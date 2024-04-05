@@ -29,7 +29,7 @@ menuentry "Ubuntu Budgie 23.10 ISO"{
     initrd (loop)/casper/initrd
 }
 #
-# KEPT ONLY FOR FUTURE USE/REFERENCE
+# KEPT ONLY FOR FUTURE USE/REFERENCE/ADAPTION
 #
 #menuentry "Fedora 35 Live"{
 #    insmod ext2
