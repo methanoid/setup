@@ -1,8 +1,7 @@
 #!/bin/bash
 #
 # Powertop Auto Settings
-#
-# Shamelessly prepared thanks to this excellent page  https://hobo.house/2015/12/18/linux-laptop-power-usage-tuning-with-powertop/
+## Shamelessly prepared thanks to this excellent page  https://hobo.house/2015/12/18/linux-laptop-power-usage-tuning-with-powertop/
 #
 echo '1500' > '/proc/sys/vm/dirty_writeback_centisecs';
 echo '0' > '/proc/sys/kernel/nmi_watchdog';
