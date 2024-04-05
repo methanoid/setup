@@ -6,7 +6,7 @@
 sudo apt install -y localepurge nala curl
 sudo nala fetch && sudo nala update && sudo nala upgrade -y
 
-# IF UBUNTU, DESNAP & INSTALL FLATPAK
+# IF UBUNTU, DE-SNAP & INSTALL FLATPAK
 distro=$(lsb_release -d | awk -F"\t" '{print $2}' | grep -c "buntu")
 if [[ $distro == '1' ]]; then
   sudo nala install -y flatpak
@@ -31,6 +31,7 @@ if [[ $distro == '1' ]]; then
   sudo printf "Package: snapd\n" >> /etc/apt/preferences.d/nosnap.pref
   sudo printf "Pin: release a=*" >> /etc/apt/preferences.d/nosnap.pref
   sudo printf "Pin-Priority: -10" >> /etc/apt/preferences.d/nosnap.pref
+  sudo systemctl disable NetworkManager-wait-online.service  # Think this is just for Ubuntu derivatives.  sudo systemd-analyze critical-chain indicates they waste 5s on boot
   sudo apt update
 fi
 
