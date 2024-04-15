@@ -62,7 +62,7 @@ else
 fi
 
 # INSTALLS & TWEAKS
-sudo nala install -y neofetch bleachbit ufw python3-pip mc easyssh libavcodec-extra git make ncdu gamemode hunspell-en-gb vlc powertop
+sudo nala install -y neofetch bleachbit ufw python3-pip mc easyssh libavcodec-extra git make ncdu gamemode hunspell-en-gb vlc powertop steam-devices
 sudo nala purge -y hunspell-en-us thunderbird transmission-cli transmission-qt pidgin pidgin-extprefs pidgin-gnome-keyring pidgin-otr pidgin-plugin-pack firefox-esr synaptic #  Spiral specifics
 sudo nala purge -y ktorrent kmahjongg ksudoku # Kubuntu specifics
 sudo nala install -y ttf-mscorefonts-installer
