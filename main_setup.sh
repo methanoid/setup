@@ -7,8 +7,7 @@ sudo apt install -y localepurge nala curl
 sudo nala fetch && sudo nala update && sudo nala upgrade -y
 
 # IF UBUNTU, DE-SNAP & INSTALL FLATPAK
-distro=$(lsb_release -d | awk -F"\t" '{print $2}' | grep -c "buntu")
-if [[ $distro == '1' ]]; then
+if [  -n "$(uname -a | grep buntu)" ]; then
   sudo nala install -y flatpak
   sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
   sudo snap remove firefox
@@ -76,7 +75,6 @@ case $XDG_SESSION_DESKTOP in
     sudo nala install -y  plasma-discover-backend-flatpak plasma-discover
     ;;
   Gnome)
-  #ubuntu:GNOME
     echo -n "Gnome specific customizations"
     sudo nala install -y gnome-software-plugin-flatpak
     ;;
@@ -86,7 +84,7 @@ case $XDG_SESSION_DESKTOP in
   XFCE)
     echo -n "XFCE specific customizations"
     ;;
-  ??Budgie)
+  Budgie)
     echo -n "Budgie specific customizations"
     ;;
   *)
@@ -108,12 +106,6 @@ if [[ $distro == '1' ]]; then
 #sudo rm /usr/share/wallpapers/Zwopper-Green-Dew-CC-BY-SA-30-2560x1600.png
 #sudo rm /home/$USER/Desktop/language-support.desktop
 fi
-
-# ADD ISOs to GRUB MENU
-mkdir /home/$USER/ISOs    # Put ISOs in here
-wget https://github.com/methanoid/setup/blob/main/append_40_custom
-cat ./append_40_custom >> /etc/grub.d/40_custom
-sudo update-grub
 
 # POWER TUNING
 wget https://github.com/methanoid/setup/blob/main/powertuning.sh
