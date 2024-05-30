@@ -1,6 +1,23 @@
 #!/bin/bash
-
 # SETUP SCRIPT FOR FEDORA BASED DISTROS USING DNF
+
+# echo "Installing RPM Fusion..."
+sudo dnf install -y "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${os_version}.noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${os_version}.noarch.rpm"
+sudo dnf update -y # and reboot if you are not on the latest kernel
+
+
+
+nvgpu=$(lspci | grep -i nvidia | grep -i vga | cut -d ":" -f 3)
+if [[ $nvgpu ]]; then
+  sudo -S dnf install -y akmod-nvidia # xorg-x11-drv-nvidia-cuda gwe
+fi
+#else
+#  printf 'Installing AMD GPU bits:  %s\n'
+#  printf "RADV_PERFTEST=aco" >> /etc/environment
+#fi
+
+# POWER TUNING
+# hostnamectl set-hostname new-name
 
 # BRAVE
 #sudo systemctl disable NetworkManager-wait-online.service  # Think this is just for Ubuntu derivatives.  sudo systemd-analyze critical-chain indicates they waste 5s on boot
@@ -9,7 +26,7 @@ sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.co
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 sudo dnf install -y brave-browser
 
-# FLATPAK STUFF
+#FLATPAK STUFF
 #sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
 #sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
 sudo flatpak install -y flathub com.heroicgameslauncher.hgl
@@ -21,19 +38,6 @@ sudo dnf upgrade -y && sudo dnf autoremove -y
 #sudo printf "neofetch" >> /home/$USER/.bashrc
 #sudo timedatectl set-local-rtc 1 --adjust-system-clock
 
-# GPU SPECIFICS
-gpu=$(lspci | grep -i '.* vga .* nvidia .*') && shopt -s nocasematch
-if [[ $gpu == *' nvidia '* ]]; then
-  sudo nala install nvidia-driver
-  sudo sed 's/splash/splash nvidia-drm.modeset=1/' /etc/default/grub-btrfs/config
-  # rhgb grub option for Fedora/RedHat distros
-  sudo dnf install -y gwe
-else
-  printf 'Installing AMD GPU bits:  %s\n'
-  printf "RADV_PERFTEST=aco" >> /etc/environment
-fi
-
-# POWER TUNING
 #wget https://github.com/methanoid/setup/blob/main/powertuning.sh
 #sudo sh ./powertuning.sh
 
