@@ -15,7 +15,7 @@ sudo dnf install brave-browser
 sudo flatpak install flathub -y com.heroicgameslauncher.hgl
 
 # INSTALLS, REMOVES & TWEAKS
-sudo dnf install -y bottles lutris dosbox-staging neofetch bleachbit python3-pip mc easyssh libavcodec-extra git ncdu gamemode hunspell-en-gb vlc powertop steam steam-devices curl retroarch
+sudo dnf install -y bottles lutris dosbox-staging neofetch bleachbit python3-pip mc git ncdu gamemode hunspell-en-GB vlc powertop steam steam-devices curl retroarch
 sudo dnf remove -y plasma-welcome ktorrent firefox neochat skanpage kmahjongg
 sudo dnf upgrade -y && sudo dnf autoremove -y
 sudo printf "neofetch" >> /home/$USER/.bashrc
