@@ -49,14 +49,19 @@ sudo add-apt-repository ppa:libretro/stable && sudo apt-get update && sudo apt-g
 wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.14.1/heroic_2.14.1_amd64.deb
 sudo dpkg -i heroic_*_amd64.deb
 #delete?
+wget https://github.com/lutris/lutris/releases/download/v0.5.17/lutris_0.5.17_all.deb
+sudo dpkg -i lutris*.deb
+#delete?
+# sudo apt install libsdl2-2.0-0 libsdl2-net-2.0-0 libopusfile0
+sudo add-apt-repository ppa:feignint/dosbox-staging
+sudo apt-get update
+sudo apt install dosbox-staging
 
 # FLATPAK STUFF
 sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
 sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
 sudo flatpak install flathub -y com.usebottles.bottles
 
-sudo flatpak install flathub -y net.lutris.Lutris
-sudo flatpak install flathub -y io.github.dosbox-staging
 
 # GPU SPECIFICS
 gpu=$(lspci | grep -i '.* vga .* nvidia .*') && shopt -s nocasematch
