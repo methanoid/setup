@@ -34,15 +34,27 @@ if [  -n "$(uname -a | grep buntu)" ]; then
   sudo apt update
 fi
 
+# BRAVE
+sudo apt install curl
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+sudo apt update
+sudo apt install brave-browser
+
+# GAMING
+sudo add-apt-repository multiverse
+sudo apt-get update -y
+sudo apt install steam steam-devices
+sudo add-apt-repository ppa:libretro/stable && sudo apt-get update && sudo apt-get install retroarch
+wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.14.1/heroic_2.14.1_amd64.deb
+sudo dpkg -i heroic_*_amd64.deb
+#delete?
+
 # FLATPAK STUFF
 sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
 sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
-sudo flatpak install flathub -y io.gitlab.librewolf-community
-sudo flatpak install flathub -y com.brave.Browser
 sudo flatpak install flathub -y com.usebottles.bottles
-sudo flatpak install flathub -y org.libretro.RetroArch
-sudo flatpak install flathub -y com.heroicgameslauncher.hgl
-sudo flatpak install flathub -y com.valvesoftware.Steam
+
 sudo flatpak install flathub -y net.lutris.Lutris
 sudo flatpak install flathub -y io.github.dosbox-staging
 
@@ -61,13 +73,11 @@ else
 fi
 
 # INSTALLS & TWEAKS
-sudo nala install -y neofetch bleachbit ufw python3-pip mc easyssh libavcodec-extra git make ncdu gamemode hunspell-en-gb vlc powertop steam-devices
+sudo nala install -y neofetch bleachbit ufw python3-pip mc libavcodec-extra git ncdu gamemode hunspell-en-gb vlc powertop
 sudo nala purge -y hunspell-en-us thunderbird transmission-cli transmission-qt pidgin pidgin-extprefs pidgin-gnome-keyring pidgin-otr pidgin-plugin-pack firefox-esr synaptic #  Spiral specifics
 sudo nala purge -y ktorrent kmahjongg ksudoku # Kubuntu specifics
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
 sudo apt-get install ttf-mscorefonts-installer
-
-# sudo nala install -y preload
 
 # DESKTOP SPECIFICS
 case $XDG_SESSION_DESKTOP in
