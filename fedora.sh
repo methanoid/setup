@@ -1,4 +1,8 @@
 #!/bin/bash
+
+
+# DOES NOT WORK... Fed40 & Plasma 6 with Wayland is BROKEN..DONT!!! You need X11
+
 # SETUP SCRIPT FOR FEDORA BASED DISTROS USING DNF
 
 # echo "Installing RPM Fusion..."
