@@ -13,12 +13,12 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" 
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
 
 title Power Planning
-:choice
+:choicep
 set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
 if /I "%c%" EQU "V" goto :vm
 if /I "%c%" EQU "D" goto :desk
 if /I "%c%" EQU "L" goto :laptop
-goto :choice
+goto :choicep
 :vm
 echo Setting up for a VM
 powercfg -setactive scheme_min
@@ -57,11 +57,11 @@ title Doing some file cleaning in background
 "C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"
 
 title Gaming Installs
-:choice
+:choiceg
 set /P c=Is this machine for Gaming? [Y/N]?
 if /I "%c%" EQU "Y" goto :yes
 if /I "%c%" EQU "N" goto :no
-goto :choice
+goto :choiceg
 :yes
 echo Installing clients - please wait
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Valve.Steam >nul
@@ -70,6 +70,7 @@ winget install --silent --disable-interactivity --accept-package-agreements --ac
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements GOG.Galaxy >nul
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ElectronicArts.EADesktop >nul
 :no
+cls
 
 title Installing Brave
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Brave.Brave >nul
@@ -113,6 +114,7 @@ winget install --silent --disable-interactivity --accept-package-agreements --ac
 
 title Installing LockHunter
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements CrystalRich.LockHunter >nul 2>&1
+taskkill /F /IM iexplore.exe /T >nul
 
 :: Needs some time to install before deleting
 del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
