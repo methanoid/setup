@@ -6,6 +6,7 @@ ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo "Beginning customizations - be patient")
 
 ::  Set PC Name
+cls
 set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
@@ -13,6 +14,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" 
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
 
 title Power Planning
+cls
 :choicep
 set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
 if /I "%c%" EQU "V" goto :vm
@@ -34,29 +36,31 @@ powercfg -setactive scheme_max
 REM Maybe add HP laptop utils ?
 :done
 
-title Activation time
-:: Activation time & then Wallpaper
+title Activation time and Wallpaper
+cls
 powershell.exe -ex bypass "irm https://get.activated.win | iex"
 powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/methanoid/setup/main/WIN_wallpaper.ps1 | iex" >nul
 
 title Installing Winget
+cls
 powershell -ExecutionPolicy Bypass -Command "irm asheroto.com/winget | iex" >nul
 REM powershell -ExecutionPolicy Bypass -Command "./winget-install.ps1" >nul
 
 title Installing Samsung Printer Driver
+cls
 "c:\Portable Apps\SamsungUPD3.exe"
 del /s "c:\Portable Apps\SamsungUPD3.exe" >nul 2>&1
 
-title Doing some file cleaning in background
+title Doing some file cleaning
+cls
 "C:\Portable Apps\ShutUp10\shutup10.exe" "C:\Portable Apps\ShutUp10\OOSU10.cfg" /quiet /nosrp
 REM "C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
 "C:\Portable Apps\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
-
-:: Run applications (needs manual intervention)
 "C:\Portable Apps\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
-"C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"
+"C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"         :: Opens WiseDiskCleaner to run it
 
 title Gaming Installs
+cls
 :choiceg
 set /P c=Is this machine for Gaming? [Y/N]?
 if /I "%c%" EQU "Y" goto :yes
@@ -70,62 +74,75 @@ winget install --silent --disable-interactivity --accept-package-agreements --ac
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements GOG.Galaxy >nul
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ElectronicArts.EADesktop >nul
 :no
-cls
 
 title Installing Brave
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Brave.Brave >nul
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
 
 title Installing 7Zip
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements 7zip.7zip >nul
 
 title Installing UnigetUI
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements SomePythonThings.WingetUIStore >nul
 del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
 
 title Installing Notepad++
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Notepad++.Notepad++ >nul
 
 title Installing Redist Files
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements --id abbodi1406.vcredist >nul
 
 title Installing OnlyOffice
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ONLYOFFICE.DesktopEditors >nul
 
 title Installing Putty
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements PuTTY.PuTTY >nul
 
 title Installing SumatraPDF
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements SumatraPDF.SumatraPDF >nul
 del /s "c:\Users\%username%\Desktop\SumatraPDF.lnk" >nul 2>&1
 
 title Installing ImgBurn
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements LIGHTNINGUK.ImgBurn >nul
 del /s "c:\Users\%username%\Desktop\ImgBurn.lnk" >nul 2>&1
 del /s "c:\Users\Public\Desktop\ImgBurn.lnk" >nul 2>&1
 
 title Installing KLite Codecs
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements CodecGuide.K-LiteCodecPack.Standard >nul
 del /s "c:\Users\%username%\Desktop\MPC-HC x64.lnk" >nul 2>&1
 del /s "c:\Users\Public\Desktop\mpc-be.lnk" >nul 2>&1
 
 title Installing Minecraft Launcher
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements PrismLauncher.PrismLauncher >nul
 
 title Installing LockHunter
+cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements CrystalRich.LockHunter >nul 2>&1
 taskkill /F /IM iexplore.exe /T >nul
 
 :: Needs some time to install before deleting
+cls
 del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
 move "c:\Portable Apps\Wise Disk Cleaner.lnk" "c:\Users\%username%\Desktop\" >nul 2>&1
 
 title Installing Chocolatey
+cls
 powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" >nul
 echo choco upgrade -y hashtab directx >>c:\users\Administrator\Desktop\Run_Me_Also.bat
-cls
 
 title Downloading and Installing Privado VPN
+cls
 powershell -Command "Invoke-WebRequest https://privadovpn.com/apps/win/Setup_PrivadoVPN_latest.exe -OutFile c:\Privado.exe"
 c:\Privado.exe /s
 del /s "c:\Privado.exe" >nul 2>&1
@@ -133,14 +150,17 @@ del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
 del /s "c:\Users\Administrator\Desktop\Setup_PrivadoVPN_latest.exe" >nul 2>&1
 
 title Installing CBX Shell
+cls
 "c:\Portable Apps\CBX.exe" /SP /VERYSILENT
 del /s "c:\Portable Apps\CBX.exe" >nul 2>&1
 
 title Installing Plasma Screensaver
+cls
 "c:\Portable Apps\PSS.exe" /s
 del /s "c:\Portable Apps\PSS.exe" >nul 2>&1
 
 title Installing VideoReDo
+cls
 "c:\Portable Apps\VRD.exe" /s
 del /s "c:\Portable Apps\VRD.exe" >nul 2>&1
 
@@ -254,4 +274,4 @@ net use y: \\UBERSERVER\isos 2>nul
 
 :: Reboot
 echo "Rebooting now - enjoy!"
-shutdown -r -t 5
+REM shutdown -r -t 5
