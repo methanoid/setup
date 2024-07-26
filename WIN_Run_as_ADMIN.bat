@@ -49,7 +49,7 @@ del /s "c:\Portable Apps\SamsungUPD3.exe" >nul 2>&1
 
 title Doing some file cleaning in background
 "C:\Portable Apps\ShutUp10\shutup10.exe" "C:\Portable Apps\ShutUp10\OOSU10.cfg" /quiet /nosrp
-"C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
+REM "C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
 "C:\Portable Apps\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
 
 :: Run applications (needs manual intervention)
