@@ -122,11 +122,10 @@ move "c:\Portable Apps\Wise Disk Cleaner.lnk" "c:\Users\%username%\Desktop\" >nu
 
 title Installing Chocolatey
 powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" >nul
-START "Choco installs" /MIN "choco" "upgrade -y hashtab directx >nul"
-REM start "Choco installs" choco_installs.bat
+echo choco upgrade -y hashtab directx >>c:\users\Administrator\Desktop\Run_Me_Also.bat
 cls
 
-title Downloading & Installing Privado VPN
+title Downloading and Installing Privado VPN
 powershell -Command "Invoke-WebRequest https://privadovpn.com/apps/win/Setup_PrivadoVPN_latest.exe -OutFile c:\Privado.exe"
 c:\Privado.exe /s
 del /s "c:\Privado.exe" >nul 2>&1
