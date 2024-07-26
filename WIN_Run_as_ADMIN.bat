@@ -1,35 +1,95 @@
+:: This script is downloaded from Github by the AutoUnattend.XML file on the ISO
+
 @echo off
 :check
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo "Beginning customizations - be patient")
 
-title Installing Chocolatey
-powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" >nul
-START "Choco installs" /MIN "choco" "upgrade -y hashtab directx >nul"
-REM start "Choco installs" choco_installs.bat
-cls
+::  Set PC Name
+set /p NUNAME=What name do you want this PC to be called? :
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" /t REG_SZ /d %NUNAME% /f >nul
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
 
-:: Now install Winget & installs
+title Power Planning
+:choice
+set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
+if /I "%c%" EQU "V" goto :vm
+if /I "%c%" EQU "D" goto :desk
+if /I "%c%" EQU "L" goto :laptop
+goto :choice
+:vm
+echo Setting up for a VM
+powercfg -setactive scheme_min
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v "ShowSleepOption" /t REG_SZ /d "0" /f >nul
+goto done
+:desk
+echo Setting up for a Desktop
+powercfg -setactive scheme_balanced
+goto done
+:laptop
+echo Setting up for a Laptop
+powercfg -setactive scheme_max
+REM Maybe add HP laptop utils ?
+:done
+
+title Activation time
+:: Activation time & then Wallpaper
+powershell.exe -ex bypass "irm https://get.activated.win | iex"
+powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/methanoid/setup/main/WIN_wallpaper.ps1 | iex" >nul
 
 title Installing Winget
 powershell -ExecutionPolicy Bypass -Command "irm asheroto.com/winget | iex" >nul
 REM powershell -ExecutionPolicy Bypass -Command "./winget-install.ps1" >nul
 
-title Installing Redist Files
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements --id abbodi1406.vcredist >nul
+title Installing Samsung Printer Driver
+"c:\Portable Apps\SamsungUPD3.exe"
+del /s "c:\Portable Apps\SamsungUPD3.exe" >nul 2>&1
+
+title Doing some file cleaning in background
+"C:\Portable Apps\ShutUp10\shutup10.exe" "C:\Portable Apps\ShutUp10\OOSU10.cfg" /quiet /nosrp
+"C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
+"C:\Portable Apps\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
+
+:: Run applications (needs manual intervention)
+"C:\Portable Apps\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
+"C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"
+
+title Gaming Installs
+:choice
+set /P c=Is this machine for Gaming? [Y/N]?
+if /I "%c%" EQU "Y" goto :yes
+if /I "%c%" EQU "N" goto :no
+goto :choice
+:yes
+echo Installing clients - please wait
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Valve.Steam >nul
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Ubisoft.Connect >nul
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements EpicGames.EpicGamesLauncher >nul
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements GOG.Galaxy >nul
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ElectronicArts.EADesktop >nul
+:no
 
 title Installing Brave
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Brave.Brave >nul
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
 
-title Installing OnlyOffice
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ONLYOFFICE.DesktopEditors >nul
-
 title Installing 7Zip
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements 7zip.7zip >nul
 
+title Installing UnigetUI
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements SomePythonThings.WingetUIStore >nul
+del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
+
 title Installing Notepad++
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Notepad++.Notepad++ >nul
+
+title Installing Redist Files
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements --id abbodi1406.vcredist >nul
+
+title Installing OnlyOffice
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ONLYOFFICE.DesktopEditors >nul
 
 title Installing Putty
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements PuTTY.PuTTY >nul
@@ -51,35 +111,39 @@ del /s "c:\Users\Public\Desktop\mpc-be.lnk" >nul 2>&1
 title Installing Minecraft Launcher
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements PrismLauncher.PrismLauncher >nul
 
-title Installing UnigetUI
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements SomePythonThings.WingetUIStore >nul
-del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
-
 title Installing LockHunter
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements CrystalRich.LockHunter >nul 2>&1
 
+:: Needs some time to install before deleting
+del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
 move "c:\Portable Apps\Wise Disk Cleaner.lnk" "c:\Users\%username%\Desktop\" >nul 2>&1
 
+title Installing Chocolatey
+powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" >nul
+START "Choco installs" /MIN "choco" "upgrade -y hashtab directx >nul"
+REM start "Choco installs" choco_installs.bat
+cls
 
-
-
-title Installing Privado VPN
-https://privadovpn.com/apps/win/Setup_PrivadoVPN_latest.exe
-OK_PrivadoVPN_latest.exe /s
+title Downloading & Installing Privado VPN
+powershell -Command "Invoke-WebRequest https://privadovpn.com/apps/win/Setup_PrivadoVPN_latest.exe -OutFile c:\Privado.exe"
+c:\Privado.exe /s
+del /s "c:\Privado.exe" >nul 2>&1
 del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
-
-
-
-
-title Installing VideoReDo
-OK_VideoReDo.TVSuite.6.63.7.836.exe /s
+del /s "c:\Users\Administrator\Desktop\Setup_PrivadoVPN_latest.exe" >nul 2>&1
 
 title Installing CBX Shell
-OK_CBX-Shell-setup.exe /SP /VERYSILENT
+"c:\Portable Apps\CBX.exe" /SP /VERYSILENT
+del /s "c:\Portable Apps\CBX.exe" >nul 2>&1
 
 title Installing Plasma Screensaver
-OK_Plasma_Screensaver.exe /s
+"c:\Portable Apps\PSS.exe" /s
+del /s "c:\Portable Apps\PSS.exe" >nul 2>&1
 
+title Installing VideoReDo
+"c:\Portable Apps\VRD.exe" /s
+del /s "c:\Portable Apps\VRD.exe" >nul 2>&1
+
+title Tweaks
 :: Small Page File and No Hibernation   (prob not needed!)
 wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=16,MaximumSize=2048 >nul
 powercfg -h off >nul
@@ -97,6 +161,9 @@ ver | find "Version 10"
 if %ERRORLEVEL% EQU 0 label C: Win10 >nul
 ver | find "Version 11"
 if %ERRORLEVEL% EQU 0 label C: Win11 >nul
+REM This is where to add those Win11 specific Tweaks
+REM This is where to add those Win11 specific Tweaks
+REM This is where to add those Win11 specific Tweaks
 
 :: Registry Tweaks
 
@@ -111,8 +178,8 @@ reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /V HideRecentlyAdded
 
 :: LanmanWorkstation to Enable Connection to unRAID
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
-net use z: \\UBERSERVER\data 2>nul
-net use y: \\UBERSERVER\isos 2>nul
+taskkill /f >nul /im explorer.exe  2>nul 
+start c:\windows\explorer.exe  2>nul 
 
 :: Disable UAC
 reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v EnableLUA /t REG_DWORD /d 0 /f
@@ -120,9 +187,8 @@ reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v Enable
 :: Remove Taskview icon from Taskbar
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\MultiTaskingView\AllUpView" /V Enabled /F
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /V ShowTaskViewButton /T REG_DWORD /D 0 /F
-REM NOT NEEDED as Bleachbit restarts explorer
-REM taskkill /f >nul /im explorer.exe  2>nul 
-REM start c:\windows\explorer.exe  2>nul 
+taskkill /f >nul /im explorer.exe  2>nul 
+start c:\windows\explorer.exe  2>nul 
 
 :: Auto Arrange Icons On
 reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v FFLAGS /t REG_DWORD /d 1075839525 /f >nul
@@ -176,65 +242,15 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "S
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "HideFastUserSwitching" /t REG_DWORD /d "1" /f >nul
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "DisableLockWorkstation" /t REG_DWORD /d "1" /f >nul
 
+:: Remove 3D Objects
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" /f >nul
+reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" /f >nul
+
+:: Map unRAID Network drives
+net use z: \\UBERSERVER\data 2>nul
+net use y: \\UBERSERVER\isos 2>nul
 
 
-
-:: Remove 3D Objects (import file to delete reg keys)
-reg import Remove-3D-Objects-Folder-W10.reg
-
-[-HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}]
-[-HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}]
-reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
-reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
-reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
-
-
-
-
-
-:: Run applications silently :-)
-"C:\Portable Apps\ShutUp10\shutup10.exe" "C:\Portable Apps\ShutUp10\OOSU10.cfg" /quiet /nosrp
-"C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
-"C:\Portable Apps\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
-
-:: Run applications (needs manual intervention)
-"C:\Portable Apps\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
-"C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"
-"SamsungUniversalPrintDriver3.exe"
-
-:: Gaming OPTIONS
-:choice
-set /P c=Is this machine for Gaming? [Y/N]?
-if /I "%c%" EQU "Y" goto :yes
-if /I "%c%" EQU "N" goto :no
-goto :choice
-:yes
-echo Installing clients - please wait
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Valve.Steam >nul
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Ubisoft.Connect >nul
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements EpicGames.EpicGamesLauncher >nul
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements GOG.Galaxy >nul
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ElectronicArts.EADesktop >nul
-:no
-
-::  Set PC Name
-set /p NUNAME=What name do you want this PC to be called? :
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" /t REG_SZ /d %NUNAME% /f >nul
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
-
-:: Needs some time to install before deleting
-del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
-
-:: Enables Performance Plan & Disables Sleep
-powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
-powercfg /setactive e9a42b02-d5df-448d-aa00-03f14749eb61
-
-:: Activation time & then Wallpaper
-powershell.exe -ex bypass "irm https://get.activated.win | iex"
-powershell -ExecutionPolicy Bypass -Command "./WIN_wallpaper.ps1" >nul
-
-:: Reboot if done?
+:: Reboot
 echo "Rebooting now - enjoy!"
 shutdown -r -t 5
