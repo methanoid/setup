@@ -1,12 +1,12 @@
 :: This script is downloaded from Github by the AutoUnattend.XML file on the ISO
-
 @echo off
+title Windows Customization - Be patient
+
 :check
 ping www.google.com -n 1 -w 1000>nul && cls
-if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo "Beginning customizations - be patient")
+if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Beginning installs - be patient)
 
 ::  Set PC Name
-cls
 set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
@@ -14,13 +14,12 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" 
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
 
 title Power Planning
-cls
-:choicep
+:choice
 set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
 if /I "%c%" EQU "V" goto :vm
 if /I "%c%" EQU "D" goto :desk
 if /I "%c%" EQU "L" goto :laptop
-goto :choicep
+goto :choice
 :vm
 echo Setting up for a VM
 powercfg -setactive scheme_min
@@ -36,36 +35,39 @@ powercfg -setactive scheme_max
 REM Maybe add HP laptop utils ?
 :done
 
-title Activation time and Wallpaper
-cls
+title Activation and Wallpaper
 powershell.exe -ex bypass "irm https://get.activated.win | iex"
-powershell -ExecutionPolicy Bypass -Command "irm https://raw.githubusercontent.com/methanoid/setup/main/WIN_wallpaper.ps1 | iex" >nul
+powershell -ex bypass -Command "irm https://raw.githubusercontent.com/methanoid/setup/main/WIN_wallpaper.ps1 | iex" >nul
 
-title Installing Winget
-cls
-powershell -ExecutionPolicy Bypass -Command "irm asheroto.com/winget | iex" >nul
-REM powershell -ExecutionPolicy Bypass -Command "./winget-install.ps1" >nul
+:: Now install Winget & installs
+title Winget Installs
+echo Installing Winget
+powershell.exe -ex bypass "irm winget.pro | iex"
+
+title Installing Chocolatey
+powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" >nul
+start /b cmd /c "C://ProgramData/chocolatey/bin/choco.exe upgrade -y hashtab directx >nul"
 
 title Installing Samsung Printer Driver
-cls
 "c:\Portable Apps\SamsungUPD3.exe"
 del /s "c:\Portable Apps\SamsungUPD3.exe" >nul 2>&1
 
-title Doing some file cleaning
-cls
+title Some File Cleaning
 "C:\Portable Apps\ShutUp10\shutup10.exe" "C:\Portable Apps\ShutUp10\OOSU10.cfg" /quiet /nosrp
-REM "C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
+"C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
 "C:\Portable Apps\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
+
+:: Run applications (needs manual intervention)
 "C:\Portable Apps\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
-"C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"         :: Opens WiseDiskCleaner to run it
+"C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"
+move "C:\Portable Apps\Wise Disk Cleaner.lnk" "c:\Users\%username%\Desktop\" >nul 2>&1
 
 title Gaming Installs
-cls
-:choiceg
+:choice
 set /P c=Is this machine for Gaming? [Y/N]?
 if /I "%c%" EQU "Y" goto :yes
 if /I "%c%" EQU "N" goto :no
-goto :choiceg
+goto :choice
 :yes
 echo Installing clients - please wait
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Valve.Steam >nul
@@ -76,98 +78,84 @@ winget install --silent --disable-interactivity --accept-package-agreements --ac
 :no
 
 title Installing Brave
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Brave.Brave >nul
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
 
 title Installing 7Zip
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements 7zip.7zip >nul
 
 title Installing UnigetUI
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements SomePythonThings.WingetUIStore >nul
 del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
 
 title Installing Notepad++
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Notepad++.Notepad++ >nul
 
 title Installing Redist Files
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements --id abbodi1406.vcredist >nul
 
 title Installing OnlyOffice
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ONLYOFFICE.DesktopEditors >nul
 
 title Installing Putty
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements PuTTY.PuTTY >nul
 
 title Installing SumatraPDF
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements SumatraPDF.SumatraPDF >nul
 del /s "c:\Users\%username%\Desktop\SumatraPDF.lnk" >nul 2>&1
 
 title Installing ImgBurn
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements LIGHTNINGUK.ImgBurn >nul
 del /s "c:\Users\%username%\Desktop\ImgBurn.lnk" >nul 2>&1
 del /s "c:\Users\Public\Desktop\ImgBurn.lnk" >nul 2>&1
 
 title Installing KLite Codecs
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements CodecGuide.K-LiteCodecPack.Standard >nul
 del /s "c:\Users\%username%\Desktop\MPC-HC x64.lnk" >nul 2>&1
 del /s "c:\Users\Public\Desktop\mpc-be.lnk" >nul 2>&1
 
 title Installing Minecraft Launcher
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements PrismLauncher.PrismLauncher >nul
 
 title Installing LockHunter
-cls
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements CrystalRich.LockHunter >nul 2>&1
-taskkill /F /IM iexplore.exe /T >nul
 
 :: Needs some time to install before deleting
-cls
 del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
-move "c:\Portable Apps\Wise Disk Cleaner.lnk" "c:\Users\%username%\Desktop\" >nul 2>&1
 
-title Installing Chocolatey
-cls
-powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" >nul
-echo choco upgrade -y hashtab directx >>c:\users\Administrator\Desktop\Run_Me_Also.bat
-
-title Downloading and Installing Privado VPN
-cls
+title Downloading & Installing Privado VPN
 powershell -Command "Invoke-WebRequest https://privadovpn.com/apps/win/Setup_PrivadoVPN_latest.exe -OutFile c:\Privado.exe"
 c:\Privado.exe /s
-del /s "c:\Privado.exe" >nul 2>&1
+:: Fix for VPN adding
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul      
 del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
+del /s "c:\Privado.exe" >nul 2>&1
 del /s "c:\Users\Administrator\Desktop\Setup_PrivadoVPN_latest.exe" >nul 2>&1
 
 title Installing CBX Shell
-cls
 "c:\Portable Apps\CBX.exe" /SP /VERYSILENT
 del /s "c:\Portable Apps\CBX.exe" >nul 2>&1
 
 title Installing Plasma Screensaver
-cls
 "c:\Portable Apps\PSS.exe" /s
 del /s "c:\Portable Apps\PSS.exe" >nul 2>&1
+reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\system32\plasma.scr" /f >nul
+reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul
+reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul
+reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /f >nul
 
 title Installing VideoReDo
-cls
+REM VideoReDo.TVSuite.6.63.7.836
 "c:\Portable Apps\VRD.exe" /s
 del /s "c:\Portable Apps\VRD.exe" >nul 2>&1
 
 title Tweaks
 :: Small Page File and No Hibernation   (prob not needed!)
+echo Pagefile, Swapfile and Hibernation Tweaks
 wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=16,MaximumSize=2048 >nul
 powercfg -h off >nul
+:: Fix for removing SwapFile.sys for Metro apps
+reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /v "SwapfileControl" /t REG_DWORD /d "0" /f >nul 
 
 ::  Set PC network discoverable
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
@@ -188,17 +176,12 @@ REM This is where to add those Win11 specific Tweaks
 
 :: Registry Tweaks
 
-:: Setup Plasma screensaver for 10m
-reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\system32\plasma.scr" /f >nul
-reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul
-reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul
-reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /f >nul
-
 :: Hide Recently Added items from Start Menu
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /V HideRecentlyAddedApps /T REG_DWORD /D 1 /F
 
-:: LanmanWorkstation to Enable Connection to unRAID
+:: LanmanWorkstation to Enable Connection to unRAID & Map Z drive
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
+net use z: \\UBERSERVER\data 2>nul
 taskkill /f >nul /im explorer.exe  2>nul 
 start c:\windows\explorer.exe  2>nul 
 
@@ -213,12 +196,6 @@ start c:\windows\explorer.exe  2>nul
 
 :: Auto Arrange Icons On
 reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v FFLAGS /t REG_DWORD /d 1075839525 /f >nul
-
-:: Fix for VPN adding
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul      
-
-:: Fix for removing SwapFile.sys for Metro apps
-reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /v "SwapfileControl" /t REG_DWORD /d "0" /f >nul 
 
 :: Add Network Icon
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul
@@ -267,11 +244,6 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "Dis
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" /f >nul
 reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" /f >nul
 
-:: Map unRAID Network drives
-net use z: \\UBERSERVER\data 2>nul
-net use y: \\UBERSERVER\isos 2>nul
-
-
 :: Reboot
 echo "Rebooting now - enjoy!"
-REM shutdown -r -t 5
+shutdown -r -t 5
