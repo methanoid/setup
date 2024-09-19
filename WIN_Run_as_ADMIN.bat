@@ -40,8 +40,7 @@ powershell.exe -ex bypass "irm https://get.activated.win | iex"
 powershell -ex bypass -Command "irm https://raw.githubusercontent.com/methanoid/setup/main/WIN_wallpaper.ps1 | iex" >nul
 
 :: Now install Winget & installs
-title Winget Installs
-echo Installing Winget
+title Installing Winget
 powershell.exe -ex bypass "irm winget.pro | iex"
 
 title Installing Chocolatey
@@ -56,6 +55,7 @@ title Some File Cleaning
 "C:\Portable Apps\ShutUp10\shutup10.exe" "C:\Portable Apps\ShutUp10\OOSU10.cfg" /quiet /nosrp
 "C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
 "C:\Portable Apps\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
+rd /s /q "c:\Intel" >nul 2>&1
 
 :: Run applications (needs manual intervention)
 "C:\Portable Apps\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
@@ -80,15 +80,16 @@ winget install --silent --disable-interactivity --accept-package-agreements --ac
 title Installing Brave
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Brave.Brave >nul
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
+del /s "c:\Users\%username%\Desktop\Microsoft Edge.lnk" >nul 2>&1
 
 title Installing 7Zip
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements 7zip.7zip >nul
 
 title Installing UnigetUI
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements SomePythonThings.WingetUIStore >nul
-del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
+del /s "c:\Users\%username%\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
 
-title Installing Notepad++
+title Installing Notepad
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Notepad++.Notepad++ >nul
 
 title Installing Redist Files
@@ -121,9 +122,9 @@ title Installing LockHunter
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements CrystalRich.LockHunter >nul 2>&1
 
 :: Needs some time to install before deleting
-del /s "c:\Users\Public\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
+del /s "c:\Users\%username%\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
 
-title Downloading & Installing Privado VPN
+title Installing Privado VPN
 powershell -Command "Invoke-WebRequest https://privadovpn.com/apps/win/Setup_PrivadoVPN_latest.exe -OutFile c:\Privado.exe"
 c:\Privado.exe /s
 :: Fix for VPN adding
