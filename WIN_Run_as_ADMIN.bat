@@ -42,6 +42,7 @@ powershell -ex bypass -Command "irm https://raw.githubusercontent.com/methanoid/
 :: Now install Winget & installs
 title Installing Winget
 powershell.exe -ex bypass "irm winget.pro | iex"
+cls
 
 title Installing Chocolatey
 powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" >nul
@@ -82,11 +83,35 @@ winget install --silent --disable-interactivity --accept-package-agreements --ac
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
 del /s "c:\Users\%username%\Desktop\Microsoft Edge.lnk" >nul 2>&1
 
+title Nuking Microsoft Edge
+cd /d "%ProgramFiles(x86)%\Microsoft"
+for /f "tokens=1 delims=\" %%i in ('dir /B /A:D "%ProgramFiles(x86)%\Microsoft\Edge\Application" ^| find "."') do (set "edge_chromium_package_version=%%i")
+if defined edge_chromium_package_version (
+		echo Removing %edge_chromium_package_version%...
+		EdgeWebView\Application\%edge_chromium_package_version%\Installer\setup.exe --uninstall --force-uninstall --msedgewebview --system-level --verbose-logging
+		Edge\Application\%edge_chromium_package_version%\Installer\setup.exe --uninstall --force-uninstall --msedge --system-level --verbose-logging
+		EdgeCore\%edge_chromium_package_version%\Installer\setup.exe --uninstall --force-uninstall --msedge --system-level --verbose-logging
+	) else (
+		echo Microsoft Edge [Chromium] not found, skipping.
+	)
+cd /d "%~dp0"
+echo Microsoft Edge [Legacy/UWP] uninstalling...
+for /f "tokens=8 delims=\" %%i in ('reg query "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages" ^| findstr "Microsoft-Windows-Internet-Browser-Package" ^| findstr "~~"') do (set "edge_legacy_package_version=%%i")
+if defined edge_legacy_package_version (
+		echo Removing %edge_legacy_package_version%...
+		reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\%edge_legacy_package_version%" /v Visibility /t REG_DWORD /d 1 /f
+		reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\Packages\%edge_legacy_package_version%\Owners" /va /f
+		dism /online /Remove-Package /PackageName:%edge_legacy_package_version%
+		powershell.exe -Command "Get-AppxPackage *edge* | Remove-AppxPackage" >nul
+	) else (
+		echo Microsoft Edge [Legacy/UWP] not found, skipping.
+	)
+
 title Installing 7Zip
 winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements 7zip.7zip >nul
 
 title Installing UnigetUI
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements SomePythonThings.WingetUIStore >nul
+winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements MartiCliment.UniGetUI >nul
 del /s "c:\Users\%username%\Desktop\UniGetUI (formerly WingetUI).lnk" >nul 2>&1
 
 title Installing Notepad
@@ -244,6 +269,10 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" /v "Dis
 :: Remove 3D Objects
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" /f >nul
 reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" /f >nul
+
+:: UNINSTALL EDGE & RUNTIME
+
+
 
 :: Reboot
 echo "Rebooting now - enjoy!"
