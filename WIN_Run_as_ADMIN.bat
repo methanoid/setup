@@ -41,8 +41,8 @@ powershell -ex bypass -Command "irm https://raw.githubusercontent.com/methanoid/
 
 :: Now install Chocolatey
 title Installing Chocolatey
-"c:\Portable Apps\chocolatey-2.3.0.0.msi" /quiet
-REM del /s "c:\Portable Apps\chocolatey-2.3.0.0.msi" >nul 2>&1
+"c:\Portable Apps\chocolatey-2.4.1.0.msi" /quiet
+REM del /s "c:\Portable Apps\chocolatey-2.4.1.0.msi" >nul 2>&1
 
 title Installing Samsung Printer Driver
 "c:\Portable Apps\SamsungUPD3.exe"
@@ -257,96 +257,7 @@ reg add "HKCU\System\GameConfigStore" /v "GameDVR_HonorUserFSEBehaviorMode" /t R
 reg add "HKCU\System\GameConfigStore" /v "GameDVR_Enabled" /t REG_DWORD /d "0" /f
 reg add "HKLM\Software\Policies\Microsoft\Windows\GameDVR" /v "AllowgameDVR" /t REG_DWORD /d "0" /f
 reg add "HKCU\Software\Microsoft\GameBar" /v "AutoGameModeEnabled" /t REG_DWORD /d "0" /f
-sc config AppVClient start= disabled
-sc config autotimesvc start= disabled
-sc config Backupper Service start= disabled
-sc config BDESVC start= disabled
-sc config BthAvctpSvc start= disabled
-sc config cbdhsvc start= disabled
-sc config CDPSvc start= disabled
-sc config CDPUserSvc start= disabled
-sc config CscService start= disabled
-sc config DevicesFlowUserSvc start= disabled
-sc config DevicesFlowUserSvc_5f1ad start= disabled
-sc config DevQueryBroker start= disabled
-sc config diagnosticshub.standardcollector.service start= disabled
-sc config diagsvc start= disabled
-sc config DiagTrack start= disabled
-sc config DialogBlockingService start= disabled
-sc config DispBrokerDesktopSvc start= disabled
-sc config DisplayEnhancementService start= disabled
-sc config dLauncherLoopback start= disabled
-sc config dmwappushservice start= disabled
-sc config DsmSvc start= disabled
-sc config DsSvc start= disabled
-sc config DusmSvc start= disabled
-sc config edgeupdate start= disabled
-sc config edgeupdatem start= disabled
-sc config EFS start= disabled
-sc config Fax start= disabled
-sc config fdPHost start= disabled
-sc config FDResPub start= disabled
-sc config FontCache start= disabled
-sc config icssvc start= disabled
-sc config IKEEXT start= disabled
-sc config iphlpsvc start= disabled
-sc config lfsvc start= disabled
-sc config lmhosts start= disabled
-sc config MessagingService_5f1ad start= disabled
-sc config MicrosoftEdgeElevationService start= disabled
-sc config MixedRealityOpenXRSvc start= disabled
-sc config MsKeyboardFilter start= disabled
-sc config NetTcpPortSharing start= disabled
-sc config NPSMSvc start= disabled
-sc config OneSyncSvc start= disabled
-sc config OneSyncSvc_5f1ad start= disabled
-sc config PcaSvc start= disabled
-sc config PhoneSvc start= disabled
-sc config PimIndexMaintenanceSvc_5f1ad start= disabled
-sc config RasMan start= disabled
-sc config RetailDemo start= disabled
-sc config RetailDemo start=disabled
-sc config SEMgrSvc start= disabled
-sc config SensorDataService start= disabled
-sc config SensorService start= disabled
-sc config SensrSvc start= disabled
-sc config SessionEnv start= disabled
-sc config SharedAccess start= disabled
-sc config ShellHWDetection start= disabled
-sc config shpamsvc start= disabled
-sc config SSDPSRV start= disabled
-sc config ssh-agent start= disabled
-sc config SstpSvc start= disabled
-sc config SstpSvc start=disabled
-sc config stisvc start= disabled
-sc config SysMain start= disabled
-sc config TabletInputService start= disabled
-sc config TapiSrv start= disabled
-sc config TermService start= disabled
-sc config TokenBroker start= disabled
-sc config TrkWks start= disabled
-sc config tzautoupdate start= disabled
-sc config UevAgentService start= disabled
-sc config UnistoreSvc start= disabled
-sc config UserDataSvc start= disabled
-sc config W32Time start= disabled
-sc config WalletService start= disabled
-sc config WbioSrvc start= disabled
-sc config Wcmsvc start= disabled
-sc config WebClient start= disabled
-sc config Wecsvc start= disabled
-sc config wercplsupport start= disabled
-sc config WerSvc start= disabled
-sc config WinHttpAutoProxySvc start= disabled
-sc config wlidsvc start= disabled
-sc config WMPNetworkSvc start= disabled
-sc config WpcMonSvc start= disabled
-sc config WPDBusEnum start= disabled
-sc config WpnUserService_5f1ad start= disabled
-sc config XblAuthManager start= disabled
-sc config XblGameSave start= disabled
-sc config XboxGipSvc start= disabled
-sc config XboxNetApiSvc start= disabled
+
 schtasks /DELETE /TN "AMDInstallLauncher" /f
 schtasks /DELETE /TN "AMDLinkUpdate" /f
 schtasks /DELETE /TN "AMDRyzenMasterSDKTask" /f
@@ -669,7 +580,7 @@ PowerShell -ExecutionPolicy Unrestricted -Command "$shortcuts = @(; @{ Revert = 
 
 
 :: Pause the script to view the final state
-pause
+REM pause
 :: Restore previous environment settings
 endlocal
 
@@ -710,3 +621,95 @@ These Windows services are started:
    AppX Deployment Service (AppXSVC) -disable if not using Store
    Microsoft Store Install Service
    NVIDIA Display Driver Service - probably not needed
+
+
+sc config AppVClient start= disabled
+sc config autotimesvc start= disabled
+sc config Backupper Service start= disabled
+sc config BDESVC start= disabled
+sc config BthAvctpSvc start= disabled
+sc config cbdhsvc start= disabled
+sc config CDPSvc start= disabled
+sc config CDPUserSvc start= disabled
+sc config CscService start= disabled
+sc config DevicesFlowUserSvc start= disabled
+sc config DevicesFlowUserSvc_5f1ad start= disabled
+sc config DevQueryBroker start= disabled
+sc config diagnosticshub.standardcollector.service start= disabled
+sc config diagsvc start= disabled
+sc config DiagTrack start= disabled
+sc config DialogBlockingService start= disabled
+sc config DispBrokerDesktopSvc start= disabled
+sc config DisplayEnhancementService start= disabled
+sc config dLauncherLoopback start= disabled
+sc config dmwappushservice start= disabled
+sc config DsmSvc start= disabled
+sc config DsSvc start= disabled
+sc config DusmSvc start= disabled
+sc config edgeupdate start= disabled
+sc config edgeupdatem start= disabled
+sc config EFS start= disabled
+sc config Fax start= disabled
+sc config fdPHost start= disabled
+sc config FDResPub start= disabled
+sc config FontCache start= disabled
+sc config icssvc start= disabled
+sc config IKEEXT start= disabled
+sc config iphlpsvc start= disabled
+sc config lfsvc start= disabled
+sc config lmhosts start= disabled
+sc config MessagingService_5f1ad start= disabled
+sc config MicrosoftEdgeElevationService start= disabled
+sc config MixedRealityOpenXRSvc start= disabled
+sc config MsKeyboardFilter start= disabled
+sc config NetTcpPortSharing start= disabled
+sc config NPSMSvc start= disabled
+sc config OneSyncSvc start= disabled
+sc config OneSyncSvc_5f1ad start= disabled
+sc config PcaSvc start= disabled
+sc config PhoneSvc start= disabled
+sc config PimIndexMaintenanceSvc_5f1ad start= disabled
+sc config RasMan start= disabled
+sc config RetailDemo start= disabled
+sc config RetailDemo start=disabled
+sc config SEMgrSvc start= disabled
+sc config SensorDataService start= disabled
+sc config SensorService start= disabled
+sc config SensrSvc start= disabled
+sc config SessionEnv start= disabled
+sc config SharedAccess start= disabled
+sc config ShellHWDetection start= disabled
+sc config shpamsvc start= disabled
+sc config SSDPSRV start= disabled
+sc config ssh-agent start= disabled
+sc config SstpSvc start= disabled
+sc config SstpSvc start=disabled
+sc config stisvc start= disabled
+sc config SysMain start= disabled
+sc config TabletInputService start= disabled
+sc config TapiSrv start= disabled
+sc config TermService start= disabled
+sc config TokenBroker start= disabled
+sc config TrkWks start= disabled
+sc config tzautoupdate start= disabled
+sc config UevAgentService start= disabled
+sc config UnistoreSvc start= disabled
+sc config UserDataSvc start= disabled
+sc config W32Time start= disabled
+sc config WalletService start= disabled
+sc config WbioSrvc start= disabled
+sc config Wcmsvc start= disabled
+sc config WebClient start= disabled
+sc config Wecsvc start= disabled
+sc config wercplsupport start= disabled
+sc config WerSvc start= disabled
+sc config WinHttpAutoProxySvc start= disabled
+sc config wlidsvc start= disabled
+sc config WMPNetworkSvc start= disabled
+sc config WpcMonSvc start= disabled
+sc config WPDBusEnum start= disabled
+sc config WpnUserService_5f1ad start= disabled
+sc config XblAuthManager start= disabled
+sc config XblGameSave start= disabled
+sc config XboxGipSvc start= disabled
+sc config XboxNetApiSvc start= disabled
