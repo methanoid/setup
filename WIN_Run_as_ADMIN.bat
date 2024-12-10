@@ -6,6 +6,9 @@ title Windows Customization - Be patient
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Beginning installs - be patient)
 
+:: Drivers (not needed if DISM updated)
+"C:\Portable Apps\Driver Booster\DriverBoosterPortable.exe"
+
 ::  Set PC Name
 set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
@@ -41,8 +44,8 @@ powershell -ex bypass -Command "irm https://raw.githubusercontent.com/methanoid/
 
 :: Now install Chocolatey
 title Installing Chocolatey
-"c:\Portable Apps\chocolatey-2.4.1.0.msi" /quiet
-REM del /s "c:\Portable Apps\chocolatey-2.4.1.0.msi" >nul 2>&1
+msiexec /i "c:\Portable Apps\chocolatey-2.4.1.0.msi" /quiet >nul 2>&1
+del /s "c:\Portable Apps\chocolatey-2.4.1.0.msi"
 
 title Installing Samsung Printer Driver
 "c:\Portable Apps\SamsungUPD3.exe"
@@ -56,11 +59,7 @@ if /I "%c%" EQU "N" goto :no
 goto :choice
 :yes
 echo Installing clients - please wait
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Valve.Steam >nul
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements Ubisoft.Connect >nul
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements EpicGames.EpicGamesLauncher >nul
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements GOG.Galaxy >nul
-winget install --silent --disable-interactivity --accept-package-agreements --accept-source-agreements ElectronicArts.EADesktop >nul
+choco upgrade -y steam ubisoft-connect epicgameslauncher goggalaxy ea-app >nul 2>&1
 :no
 
 title Installing Brave
@@ -68,6 +67,7 @@ choco upgrade -y brave >nul
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
 schtasks /delete /tn BraveUpdateTaskMachineCore /f >nul 2>&1
 schtasks /delete /tn BraveUpdateTaskMachineUA /f >nul 2>&1
+reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\ /f "BraveSoftware Update" /f
 
 title Installing 7Zip
 choco upgrade -y 7zip >nul
@@ -120,6 +120,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncaps
 del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
 del /s "c:\Privado.exe" >nul 2>&1
 del /s "c:\Users\Administrator\Desktop\Setup_PrivadoVPN_latest.exe" >nul 2>&1
+reg delete HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\ /f "PrivadoVPN" /f
 
 title Installing CBX Shell
 "c:\Portable Apps\CBX.exe" /SP /VERYSILENT
@@ -145,9 +146,6 @@ wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=16,MaximumSize=20
 powercfg -h off >nul
 :: Fix for removing SwapFile.sys for Metro apps
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Memory Management" /v "SwapfileControl" /t REG_DWORD /d "0" /f >nul 
-
-::  Set PC network discoverable
-netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 
 :: Tidying up scheduled tasks
 schtasks /delete /tn klcp_update /f >nul 2>&1
@@ -180,6 +178,9 @@ reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\MultiTasking
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" /V ShowTaskViewButton /T REG_DWORD /D 0 /F
 taskkill /f >nul /im explorer.exe  2>nul 
 start c:\windows\explorer.exe  2>nul 
+
+:: Remove Realtek Control Panel (shouldnt be needed)
+reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run\ /f "RTHDVCPL" /f
 
 :: Auto Arrange Icons On
 reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v FFLAGS /t REG_DWORD /d 1075839525 /f >nul
@@ -240,140 +241,6 @@ DISM /Online /Remove-Capability /CapabilityName:Microsoft.Windows.WordPad~~~~0.0
 DISM /Online /Remove-Capability /CapabilityName:Microsoft-Windows-SnippingTool~~~~0.0.1.0​
 PowerShell "Get-AppxPackage -AllUsers -PackageTypeFilter Bundle -Name "*Windows.DevHome*" | Remove-AppxPackage -AllUsers"
 PowerShell "Get-AppxPackage -AllUsers -PackageTypeFilter Bundle -Name "*UserExperience-Desktop*" | Remove-AppxPackage -AllUsers"
-
-:: Fixing all those unnecessary services
-title Fixing Services
-
-reg add "HKLM\System\CurrentControlSet\Services\PimIndexMaintenanceSvc" /v "Start" /t REG_DWORD /d "4" /f
-reg add "HKLM\System\CurrentControlSet\Services\WinHttpAutoProxySvc" /v "Start" /t REG_DWORD /d "4" /fd
-reg add "HKLM\System\CurrentControlSet\Services\BcastDVRUserService" /v "Start" /t REG_DWORD /d "4" /f
-reg add "HKLM\System\CurrentControlSet\Services\xbgm" /v "Start" /t REG_DWORD /d "4" /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "AppCaptureEnabled" /t REG_DWORD /d "0" /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "AudioCaptureEnabled" /t REG_DWORD /d "0" /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "CursorCaptureEnabled" /t REG_DWORD /d "0" /f
-reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "MicrophoneCaptureEnabled" /t REG_DWORD /d "0" /f
-reg add "HKCU\System\GameConfigStore" /v "GameDVR_FSEBehavior" /t REG_DWORD /d "2" /f
-reg add "HKCU\System\GameConfigStore" /v "GameDVR_HonorUserFSEBehaviorMode" /t REG_DWORD /d "2" /f
-reg add "HKCU\System\GameConfigStore" /v "GameDVR_Enabled" /t REG_DWORD /d "0" /f
-reg add "HKLM\Software\Policies\Microsoft\Windows\GameDVR" /v "AllowgameDVR" /t REG_DWORD /d "0" /f
-reg add "HKCU\Software\Microsoft\GameBar" /v "AutoGameModeEnabled" /t REG_DWORD /d "0" /f
-
-schtasks /DELETE /TN "AMDInstallLauncher" /f
-schtasks /DELETE /TN "AMDLinkUpdate" /f
-schtasks /DELETE /TN "AMDRyzenMasterSDKTask" /f
-schtasks /DELETE /TN "Driver Easy Scheduled Scan" /f
-schtasks /DELETE /TN "ModifyLinkUpdate" /f
-schtasks /DELETE /TN "SoftMakerUpdater" /f
-schtasks /DELETE /TN "StartCN" /f
-schtasks /DELETE /TN "StartDVR" /f
-schtasks /Change /TN "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /Disable
-schtasks /Change /TN "Microsoft\Windows\Application Experience\PcaPatchDbTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Application Experience\ProgramDataUpdater" /Disable
-schtasks /Change /TN "Microsoft\Windows\Application Experience\StartupAppTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Autochk\Proxy" /Disable
-schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" /Disable
-schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /Disable
-schtasks /Change /TN "Microsoft\Windows\Defrag\ScheduledDefrag" /Disable
-schtasks /Change /TN "Microsoft\Windows\Device Information\Device" /Disable
-schtasks /Change /TN "Microsoft\Windows\Device Information\Device User" /Disable
-schtasks /Change /TN "Microsoft\Windows\Diagnosis\RecommendedTroubleshootingScanner" /Disable
-schtasks /Change /TN "Microsoft\Windows\Diagnosis\Scheduled" /Disable
-schtasks /Change /TN "Microsoft\Windows\DiskCleanup\SilentCleanup" /Disable
-schtasks /Change /TN "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" /Disable
-schtasks /Change /TN "Microsoft\Windows\DiskFootprint\Diagnostics" /Disable
-schtasks /Change /TN "Microsoft\Windows\DiskFootprint\StorageSense" /Disable
-schtasks /Change /TN "Microsoft\Windows\DUSM\dusmtask" /Disable
-schtasks /Change /TN "Microsoft\Windows\EnterpriseMgmt\MDMMaintenenceTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Feedback\Siuf\DmClient" /Disable
-schtasks /Change /TN "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload" /Disable
-schtasks /Change /TN "Microsoft\Windows\FileHistory\File History (maintenance mode)" /Disable
-schtasks /Change /TN "Microsoft\Windows\Flighting\FeatureConfig\ReconcileFeatures" /Disable
-schtasks /Change /TN "Microsoft\Windows\Flighting\FeatureConfig\UsageDataFlushing" /Disable
-schtasks /Change /TN "Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting" /Disable
-schtasks /Change /TN "Microsoft\Windows\Flighting\OneSettings\RefreshCache" /Disable
-schtasks /Change /TN "Microsoft\Windows\Input\LocalUserSyncDataAvailable" /Disable
-schtasks /Change /TN "Microsoft\Windows\Input\MouseSyncDataAvailable" /Disable
-schtasks /Change /TN "Microsoft\Windows\Input\PenSyncDataAvailable" /Disable
-schtasks /Change /TN "Microsoft\Windows\Input\TouchpadSyncDataAvailable" /Disable
-schtasks /Change /TN "Microsoft\Windows\International\Synchronize Language Settings" /Disable
-schtasks /Change /TN "Microsoft\Windows\LanguageComponentsInstaller\Installation" /Disable
-schtasks /Change /TN "Microsoft\Windows\LanguageComponentsInstaller\ReconcileLanguageResources" /Disable
-schtasks /Change /TN "Microsoft\Windows\LanguageComponentsInstaller\Uninstallation" /Disable
-schtasks /Change /TN "Microsoft\Windows\License Manager\TempSignedLicenseExchange" /Disable
-schtasks /Change /TN "Microsoft\Windows\License Manager\TempSignedLicenseExchange" /Disable
-schtasks /Change /TN "Microsoft\Windows\Management\Provisioning\Cellular" /Disable
-schtasks /Change /TN "Microsoft\Windows\Management\Provisioning\Logon" /Disable
-schtasks /Change /TN "Microsoft\Windows\Maintenance\WinSAT" /Disable
-schtasks /Change /TN "Microsoft\Windows\Maps\MapsToastTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Maps\MapsUpdateTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Mobile Broadband Accounts\MNO Metadata Parser" /Disable
-schtasks /Change /TN "Microsoft\Windows\MUI\LPRemove" /Disable
-schtasks /Change /TN "Microsoft\Windows\NetTrace\GatherNetworkInfo" /Disable
-schtasks /Change /TN "Microsoft\Windows\PI\Sqm-Tasks" /Disable
-schtasks /Change /TN "Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem" /Disable
-schtasks /Change /TN "Microsoft\Windows\PushToInstall\Registration" /Disable
-schtasks /Change /TN "Microsoft\Windows\Ras\MobilityManager" /Disable
-schtasks /Change /TN "Microsoft\Windows\RecoveryEnvironment\VerifyWinRE" /Disable
-schtasks /Change /TN "Microsoft\Windows\RemoteAssistance\RemoteAssistanceTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\RetailDemo\CleanupOfflineContent" /Disable
-schtasks /Change /TN "Microsoft\Windows\Servicing\StartComponentCleanup" /Disable
-schtasks /Change /TN "Microsoft\Windows\SettingSync\NetworkStateChangeTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Setup\SetupCleanupTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Setup\SnapshotCleanupTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\SpacePort\SpaceAgentTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\SpacePort\SpaceManagerTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Speech\SpeechModelDownloadTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Storage Tiers Management\Storage Tiers Management Initialization" /Disable
-schtasks /Change /TN "Microsoft\Windows\Sysmain\ResPriStaticDbSync" /Disable
-schtasks /Change /TN "Microsoft\Windows\Sysmain\WsSwapAssessmentTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\Task Manager\Interactive" /Disable
-schtasks /Change /TN "Microsoft\Windows\Time Synchronization\ForceSynchronizeTime" /Disable
-schtasks /Change /TN "Microsoft\Windows\Time Synchronization\SynchronizeTime" /Disable
-schtasks /Change /TN "Microsoft\Windows\Time Zone\SynchronizeTimeZone" /Disable
-schtasks /Change /TN "Microsoft\Windows\TPM\Tpm-HASCertRetr" /Disable
-schtasks /Change /TN "Microsoft\Windows\TPM\Tpm-Maintenance" /Disable
-schtasks /Change /TN "Microsoft\Windows\UPnP\UPnPHostConfig" /Disable
-schtasks /Change /TN "Microsoft\Windows\User Profile Service\HiveUploadTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\WDI\ResolutionHost" /Disable
-schtasks /Change /TN "Microsoft\Windows\Windows Filtering Platform\BfeOnServiceStartTypeChange" /Disable
-schtasks /Change /TN "Microsoft\Windows\WOF\WIM-Hash-Management" /Disable
-schtasks /Change /TN "Microsoft\Windows\WOF\WIM-Hash-Validation" /Disable
-schtasks /Change /TN "Microsoft\Windows\Work Folders\Work Folders Logon Synchronization" /Disable
-schtasks /Change /TN "Microsoft\Windows\Work Folders\Work Folders Maintenance Work" /Disable
-schtasks /Change /TN "Microsoft\Windows\Workplace Join\Automatic-Device-Join" /Disable
-schtasks /Change /TN "Microsoft\Windows\WwanSvc\NotificationTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\WwanSvc\OobeDiscovery" /Disable
-schtasks /Change /TN "Microsoft\XblGameSave\XblGameSaveTask" /Disable
-
-# WIFI GROUPED
-sc config NlaSvc start= disabled
-schtasks /Change /TN "Microsoft\Windows\WlanSvc\CDSSync" /Disable
-schtasks /Change /TN "Microsoft\Windows\WCM\WiFiTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\NlaSvc\WiFiTask" /Disable
-schtasks /Change /TN "Microsoft\Windows\DUSM\dusmtask" /Disable
-reg add "HKLM\Software\Policies\Microsoft\Windows\NetworkConnectivityStatusIndicator" /v "NoActiveProbe" /t REG_DWORD /d "1" /f
-reg add "HKLM\System\CurrentControlSet\Services\NlaSvc\Parameters\Internet" /v "EnableActiveProbing" /t REG_DWORD /d "0" /f
-sc config BFE start= demand
-sc config Dnscache start= demand
-sc config WinHttpAutoProxySvc start= demand
-sc config Dhcp start= auto
-sc config DPS start= auto
-sc config lmhosts start= disabled
-sc config nsi start= auto
-sc config Wcmsvc start= disabled
-sc config Winmgmt start= auto
-sc config WlanSvc start= demand
-sc config WCNCSVC start= disabled
-
-# BLUETOOTH RELATED
-sc config BTAGService start= disabled
-sc config bthserv start= disabled
-
-# REMOTE SERVICES
-sc config RemoteRegistry start= disabled
-sc config RemoteAccess start= disabled
-sc config WinRM start= disabled
-sc config RmSvc start= disabled
 
 
 :: EDGE TOTAL REMOVAL shamelessly lifted from privacy.sexy
@@ -600,9 +467,149 @@ echo "Rebooting now - enjoy!"
 shutdown -r -t 5
 
 
+::  Set PC network discoverable
+netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
+
+
 
 :: REDUNDANT BITS
 Exit
+
+:: Fixing all those unnecessary services
+title Fixing Services
+reg add "HKLM\System\CurrentControlSet\Services\PimIndexMaintenanceSvc" /v "Start" /t REG_DWORD /d "4" /f
+reg add "HKLM\System\CurrentControlSet\Services\WinHttpAutoProxySvc" /v "Start" /t REG_DWORD /d "4" /fd
+reg add "HKLM\System\CurrentControlSet\Services\BcastDVRUserService" /v "Start" /t REG_DWORD /d "4" /f
+reg add "HKLM\System\CurrentControlSet\Services\xbgm" /v "Start" /t REG_DWORD /d "4" /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "AppCaptureEnabled" /t REG_DWORD /d "0" /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "AudioCaptureEnabled" /t REG_DWORD /d "0" /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "CursorCaptureEnabled" /t REG_DWORD /d "0" /f
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\GameDVR" /v "MicrophoneCaptureEnabled" /t REG_DWORD /d "0" /f
+reg add "HKCU\System\GameConfigStore" /v "GameDVR_FSEBehavior" /t REG_DWORD /d "2" /f
+reg add "HKCU\System\GameConfigStore" /v "GameDVR_HonorUserFSEBehaviorMode" /t REG_DWORD /d "2" /f
+reg add "HKCU\System\GameConfigStore" /v "GameDVR_Enabled" /t REG_DWORD /d "0" /f
+reg add "HKLM\Software\Policies\Microsoft\Windows\GameDVR" /v "AllowgameDVR" /t REG_DWORD /d "0" /f
+reg add "HKCU\Software\Microsoft\GameBar" /v "AutoGameModeEnabled" /t REG_DWORD /d "0" /f
+
+schtasks /DELETE /TN "AMDInstallLauncher" /f
+schtasks /DELETE /TN "AMDLinkUpdate" /f
+schtasks /DELETE /TN "AMDRyzenMasterSDKTask" /f
+schtasks /DELETE /TN "Driver Easy Scheduled Scan" /f
+schtasks /DELETE /TN "ModifyLinkUpdate" /f
+schtasks /DELETE /TN "SoftMakerUpdater" /f
+schtasks /DELETE /TN "StartCN" /f
+schtasks /DELETE /TN "StartDVR" /f
+schtasks /Change /TN "Microsoft\Windows\Application Experience\Microsoft Compatibility Appraiser" /Disable
+schtasks /Change /TN "Microsoft\Windows\Application Experience\PcaPatchDbTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Application Experience\ProgramDataUpdater" /Disable
+schtasks /Change /TN "Microsoft\Windows\Application Experience\StartupAppTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Autochk\Proxy" /Disable
+schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\Consolidator" /Disable
+schtasks /Change /TN "Microsoft\Windows\Customer Experience Improvement Program\UsbCeip" /Disable
+schtasks /Change /TN "Microsoft\Windows\Defrag\ScheduledDefrag" /Disable
+schtasks /Change /TN "Microsoft\Windows\Device Information\Device" /Disable
+schtasks /Change /TN "Microsoft\Windows\Device Information\Device User" /Disable
+schtasks /Change /TN "Microsoft\Windows\Diagnosis\RecommendedTroubleshootingScanner" /Disable
+schtasks /Change /TN "Microsoft\Windows\Diagnosis\Scheduled" /Disable
+schtasks /Change /TN "Microsoft\Windows\DiskCleanup\SilentCleanup" /Disable
+schtasks /Change /TN "Microsoft\Windows\DiskDiagnostic\Microsoft-Windows-DiskDiagnosticDataCollector" /Disable
+schtasks /Change /TN "Microsoft\Windows\DiskFootprint\Diagnostics" /Disable
+schtasks /Change /TN "Microsoft\Windows\DiskFootprint\StorageSense" /Disable
+schtasks /Change /TN "Microsoft\Windows\DUSM\dusmtask" /Disable
+schtasks /Change /TN "Microsoft\Windows\EnterpriseMgmt\MDMMaintenenceTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Feedback\Siuf\DmClient" /Disable
+schtasks /Change /TN "Microsoft\Windows\Feedback\Siuf\DmClientOnScenarioDownload" /Disable
+schtasks /Change /TN "Microsoft\Windows\FileHistory\File History (maintenance mode)" /Disable
+schtasks /Change /TN "Microsoft\Windows\Flighting\FeatureConfig\ReconcileFeatures" /Disable
+schtasks /Change /TN "Microsoft\Windows\Flighting\FeatureConfig\UsageDataFlushing" /Disable
+schtasks /Change /TN "Microsoft\Windows\Flighting\FeatureConfig\UsageDataReporting" /Disable
+schtasks /Change /TN "Microsoft\Windows\Flighting\OneSettings\RefreshCache" /Disable
+schtasks /Change /TN "Microsoft\Windows\Input\LocalUserSyncDataAvailable" /Disable
+schtasks /Change /TN "Microsoft\Windows\Input\MouseSyncDataAvailable" /Disable
+schtasks /Change /TN "Microsoft\Windows\Input\PenSyncDataAvailable" /Disable
+schtasks /Change /TN "Microsoft\Windows\Input\TouchpadSyncDataAvailable" /Disable
+schtasks /Change /TN "Microsoft\Windows\International\Synchronize Language Settings" /Disable
+schtasks /Change /TN "Microsoft\Windows\LanguageComponentsInstaller\Installation" /Disable
+schtasks /Change /TN "Microsoft\Windows\LanguageComponentsInstaller\ReconcileLanguageResources" /Disable
+schtasks /Change /TN "Microsoft\Windows\LanguageComponentsInstaller\Uninstallation" /Disable
+schtasks /Change /TN "Microsoft\Windows\License Manager\TempSignedLicenseExchange" /Disable
+schtasks /Change /TN "Microsoft\Windows\License Manager\TempSignedLicenseExchange" /Disable
+schtasks /Change /TN "Microsoft\Windows\Management\Provisioning\Cellular" /Disable
+schtasks /Change /TN "Microsoft\Windows\Management\Provisioning\Logon" /Disable
+schtasks /Change /TN "Microsoft\Windows\Maintenance\WinSAT" /Disable
+schtasks /Change /TN "Microsoft\Windows\Maps\MapsToastTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Maps\MapsUpdateTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Mobile Broadband Accounts\MNO Metadata Parser" /Disable
+schtasks /Change /TN "Microsoft\Windows\MUI\LPRemove" /Disable
+schtasks /Change /TN "Microsoft\Windows\NetTrace\GatherNetworkInfo" /Disable
+schtasks /Change /TN "Microsoft\Windows\PI\Sqm-Tasks" /Disable
+schtasks /Change /TN "Microsoft\Windows\Power Efficiency Diagnostics\AnalyzeSystem" /Disable
+schtasks /Change /TN "Microsoft\Windows\PushToInstall\Registration" /Disable
+schtasks /Change /TN "Microsoft\Windows\Ras\MobilityManager" /Disable
+schtasks /Change /TN "Microsoft\Windows\RecoveryEnvironment\VerifyWinRE" /Disable
+schtasks /Change /TN "Microsoft\Windows\RemoteAssistance\RemoteAssistanceTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\RetailDemo\CleanupOfflineContent" /Disable
+schtasks /Change /TN "Microsoft\Windows\Servicing\StartComponentCleanup" /Disable
+schtasks /Change /TN "Microsoft\Windows\SettingSync\NetworkStateChangeTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Setup\SetupCleanupTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Setup\SnapshotCleanupTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\SpacePort\SpaceAgentTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\SpacePort\SpaceManagerTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Speech\SpeechModelDownloadTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Storage Tiers Management\Storage Tiers Management Initialization" /Disable
+schtasks /Change /TN "Microsoft\Windows\Sysmain\ResPriStaticDbSync" /Disable
+schtasks /Change /TN "Microsoft\Windows\Sysmain\WsSwapAssessmentTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\Task Manager\Interactive" /Disable
+schtasks /Change /TN "Microsoft\Windows\Time Synchronization\ForceSynchronizeTime" /Disable
+schtasks /Change /TN "Microsoft\Windows\Time Synchronization\SynchronizeTime" /Disable
+schtasks /Change /TN "Microsoft\Windows\Time Zone\SynchronizeTimeZone" /Disable
+schtasks /Change /TN "Microsoft\Windows\TPM\Tpm-HASCertRetr" /Disable
+schtasks /Change /TN "Microsoft\Windows\TPM\Tpm-Maintenance" /Disable
+schtasks /Change /TN "Microsoft\Windows\UPnP\UPnPHostConfig" /Disable
+schtasks /Change /TN "Microsoft\Windows\User Profile Service\HiveUploadTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\WDI\ResolutionHost" /Disable
+schtasks /Change /TN "Microsoft\Windows\Windows Filtering Platform\BfeOnServiceStartTypeChange" /Disable
+schtasks /Change /TN "Microsoft\Windows\WOF\WIM-Hash-Management" /Disable
+schtasks /Change /TN "Microsoft\Windows\WOF\WIM-Hash-Validation" /Disable
+schtasks /Change /TN "Microsoft\Windows\Work Folders\Work Folders Logon Synchronization" /Disable
+schtasks /Change /TN "Microsoft\Windows\Work Folders\Work Folders Maintenance Work" /Disable
+schtasks /Change /TN "Microsoft\Windows\Workplace Join\Automatic-Device-Join" /Disable
+schtasks /Change /TN "Microsoft\Windows\WwanSvc\NotificationTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\WwanSvc\OobeDiscovery" /Disable
+schtasks /Change /TN "Microsoft\XblGameSave\XblGameSaveTask" /Disable
+
+# WIFI GROUPED
+sc config NlaSvc start= disabled
+schtasks /Change /TN "Microsoft\Windows\WlanSvc\CDSSync" /Disable
+schtasks /Change /TN "Microsoft\Windows\WCM\WiFiTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\NlaSvc\WiFiTask" /Disable
+schtasks /Change /TN "Microsoft\Windows\DUSM\dusmtask" /Disable
+reg add "HKLM\Software\Policies\Microsoft\Windows\NetworkConnectivityStatusIndicator" /v "NoActiveProbe" /t REG_DWORD /d "1" /f
+reg add "HKLM\System\CurrentControlSet\Services\NlaSvc\Parameters\Internet" /v "EnableActiveProbing" /t REG_DWORD /d "0" /f
+sc config BFE start= demand
+sc config Dnscache start= demand
+sc config WinHttpAutoProxySvc start= demand
+sc config Dhcp start= auto
+sc config DPS start= auto
+sc config lmhosts start= disabled
+sc config nsi start= auto
+sc config Wcmsvc start= disabled
+sc config Winmgmt start= auto
+sc config WlanSvc start= demand
+sc config WCNCSVC start= disabled
+
+# BLUETOOTH RELATED
+sc config BTAGService start= disabled
+sc config bthserv start= disabled
+
+# REMOTE SERVICES
+sc config RemoteRegistry start= disabled
+sc config RemoteAccess start= disabled
+sc config WinRM start= disabled
+sc config RmSvc start= disabled
+
+
+
 
 title Installing Chocolatey
 powershell "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" >nul
