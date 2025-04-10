@@ -42,3 +42,33 @@ sudo timedatectl set-local-rtc 1 --adjust-system-clock
 # CONF files?
 # make konsole & BRAVE favouriteS
 # screen locking,sleep settings
+
+steam
+lutris
+gamescope
+mangohud
+obs-studio
+prism launcher (for minecraft)
+cuda-gcc:
+required for sunshine
+fastfetch:
+replacement for deprecated neofetch
+flatpak:
+we've removed fedora's flatpak repos and instead enabled flathub official and flathub beta repos.
+goverlay
+mangohud
+flatpak:
+we've removed fedora's flatpak repos and instead enabled flathub official and flathub beta repos.
+lutris
+mesa
+mesa-vulkan-drivers.x86_64
+wine-tricks
+wine-staging
+rpmfusion-free-release:
+provides the rpmfusion free repository files. cannot be provided via COPR.
+
+rpmfusion-nonfree-release:
+provides the rpmfusion nonfree repository files. cannot be provided via COPR.
+
+steam:
+
