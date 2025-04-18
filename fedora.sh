@@ -1,9 +1,15 @@
 #!/bin/bash
 
 # SETUP SCRIPT FOR FEDORA BASED DISTROS USING DNF
+echo "Tweaks to DNF"
+echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
+echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
 
 echo "Installing RPM Fusion..."
-sudo dnf install -y "https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-${os_version}.noarch.rpm" "https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-${os_version}.noarch.rpm"
+sudo dnf install \
+  https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install \
+  https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf update -y # and reboot if you are not on the latest kernel
 
 nvgpu=$(lspci | grep -i nvidia | grep -i vga | cut -d ":" -f 3)
@@ -17,39 +23,38 @@ fi
 hostnamectl set-hostname new-name
 
 # BRAVE
-#sudo systemctl disable NetworkManager-wait-online.service  # Think this is just for Ubuntu derivatives.  sudo systemd-analyze critical-chain indicates they waste 5s on boot
-sudo dnf install -y dnf-plugins-core
-sudo dnf config-manager --add-repo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
-sudo dnf install -y brave-browser
+sudo dnf install dnf-plugins-core
+sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+sudo dnf install brave-browser
 
-#FLATPAK STUFF
-#sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
-#sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
-sudo flatpak install -y flathub com.heroicgameslauncher.hgl
-
-# INSTALLS, REMOVES & TWEAKS
-sudo dnf install -y bottles lutris dosbox-staging fastfetch bleachbit python3-pip mc git ncdu gamemode hunspell-en-GB vlc powertop steam steam-devices curl retroarch
-sudo dnf remove -y plasma-welcome ktorrent firefox neochat skanpage kmahjongg
-sudo dnf upgrade -y && sudo dnf autoremove -y
+#GENERAL INSTALLS
+sudo flatpak remote-modify --no-filter --enable flathub
+sudo flatpak remote-delete fedora
+sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
+sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
+sudo dnf install -y fastfetch bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl
 sudo printf "fastfetch" >> /home/$USER/.bashrc
-sudo timedatectl set-local-rtc 1 --adjust-system-clock
 
+#GAMING STUFF
+sudo dnf install -y gamemode bottles lutris dosbox-staging steam steam-devices goverlay mangohud 
+sudo dnf install -y goverlay mangohud 
+sudo flatpak install -y flathub com.heroicgameslauncher.hgl
+sudo flatpak install flathub org.prismlauncher.PrismLauncher
+
+sudo dnf upgrade -y && sudo dnf autoremove -y
+
+## retroarch BROKEN??
+## sudo dnf remove -y plasma-welcome ktorrent firefox neochat skanpage kmahjongg
+## sudo timedatectl set-local-rtc 1 --adjust-system-clock
 #wget https://github.com/methanoid/setup/blob/main/powertuning.sh
 #sudo sh ./powertuning.sh
-
 # CONF files?
 # make konsole & BRAVE favouriteS
 # screen locking,sleep settings
-
-gamescope
-prism launcher (for minecraft)
-cuda-gcc:  required for sunshine
-goverlay
-mangohud
-mesa
-mesa-vulkan-drivers.x86_64
-wine-tricks
-wine-staging
+protontricks.noarch: Simple wrapper that does winetricks things for Proton enabled games
+protonvpn-cli.noarch: Linux command-line client for ProtonVPN written in Python
+python-qpid-proton-docs.noarch: Documentation for the Python language bindings for Qpid Proton
+python3-proton-core.noarch: proton-core library
+python3-proton-vpn-api-core.noarch: Expose a uniform API to available Proton VPN services
+wine-tricks wine-staging sunshine moonlight
 proton-ge / proton up ??
-flatpak: we've removed fedora's flatpak repos and instead enabled flathub official and flathub beta repos.
