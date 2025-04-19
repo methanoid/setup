@@ -1,6 +1,6 @@
 #!/bin/bash
 # SETUP SCRIPT FOR FEDORA BASED DISTROS USING DNF
-hostnamectl set-hostname new-name
+hostnamectl set-hostname FED-PCNAME
 
 echo "Tweaks to DNF"
 echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
@@ -19,15 +19,11 @@ fi
 #fi
 
 # BRAVE
-sudo dnf install -y dnf-plugins-core
-sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
-sudo dnf install -y brave-browser
+sudo dnf install -y dnf-plugins-core && sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo && sudo dnf install -y brave-browser
 
 #GENERAL INSTALLS
-sudo flatpak remote-modify --no-filter --enable flathub
-sudo flatpak remote-delete fedora
-sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
-sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
+sudo flatpak remote-modify --no-filter --enable flathub && sudo flatpak remote-delete fedora && sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
+sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro 
 sudo dnf install -y fastfetch bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl
 sudo printf "fastfetch" >> /home/$USER/.bashrc
 
@@ -38,10 +34,11 @@ sudo flatpak install -y flathub com.heroicgameslauncher.hgl
 sudo flatpak install flathub org.prismlauncher.PrismLauncher
 sudo flatpak install flathub dev.lizardbyte.app.Sunshine
 sudo flatpak install flathub com.moonlight_stream.Moonlight
+sudo flatpak install flathub net.retrodeck.retrodeck
+sudo dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
 
 sudo dnf upgrade -y && sudo dnf autoremove -y
 
-## retroarch BROKEN??
 ## sudo dnf remove -y plasma-welcome ktorrent firefox neochat skanpage kmahjongg
 ## sudo timedatectl set-local-rtc 1 --adjust-system-clock
 # wget https://github.com/methanoid/setup/blob/main/powertuning.sh
