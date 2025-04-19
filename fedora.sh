@@ -1,11 +1,9 @@
 #!/bin/bash
 # SETUP SCRIPT FOR FEDORA BASED DISTROS USING DNF
-hostnamectl set-hostname FED-PCNAME
 
-echo "Tweaks to DNF"
+hostnamectl set-hostname FED-PCNAME
 echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
 echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
-echo "Installing RPM Fusion..."
 sudo dnf install \ https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf install \ https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 sudo dnf update -y            # and reboot if you are not on the latest kernel
@@ -22,7 +20,8 @@ fi
 sudo dnf install -y dnf-plugins-core && sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo && sudo dnf install -y brave-browser
 
 #GENERAL INSTALLS
-sudo flatpak remote-modify --no-filter --enable flathub && sudo flatpak remote-delete fedora && sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
+sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && sudo flatpak remote-modify --no-filter --enable flathub && sudo flatpak remote-delete fedora
+sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
 sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro 
 sudo dnf install -y fastfetch bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl
 sudo printf "fastfetch" >> /home/$USER/.bashrc
@@ -31,11 +30,10 @@ sudo printf "fastfetch" >> /home/$USER/.bashrc
 sudo dnf install -y gamemode bottles lutris dosbox-staging steam steam-devices goverlay mangohud 
 sudo dnf install -y goverlay mangohud winetricks 
 sudo flatpak install -y flathub com.heroicgameslauncher.hgl
-sudo flatpak install flathub org.prismlauncher.PrismLauncher
-sudo flatpak install flathub dev.lizardbyte.app.Sunshine
-sudo flatpak install flathub com.moonlight_stream.Moonlight
-sudo flatpak install flathub net.retrodeck.retrodeck
-sudo dnf install --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release
+sudo flatpak install -y flathub org.prismlauncher.PrismLauncher
+sudo flatpak install -y flathub dev.lizardbyte.app.Sunshine
+sudo flatpak install -y flathub com.moonlight_stream.Moonlight
+sudo flatpak install -y flathub net.retrodeck.retrodeck
 
 sudo dnf upgrade -y && sudo dnf autoremove -y
 
