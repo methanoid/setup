@@ -4,9 +4,8 @@
 hostnamectl set-hostname FED-PCNAME
 echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
 echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
-sudo dnf install \ https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf install \ https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf update -y            # and reboot if you are not on the latest kernel
+sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf up -y            # and reboot if you are not on the latest kernel
 
 nvgpu=$(lspci | grep -i nvidia | grep -i vga | cut -d ":" -f 3)
 if [[ $nvgpu ]]; then
@@ -35,7 +34,7 @@ sudo flatpak install -y flathub dev.lizardbyte.app.Sunshine
 sudo flatpak install -y flathub com.moonlight_stream.Moonlight
 sudo flatpak install -y flathub net.retrodeck.retrodeck
 
-sudo dnf upgrade -y && sudo dnf autoremove -y
+sudo dnf up -y && sudo dnf autoremove -y
 
 ## sudo dnf remove -y plasma-welcome ktorrent firefox neochat skanpage kmahjongg
 ## sudo timedatectl set-local-rtc 1 --adjust-system-clock
