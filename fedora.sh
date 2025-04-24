@@ -22,12 +22,11 @@ sudo dnf install -y dnf-plugins-core && sudo dnf config-manager addrepo --from-r
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && sudo flatpak remote-modify --no-filter --enable flathub && sudo flatpak remote-delete fedora
 sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
 sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro 
-sudo dnf install -y fastfetch bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl
+sudo dnf install -y fastfetch bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl libavcodec-freeworld
 sudo printf "fastfetch" >> /home/$USER/.bashrc
 
 #GAMING STUFF
-sudo dnf install -y gamemode bottles lutris dosbox-staging steam steam-devices goverlay mangohud 
-sudo dnf install -y goverlay mangohud winetricks 
+sudo dnf install -y gamemode bottles lutris dosbox-staging steam steam-devices goverlay mangohud winetricks
 sudo flatpak install -y flathub com.heroicgameslauncher.hgl
 sudo flatpak install -y flathub org.prismlauncher.PrismLauncher
 sudo flatpak install -y flathub dev.lizardbyte.app.Sunshine
@@ -38,9 +37,5 @@ sudo dnf up -y && sudo dnf autoremove -y
 
 ## sudo dnf remove -y plasma-welcome ktorrent firefox neochat skanpage kmahjongg
 ## sudo timedatectl set-local-rtc 1 --adjust-system-clock
-# wget https://github.com/methanoid/setup/blob/main/powertuning.sh
-# sudo sh ./powertuning.sh
-# CONF files?
-# make konsole & BRAVE favouriteS
-# screen locking,sleep settings
-# proton-ge / proton up ??
+# wget https://github.com/methanoid/setup/blob/main/powertuning.sh && sudo sh ./powertuning.sh
+# CONF files, # make konsole & BRAVE favouriteS, # screen locking,sleep settings, # proton-ge / proton up ??
