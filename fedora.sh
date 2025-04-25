@@ -4,7 +4,18 @@
 hostnamectl set-hostname FED-PCNAME
 echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
 echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
+# Enable RPMfusion repos
 sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+# Disable the Modular Repos, added load at update.
+sudo sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/fedora-updates-modular.repo
+sudo sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/fedora-modular.repo
+# Testing Repos should be disabled anyways
+sudo sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/fedora-updates-testing-modular.repo
+sudo sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/rpmfusion-free-updates-testing.repo
+# Rpmfusion makes this obsolete
+sudo sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/fedora-cisco-openh264.repo
+# Disable Machine Counting for all repos
+sudo sed -i 's/countme=1/countme=0/g' /etc/yum.repos.d/*
 sudo dnf up -y            # and reboot if you are not on the latest kernel
 
 nvgpu=$(lspci | grep -i nvidia | grep -i vga | cut -d ":" -f 3)
@@ -29,7 +40,7 @@ sudo flatpak install -y flathub dev.lizardbyte.app.Sunshine
 sudo flatpak install -y flathub com.moonlight_stream.Moonlight
 sudo flatpak install -y flathub net.retrodeck.retrodeck
 
-sudo dnf up -y && sudo dnf autoremove -y
+sudo dnf up -y && sudo dnf autoremove -y && sudo dnf clean all && sudo dnf distro-sync -y
 
 ## sudo dnf remove -y plasma-welcome ktorrent firefox neochat skanpage kmahjongg
 ## sudo timedatectl set-local-rtc 1 --adjust-system-clock    # For MultiBoot systems
