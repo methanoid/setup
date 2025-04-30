@@ -44,8 +44,14 @@ powershell -ex bypass -Command "irm https://raw.githubusercontent.com/methanoid/
 
 :: Now install Chocolatey
 title Installing Chocolatey
-msiexec /i "c:\Portable Apps\chocolatey-2.4.1.0.msi" /quiet >nul 2>&1
-del /s "c:\Portable Apps\chocolatey-2.4.1.0.msi"
+@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+
+title Installing Brave
+choco upgrade -y brave >nul
+del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
+schtasks /delete /tn BraveUpdateTaskMachineCore /f >nul 2>&1
+schtasks /delete /tn BraveUpdateTaskMachineUA /f >nul 2>&1
+reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\ /f "BraveSoftware Update" /f
 
 title Installing Samsung Printer Driver
 "c:\Portable Apps\SamsungUPD3.exe"
@@ -61,13 +67,6 @@ goto :choice
 echo Installing clients - please wait
 choco upgrade -y steam ubisoft-connect epicgameslauncher goggalaxy ea-app >nul 2>&1
 :no
-
-title Installing Brave
-choco upgrade -y brave >nul
-del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
-schtasks /delete /tn BraveUpdateTaskMachineCore /f >nul 2>&1
-schtasks /delete /tn BraveUpdateTaskMachineUA /f >nul 2>&1
-reg delete "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run\ /f "BraveSoftware Update" /f
 
 title Installing 7Zip
 choco upgrade -y 7zip >nul
@@ -112,7 +111,7 @@ choco upgrade -y directx >nul
 title Installing Hashtab
 choco upgrade -y hashtab >nul
 
-title Downloading & Installing Privado VPN
+title Installing Privado VPN
 powershell -Command "Invoke-WebRequest https://privadovpn.com/apps/win/Setup_PrivadoVPN_latest.exe -OutFile c:\Privado.exe"
 c:\Privado.exe /s
 :: Fix for VPN adding
@@ -461,14 +460,13 @@ title Some File Cleaning
 "C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"
 move "C:\Portable Apps\Wise Disk Cleaner.lnk" "c:\Users\%username%\Desktop\" >nul 2>&1
 
+::  Set PC network discoverable
+netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 
 :: Reboot
 echo "Rebooting now - enjoy!"
 shutdown -r -t 5
 
-
-::  Set PC network discoverable
-netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 
 
 
