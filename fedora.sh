@@ -4,6 +4,7 @@
 hostnamectl set-hostname FED-PCNAME
 echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
 echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
+echo "install_weak_deps=False" | sudo tee -a /etc/dnf/dnf.conf
 # Enable RPMfusion repos
 sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 # Disable the Modular Repos, added load at update.
