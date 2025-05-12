@@ -30,7 +30,7 @@ sudo dnf install -y dnf-plugins-core && sudo dnf config-manager addrepo --from-r
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && sudo flatpak remote-modify --no-filter --enable flathub && sudo flatpak remote-delete fedora
 sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
 sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro 
-sudo dnf install -y fastfetch bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl libavcodec-freeworld
+sudo dnf install -y fastfetch preload bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl libavcodec-freeworld
 sudo printf "fastfetch" >> /home/$USER/.bashrc
 
 #GAMING STUFF
