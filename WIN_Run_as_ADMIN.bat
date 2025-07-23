@@ -127,7 +127,7 @@ winget install -e --id PuTTY.PuTTY
 
 title Installing SumatraPDF
 winget install -e --id SumatraPDF.SumatraPDF
-del /s "c:\Users\Public\Desktop\SumatraPDF.lnk" >nul 2>&1
+del /s "c:\Users\Administrator\Desktop\SumatraPDF.lnk" >nul 2>&1
 
 title Installing ImgBurn
 winget install -e --id LIGHTNINGUK.ImgBurn
