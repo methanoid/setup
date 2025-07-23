@@ -68,6 +68,9 @@ powercfg -setactive scheme_max
 REM Maybe add HP laptop utils ?
 :done
 
+:: Windows update check and update
+wuauclt /detectnow
+wuauclt /updatenow
 
 :: ==INSTALLS========================================================================================================================
 
@@ -200,9 +203,5 @@ shutdown -r -t 5
 
 title Installing DirectX
 choco upgrade -y directx >nul
-
-:: Windows update check and update
-:: wuauclt /detectnow
-:: wuauclt /updatenow
 
 :: "C:\Portable Apps\d3dx43.exe"
