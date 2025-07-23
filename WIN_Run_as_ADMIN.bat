@@ -21,9 +21,9 @@ powershell.exe -ex bypass "irm https://get.activated.win | iex"
 label C: Win11 >nul
 
 title RegTweaks
-::  Set PC network discoverable
+::  Set PC network discoverable & enable file sharing
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
-&&&&&&&&&&&&&&&&&&&&&&ANOTHER HERE
+netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul
 
 :: Remove Realtek Control Panel (will error if not present)
 reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v "RTHDVCPL" /f >nul
