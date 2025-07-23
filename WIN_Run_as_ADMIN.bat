@@ -46,6 +46,8 @@ reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\
 :: Disable Taskbar Transparency (needed for NV 7 Series)
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v "EnableTransparency" /t REG_DWORD /d "0" /f >nul
 
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul
+
 title Power Planning
 :choice
 set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
