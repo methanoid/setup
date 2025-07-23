@@ -162,6 +162,16 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncaps
 del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
 
+winget install -e bleachbit
+winget install -e piriform.ccleaner.slim
+winget install -e SingularLabs.CCEnhancer
+winget install -e MKVtoolnix
+winget install -e IObit.DriverBooster
+winget install -e WiseCleaner.WiseDiskCleaner
+winget install -e WiseCleaner.WiseForceDeleter
+winget install -e WiseCleaner.WiseRegistryCleaner
+winget install -e OO-Software.ShutUp10
+
 title Installing CBX Shell
 "c:\Portable Apps\CBX.exe" /SP /VERYSILENT
 del /s "c:\Portable Apps\CBX.exe" >nul 2>&1
