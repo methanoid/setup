@@ -74,7 +74,7 @@ wuauclt /updatenow
 
 :: ==INSTALLS========================================================================================================================
 
-:: Debloat Last Appx
+title Debloating Last AppX
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdgeDevToolsClient* -AllUsers
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Edge.GameAssist* -AllUsers
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdge.Stable* -AllUsers
@@ -82,9 +82,6 @@ Remove-AppXProvisionedPackage -Online -PackageName Microsoft.OutlookForWindows* 
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*
 Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*
-
-:: Drivers (not needed if DISM updated)
-"C:\Portable Apps\Driver Booster\DriverBoosterPortable.exe"
 
 title Installing Brave
 winget install -e --id Brave.Brave
@@ -171,6 +168,9 @@ winget install -e WiseCleaner.WiseDiskCleaner
 winget install -e WiseCleaner.WiseForceDeleter
 winget install -e WiseCleaner.WiseRegistryCleaner
 winget install -e OO-Software.ShutUp10
+
+::            Drivers (not needed if DISM updated)
+::           "C:\Portable Apps\Driver Booster\DriverBoosterPortable.exe"
 
 title Installing CBX Shell
 "c:\Portable Apps\CBX.exe" /SP /VERYSILENT
