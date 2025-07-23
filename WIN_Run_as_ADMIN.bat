@@ -78,10 +78,12 @@ title Debloating Last AppX
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdgeDevToolsClient* -AllUsers
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Edge.GameAssist* -AllUsers
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdge.Stable* -AllUsers
+
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.OutlookForWindows* -AllUsers
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*
 Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*
+dek /s "c:\Users\Administrator\Desktop\Microsoft Edge.lnk" >nul 2>&1
 
 title Installing Brave
 winget install -e --id Brave.Brave
