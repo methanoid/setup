@@ -9,12 +9,20 @@ if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & 
 
 :: ==TWEAKS===========================================================================================================================
 
+title Installing Winget
+powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
+powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
+powershell -command "Repair-WinGetPackageManager"
+
 ::  Set PC Name
 set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
+
+:: LanmanWorkstation to Enable Connection to unRAID
+reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
 
 title Windows Activation
 powershell.exe -ex bypass "irm https://get.activated.win | iex"
@@ -62,6 +70,15 @@ REM Maybe add HP laptop utils ?
 
 
 :: ==INSTALLS========================================================================================================================
+
+:: Debloat Last Appx
+Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdgeDevToolsClient* -AllUsers
+Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Edge.GameAssist* -AllUsers
+Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdge.Stable* -AllUsers
+Remove-AppXProvisionedPackage -Online -PackageName Microsoft.OutlookForWindows* -AllUsers
+Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*
+Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*
+Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*
 
 :: Drivers (not needed if DISM updated)
 "C:\Portable Apps\Driver Booster\DriverBoosterPortable.exe"
