@@ -135,6 +135,9 @@ winget install -e --id ONLYOFFICE.DesktopEditors
 title Installing Putty
 winget install -e --id PuTTY.PuTTY
 
+title Installing Windhawk customizer
+winget install -e --id RamenSoftware.Windhawk
+
 title Installing SumatraPDF
 winget install -e --id SumatraPDF.SumatraPDF
 del /s "c:\Users\Administrator\Desktop\SumatraPDF.lnk" >nul 2>&1
