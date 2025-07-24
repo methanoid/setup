@@ -187,8 +187,8 @@ reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
 
 title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit.ini"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile C:\Users\Administrator\AppData\Roaming\BleachBit\cleaners\winapp2.ini"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\bleachbit.ini"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\cleaners\winapp2.ini"
 
 title Installing CCleaner
 winget install -e -h --id Piriform.CCleaner
@@ -226,7 +226,7 @@ del C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
 
 title Installing Plasma Screensaver
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PSS.exe -OutFile C:\Users\Administrator\Desktop\PSS.exe"
-C:\Users\Administrator\Desktop\PSS.exe  /S
+C:\Users\Administrator\Desktop\PSS.exe /S
 del C:\Users\Administrator\Desktop\PSS.exe >nul 2>&1
 reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\system32\plasma.scr" /f >nul
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul
