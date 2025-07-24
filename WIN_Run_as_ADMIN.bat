@@ -97,6 +97,9 @@ schtasks /delete /tn BraveUpdateTaskMachineCore /f >nul 2>&1
 schtasks /delete /tn BraveUpdateTaskMachineUA /f >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f
 
+title Installing NVcleanstall
+winget install -e --id TechPowerUp.NVCleanstall
+
 title Installing Samsung Printer Driver
 "c:\Portable Apps\SamsungUPD3.exe"
 del /s "c:\Portable Apps\SamsungUPD3.exe" >nul 2>&1
