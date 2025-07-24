@@ -14,7 +14,8 @@ powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
 powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
 powershell -command "Repair-WinGetPackageManager"
 
-::  Set PC Name
+title Name PC
+cls
 set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
@@ -29,7 +30,7 @@ title Windows Activation
 powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
 label C: Win11 >nul
 
-title RegTweaks
+title Tweaks
 ::  Set PC network discoverable & enable file sharing
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul
@@ -40,22 +41,24 @@ reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd02
 :: Remove Home from Explorer
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}" /f >nul
 
-:: Remove Realtek Control Panel (will error if not present)
-reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v "RTHDVCPL" /f >nul
-
-:: Auto Arrange Icons On
-reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v FFLAGS /t REG_DWORD /d 40200224 /f >nul     :: DOESNT WORK!!!!!!!!!
-
 :: Stop Explorer from showing external drives twice
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
 reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
 
+:: Hide Recommended Section on Start Menu (which is soon to be hidden anyway!)
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul
+
+:: Remove Realtek Control Panel (will error if not present)
+reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v "RTHDVCPL" /f >nul
+
 :: Disable Taskbar Transparency (needed for NV 7 Series)
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v "EnableTransparency" /t REG_DWORD /d "0" /f >nul
 
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul
+:: Auto Arrange Icons On
+reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v FFLAGS /t REG_DWORD /d 40200224 /f >nul     :: DOESNT WORK!!!!!!!!!
 
 title Power Planning
+cls
 :choice
 set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
 if /I "%c%" EQU "V" goto :vm
@@ -74,7 +77,7 @@ goto done
 :laptop
 echo Setting up for a Laptop
 powercfg -setactive scheme_max
-REM Maybe add HP laptop utils ?
+REM ***************************************************Maybe add HP laptop utils ?
 :done
 
 :: Windows update check and update
@@ -111,10 +114,6 @@ reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware 
 
 title Installing NVcleanstall
 winget install -e -h --id TechPowerUp.NVCleanstall
-
-title Installing Samsung Printer Driver
-"c:\Portable Apps\SamsungUPD3.exe"
-del /s "c:\Portable Apps\SamsungUPD3.exe" >nul 2>&1
 
 title Gaming Installs
 :choice
@@ -190,9 +189,9 @@ Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILE
 
 title Installing CCleaner
 winget install -e -h --id piriform.ccleaner
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ccleaner.ini -OutFile "C:\Users\Administrator\Desktop\ccleaner.ini"
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile "C:\Users\Administrator\Desktop\winapp2.ini"
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCenhancer.exe -OutFile "C:\Users\Administrator\Desktop\CCenhancer.exe"
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ccleaner.ini -OutFile "C:\Program Files\CCleaner\ccleaner.ini"
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile "C:\Program Files\CCleaner\winapp2.ini"
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCenhancer.exe -OutFile "C:\Program Files\CCleaner\CCenhancer.exe"
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
@@ -218,34 +217,46 @@ C:\Users\Administrator\Desktop\DB.exe -Y
 del C:\Users\Administrator\Desktop\DB.exe
 
 title Installing CBX Shell
-"c:\Portable Apps\CBX.exe" /SP /VERYSILENT
-del /s "c:\Portable Apps\CBX.exe" >nul 2>&1
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CBX.exe -OutFile "C:\Users\Administrator\Desktop\CBX.exe"
+C:\Users\Administrator\Desktop\CBX.exe  /SP /VERYSILENT
+del C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
 
 title Installing Plasma Screensaver
-"c:\Portable Apps\PSS.exe" /s
-del /s "c:\Portable Apps\PSS.exe" >nul 2>&1
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PSS.exe -OutFile "C:\Users\Administrator\Desktop\PSS.exe"
+C:\Users\Administrator\Desktop\PSS.exe  /S
+del C:\Users\Administrator\Desktop\PSS.exe >nul 2>&1
 reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\system32\plasma.scr" /f >nul
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /f >nul
+
+
+
+
+::   NEED FIXES FOR BELOW COS FILES ABOVE 25MB GITHUB LIMIT - MAYBE SPLIT ZIPS?
 
 title Installing VideoReDo
 REM VideoReDo.TVSuite.6.63.7.836
 "c:\Portable Apps\VRD.exe" /s
 del /s "c:\Portable Apps\VRD.exe" >nul 2>&1
 
+title Installing Samsung Printer Driver
+"c:\Portable Apps\SamsungUPD3.exe"
+del /s "c:\Portable Apps\SamsungUPD3.exe" >nul 2>&1
+
+
+
+
 
 :: ==CLEANUPS========================================================================================================================
 
 title Some File Cleaning
-"C:\Portable Apps\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1        ::   MSVCR100 ERROR!!!!
-"C:\Portable Apps\ShutUp10\shutup10.exe" "C:\Portable Apps\ShutUp10\OOSU10.cfg" /quiet /nosrp
-"C:\Portable Apps\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
+"C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
+"C:\Program Files\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
 
 :: Run applications (needs manual intervention)
-"C:\Portable Apps\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
-"C:\Portable Apps\Wise Disk Cleaner\WiseDiskCleaner.exe"
-move "C:\Portable Apps\Wise Disk Cleaner.lnk" "c:\Users\%username%\Desktop\" >nul 2>&1
+"C:\Program Files\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
+"C:\Program Files (x86)\Wise\Wise Disk Cleaner\WiseDiskCleaner.exe"
 
 
 :: ==REBOOT==++======================================================================================================================
@@ -258,7 +269,5 @@ shutdown -r -t 5
 
 title Installing DirectX
 winget install -e -h --id microsoft.directx
-
-:: "C:\Portable Apps\d3dx43.exe"
 
 winget install StartIsBack.StartAllBack --scope machine
