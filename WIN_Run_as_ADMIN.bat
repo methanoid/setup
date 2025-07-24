@@ -91,14 +91,16 @@ title Debloating Last AppX
 ::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Edge.GameAssist* -AllUsers
 ::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdge.Stable* -AllUsers
 ::del /s "c:\Users\Administrator\Desktop\Microsoft Edge.lnk" >nul 2>&1
-
-Remove-AppXProvisionedPackage -Online -PackageName Microsoft.OutlookForWindows* -AllUsers
-Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*
-Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*
-Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*
+powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.OutlookForWindows* -AllUsers"
+powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*"
+powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*"
+powershell -command "Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*"
 
 title Installing Wintoys
 winget install -e -h Wintoys --accept-package-agreements
+
+title Installing UniGetUI
+winget install -e -h --id XPFFTQ032PTPHF --accept-package-agreements
 
 title Installing Brave
 winget install -e -h --id Brave.Brave --accept-package-agreements
@@ -173,7 +175,6 @@ winget install -e -h --id CrystalRich.LockHunter
 :taskkill /F /IM iexplore.exe /T
 
 title Installing Hashtab
-:choco upgrade -y hashtab >nul
 winget install -e -h --id namazso.OpenHashTab
 
 title Installing Privado VPN
