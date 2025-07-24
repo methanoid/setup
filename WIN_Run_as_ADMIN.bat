@@ -74,6 +74,9 @@ REM Maybe add HP laptop utils ?
 wuauclt /detectnow
 wuauclt /updatenow
 
+rd /s /q "c:\Perflogs" >nul 2>&1
+
+
 :: ==INSTALLS========================================================================================================================
 
 title Debloating Last AppX
@@ -88,7 +91,7 @@ Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*
 Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*
 
 title Installing Brave
-winget install -e --id Brave.Brave
+winget install -e --id Brave.Brave --accept-package-agreements
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
 schtasks /delete /tn BraveUpdateTaskMachineCore /f >nul 2>&1
 schtasks /delete /tn BraveUpdateTaskMachineUA /f >nul 2>&1
@@ -163,15 +166,14 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncaps
 del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
 
-winget install -e bleachbit
-winget install -e piriform.ccleaner.slim
-winget install -e SingularLabs.CCEnhancer
-winget install -e MKVtoolnix
-winget install -e IObit.DriverBooster
-winget install -e WiseCleaner.WiseDiskCleaner
-winget install -e WiseCleaner.WiseForceDeleter
-winget install -e WiseCleaner.WiseRegistryCleaner
-winget install -e OO-Software.ShutUp10
+winget install -e --id BleachBit.BleachBit
+winget install -e --id piriform.ccleaner
+winget install -e --id MoritzBunkus.MKVToolNix
+winget install -e --id IObit.DriverBooster
+winget install -e --id WiseCleaner.WiseDiskCleaner
+winget install -e --id WiseCleaner.WiseForceDeleter
+winget install -e --id WiseCleaner.WiseRegistryCleaner
+winget install -e --id OO-Software.ShutUp10
 
 ::            Drivers (not needed if DISM updated)
 ::           "C:\Portable Apps\Driver Booster\DriverBoosterPortable.exe"
