@@ -91,15 +91,18 @@ Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQui
 Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*
 Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*
 
+title Installing Wintoys
+winget install -e -h Wintoys --accept-package-agreements
+
 title Installing Brave
-winget install -e --id Brave.Brave --accept-package-agreements
+winget install -e -h --id Brave.Brave --accept-package-agreements
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
 schtasks /delete /tn BraveUpdateTaskMachineCore /f >nul 2>&1
 schtasks /delete /tn BraveUpdateTaskMachineUA /f >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f
 
 title Installing NVcleanstall
-winget install -e --id TechPowerUp.NVCleanstall
+winget install -e -h --id TechPowerUp.NVCleanstall
 
 title Installing Samsung Printer Driver
 "c:\Portable Apps\SamsungUPD3.exe"
@@ -114,73 +117,71 @@ goto :choice
 :yes
 echo Installing clients - please wait
 :choco upgrade -y steam ubisoft-connect epicgameslauncher goggalaxy ea-app >nul 2>&1
-winget install -e --id Valve.Steam
-winget install -e --id HeroicGamesLauncher.HeroicGamesLauncher
-winget install -e --id GOG.Galaxy
-winget install -e --id Ubisoft.Connect
-winget install -e --id ElectronicArts.EADesktop
+winget install -e -h --id Valve.Steam
+winget install -e -h --id HeroicGamesLauncher.HeroicGamesLauncher
+winget install -e -h --id GOG.Galaxy
+winget install -e -h --id Ubisoft.Connect
+winget install -e -h --id ElectronicArts.EADesktop
 :no
 
 title Installing 7Zip
-winget install -e --id 7zip.7zip
+winget install -e -h --id 7zip.7zip
 
 title Installing Notepad++
-winget install -e --id Notepad++.Notepad++
+winget install -e -h --id Notepad++.Notepad++
 
 title Installing Redist Files
-winget install -e --id Microsoft.VCRedist.2015+.x64
+winget install -e -h --id Microsoft.VCRedist.2015+.x64
 
 title Installing OnlyOffice
-winget install -e --id ONLYOFFICE.DesktopEditors
+winget install -e -h --id ONLYOFFICE.DesktopEditors
 
 title Installing Putty
-winget install -e --id PuTTY.PuTTY
+winget install -e -h --id PuTTY.PuTTY
 
 title Installing Windhawk customizer
-winget install -e --id RamenSoftware.Windhawk
+winget install -e -h --id RamenSoftware.Windhawk
 
 title Installing SumatraPDF
-winget install -e --id SumatraPDF.SumatraPDF
+winget install -e -h --id SumatraPDF.SumatraPDF
 del /s "c:\Users\Administrator\Desktop\SumatraPDF.lnk" >nul 2>&1
 
 title Installing ImgBurn
-winget install -e --id LIGHTNINGUK.ImgBurn
+winget install -e -h --id LIGHTNINGUK.ImgBurn
 del /s "c:\Users\%username%\Desktop\ImgBurn.lnk" >nul 2>&1
 del /s "c:\Users\Public\Desktop\ImgBurn.lnk" >nul 2>&1
 
 title Installing KLite Codecs
-winget install -e --id CodecGuide.K-LiteCodecPack.Standard
+winget install -e -h --id CodecGuide.K-LiteCodecPack.Standard
 del /s "c:\Users\%username%\Desktop\MPC-HC x64.lnk" >nul 2>&1
 del /s "c:\Users\Public\Desktop\mpc-be.lnk" >nul 2>&1
 schtasks /delete /tn klcp_update /f >nul 2>&1
 
 title Installing Minecraft Launcher
-winget install -e --id PrismLauncher.PrismLauncher
+winget install -e -h --id PrismLauncher.PrismLauncher
 
 title Installing LockHunter
-:choco upgrade --ignore-checksums -y lockHunter >nul
-winget install -e --id CrystalRich.LockHunter
+winget install -e -h --id CrystalRich.LockHunter
 :taskkill /F /IM iexplore.exe /T
 
 title Installing Hashtab
 :choco upgrade -y hashtab >nul
-winget install -e --id namazso.OpenHashTab
+winget install -e -h --id namazso.OpenHashTab
 
 title Installing Privado VPN
-winget install -e --id PrivadoNetworksAG.PrivadoVPN
-:: Fix for VPN adding
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul      
+winget install -e -h --id PrivadoNetworksAG.PrivadoVPN
 del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul      
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
 
-winget install -e --id BleachBit.BleachBit
-winget install -e --id piriform.ccleaner
-winget install -e --id MoritzBunkus.MKVToolNix
-winget install -e --id IObit.DriverBooster
-winget install -e --id WiseCleaner.WiseDiskCleaner
-winget install -e --id WiseCleaner.WiseForceDeleter
-winget install -e --id WiseCleaner.WiseRegistryCleaner
-winget install -e --id OO-Software.ShutUp10
+winget install -e -h --id BleachBit.BleachBit
+winget install -e -h --id piriform.ccleaner
+winget install -e -h --id MoritzBunkus.MKVToolNix
+winget install -e -h --id IObit.DriverBooster
+winget install -e -h --id WiseCleaner.WiseDiskCleaner
+winget install -e -h --id WiseCleaner.WiseForceDeleter
+winget install -e -h --id WiseCleaner.WiseRegistryCleaner
+winget install -e -h --id OO-Software.ShutUp10
 
 ::            Drivers (not needed if DISM updated)
 ::           "C:\Portable Apps\Driver Booster\DriverBoosterPortable.exe"
