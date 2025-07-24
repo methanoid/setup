@@ -25,7 +25,8 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostnam
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
 
 title Windows Activation
-powershell.exe -ex bypass "irm https://get.activated.win | iex"
+:: OLD WAY   powershell.exe -ex bypass "irm https://get.activated.win | iex"
+powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
 label C: Win11 >nul
 
 title RegTweaks
