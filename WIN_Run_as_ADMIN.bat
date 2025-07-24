@@ -175,13 +175,33 @@ del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul      
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
 
+title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile "C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit.ini"
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile "C:\Users\Administrator\AppData\Roaming\BleachBit\cleaners\winapp2.ini"
+
+title Installing CCleaner
 winget install -e -h --id piriform.ccleaner
-winget install -e -h --id MoritzBunkus.MKVToolNix
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ccleaner.ini -OutFile "C:\Users\Administrator\Desktop\ccleaner.ini"
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile "C:\Users\Administrator\Desktop\winapp2.ini"
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCenhancer.exe -OutFile "C:\Users\Administrator\Desktop\CCenhancer.exe"
+
+title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/config.ini -OutFile "C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini"
+
+title Installing Wise Force Deleter
 winget install -e -h --id WiseCleaner.WiseForceDeleter
+
+title Installing Wise Registry Cleaner
 winget install -e -h --id WiseCleaner.WiseRegistryCleaner
+
+title Installing MKVtoolnix
+winget install -e -h --id MoritzBunkus.MKVToolNix
+
+title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
+shutup10
 
 title Installing DriverBooster
 Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile "C:\Users\Administrator\Desktop\DB.exe"
