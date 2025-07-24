@@ -224,3 +224,5 @@ title Installing DirectX
 choco upgrade -y directx >nul
 
 :: "C:\Portable Apps\d3dx43.exe"
+
+winget install StartIsBack.StartAllBack --scope machine
