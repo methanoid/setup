@@ -141,6 +141,7 @@ winget install -e -h --id PuTTY.PuTTY
 
 title Installing Windhawk customizer
 winget install -e -h --id RamenSoftware.Windhawk
+md "c:\Users\Administrator\Desktop\Open Windhawk and install Windows 11 Start Menu Styler"
 
 title Installing SumatraPDF
 winget install -e -h --id SumatraPDF.SumatraPDF
