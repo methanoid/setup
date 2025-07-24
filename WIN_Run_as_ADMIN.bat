@@ -34,6 +34,12 @@ title RegTweaks
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul
 
+:: Remove Gallery from Explorer
+reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} /f /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0x00000000
+
+:: Remove Home from Explorer
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}" /f >nul
+
 :: Remove Realtek Control Panel (will error if not present)
 reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v "RTHDVCPL" /f >nul
 
