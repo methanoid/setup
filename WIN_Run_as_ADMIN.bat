@@ -9,11 +9,6 @@ if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & 
 
 :: ==TWEAKS===========================================================================================================================
 
-title Installing Winget
-powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
-powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
-powershell -command "Repair-WinGetPackageManager"
-
 title Name PC
 cls
 set /p NUNAME=What name do you want this PC to be called? :
@@ -22,11 +17,34 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "Co
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
 
+title Power Planning
+cls
+:choice
+set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
+if /I "%c%" EQU "V" goto :vm
+if /I "%c%" EQU "D" goto :desk
+if /I "%c%" EQU "L" goto :laptop
+goto :choice
+:vm
+echo Setting up for a VM
+powercfg -setactive scheme_min
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v "ShowSleepOption" /t REG_SZ /d "0" /f >nul
+goto done
+:desk
+echo Setting up for a Desktop
+powercfg -setactive scheme_balanced
+goto done
+:laptop
+echo Setting up for a Laptop
+powercfg -setactive scheme_max
+REM ***************************************************Maybe add HP laptop utils ?
+:done
+
 :: LanmanWorkstation to Enable Connection to unRAID
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
 
 title Windows Activation
-:: OLD WAY   powershell.exe -ex bypass "irm https://get.activated.win | iex"
+::  ******************************** COULD WE MINIMIZE THIS? **********************
 powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
 label C: Win11 >nul
 
@@ -57,29 +75,6 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v 
 :: Auto Arrange Icons On
 reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v FFLAGS /t REG_DWORD /d 40200224 /f >nul     :: DOESNT WORK!!!!!!!!!
 
-title Power Planning
-cls
-:choice
-set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
-if /I "%c%" EQU "V" goto :vm
-if /I "%c%" EQU "D" goto :desk
-if /I "%c%" EQU "L" goto :laptop
-goto :choice
-:vm
-echo Setting up for a VM
-powercfg -setactive scheme_min
-reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v "ShowSleepOption" /t REG_SZ /d "0" /f >nul
-goto done
-:desk
-echo Setting up for a Desktop
-powercfg -setactive scheme_balanced
-goto done
-:laptop
-echo Setting up for a Laptop
-powercfg -setactive scheme_max
-REM ***************************************************Maybe add HP laptop utils ?
-:done
-
 :: Windows update check and update
 wuauclt /detectnow
 wuauclt /updatenow
@@ -88,6 +83,11 @@ rd /s /q "c:\Perflogs" >nul 2>&1
 
 
 :: ==INSTALLS========================================================================================================================
+
+title Installing Winget
+powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
+powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
+powershell -command "Repair-WinGetPackageManager"
 
 title Debloating Last AppX
 ::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdgeDevToolsClient* -AllUsers
@@ -98,9 +98,12 @@ powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsof
 powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*"
 powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*"
 powershell -command "Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*"
+:: ***************************** FAILS ***********************
+
+
 
 title Installing Wintoys
-winget install -e -h Wintoys --accept-package-agreements
+winget install -e -h 9P8LTPGCBZXD --accept-package-agreements
 
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-package-agreements
@@ -145,7 +148,7 @@ winget install -e -h --id ONLYOFFICE.DesktopEditors
 
 title Installing Putty
 winget install -e -h --id PuTTY.PuTTY
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Putty.lnk -OutFile "C:\Users\Administrator\Desktop\Putty.lnk"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Putty.lnk -OutFile C:\Users\Administrator\Desktop\Putty.lnk"
 
 title Installing Windhawk customizer
 winget install -e -h --id RamenSoftware.Windhawk
@@ -171,7 +174,7 @@ winget install -e -h --id PrismLauncher.PrismLauncher
 
 title Installing LockHunter
 winget install -e -h --id CrystalRich.LockHunter
-:taskkill /F /IM iexplore.exe /T
+taskkill /F /IM msedge.exe /T
 
 title Installing Hashtab
 winget install -e -h --id namazso.OpenHashTab
@@ -184,18 +187,18 @@ reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
 
 title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile "C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit.ini"
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile "C:\Users\Administrator\AppData\Roaming\BleachBit\cleaners\winapp2.ini"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit.ini"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile C:\Users\Administrator\AppData\Roaming\BleachBit\cleaners\winapp2.ini"
 
 title Installing CCleaner
-winget install -e -h --id piriform.ccleaner
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ccleaner.ini -OutFile "C:\Program Files\CCleaner\ccleaner.ini"
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile "C:\Program Files\CCleaner\winapp2.ini"
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCenhancer.exe -OutFile "C:\Program Files\CCleaner\CCenhancer.exe"
+winget install -e -h --id Piriform.CCleaner
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ccleaner.ini -OutFile 'C:\Program Files\CCleaner\ccleaner.ini'"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile 'C:\Program Files\CCleaner\winapp2.ini'"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCenhancer.exe -OutFile 'C:\Program Files\CCleaner\CCenhancer.exe'"
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/config.ini -OutFile "C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/config.ini -OutFile 'C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini'"
 
 title Installing Wise Force Deleter
 winget install -e -h --id WiseCleaner.WiseForceDeleter
@@ -205,24 +208,24 @@ winget install -e -h --id WiseCleaner.WiseRegistryCleaner
 
 title Installing MKVtoolnix
 winget install -e -h --id MoritzBunkus.MKVToolNix
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/MKVToolnix.lnk -OutFile "C:\Users\Administrator\Desktop\MKVtoolnix.lnk"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/MKVToolnix.lnk -OutFile C:\Users\Administrator\Desktop\MKVtoolnix.lnk"
 
 title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
 shutup10
 
 title Installing DriverBooster
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile "C:\Users\Administrator\Desktop\DB.exe"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
 C:\Users\Administrator\Desktop\DB.exe -Y
 del C:\Users\Administrator\Desktop\DB.exe
 
 title Installing CBX Shell
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CBX.exe -OutFile "C:\Users\Administrator\Desktop\CBX.exe"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CBX.exe -OutFile C:\Users\Administrator\Desktop\CBX.exe"
 C:\Users\Administrator\Desktop\CBX.exe  /SP /VERYSILENT
 del C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
 
 title Installing Plasma Screensaver
-Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PSS.exe -OutFile "C:\Users\Administrator\Desktop\PSS.exe"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PSS.exe -OutFile C:\Users\Administrator\Desktop\PSS.exe"
 C:\Users\Administrator\Desktop\PSS.exe  /S
 del C:\Users\Administrator\Desktop\PSS.exe >nul 2>&1
 reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\system32\plasma.scr" /f >nul
@@ -266,8 +269,7 @@ shutdown -r -t 5
 
 
 ==REDUNDANT?=================================
-
+pause
 title Installing DirectX
 winget install -e -h --id microsoft.directx
-
 winget install StartIsBack.StartAllBack --scope machine
