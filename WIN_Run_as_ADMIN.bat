@@ -177,14 +177,15 @@ reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
 winget install -e -h --id BleachBit.BleachBit
 winget install -e -h --id piriform.ccleaner
 winget install -e -h --id MoritzBunkus.MKVToolNix
-winget install -e -h --id IObit.DriverBooster
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
 winget install -e -h --id WiseCleaner.WiseForceDeleter
 winget install -e -h --id WiseCleaner.WiseRegistryCleaner
 winget install -e -h --id OO-Software.ShutUp10
 
-::            Drivers (not needed if DISM updated)
-::           "C:\Portable Apps\Driver Booster\DriverBoosterPortable.exe"
+title Installing DriverBooster
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile "C:\Users\Administrator\Desktop\DB.exe"
+C:\Users\Administrator\Desktop\DB.exe -Y
+del C:\Users\Administrator\Desktop\DB.exe
 
 title Installing CBX Shell
 "c:\Portable Apps\CBX.exe" /SP /VERYSILENT
