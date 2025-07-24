@@ -138,6 +138,7 @@ winget install -e -h --id ONLYOFFICE.DesktopEditors
 
 title Installing Putty
 winget install -e -h --id PuTTY.PuTTY
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Putty.lnk -OutFile "C:\Users\Administrator\Desktop\Putty.lnk"
 
 title Installing Windhawk customizer
 winget install -e -h --id RamenSoftware.Windhawk
@@ -198,6 +199,7 @@ winget install -e -h --id WiseCleaner.WiseRegistryCleaner
 
 title Installing MKVtoolnix
 winget install -e -h --id MoritzBunkus.MKVToolNix
+Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/MKVToolnix.lnk -OutFile "C:\Users\Administrator\Desktop\MKVtoolnix.lnk"
 
 title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
