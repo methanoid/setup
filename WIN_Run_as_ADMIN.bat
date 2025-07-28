@@ -157,6 +157,7 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 
 title Installing Windhawk customizer
 winget install -e -h --id RamenSoftware.Windhawk
+schtasks /delete /tn WindhawkUpdateTask /f
 md "c:\Users\Administrator\Desktop\Open Windhawk and install Windows 11 Start Menu Styler"
 
 title Installing SumatraPDF
