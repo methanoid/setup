@@ -532,6 +532,23 @@ sc config "tzautoupdate" start=disabled
 sc config "UevAgentService" start=disabled
 sc config "uhssvc" start=disabled
 
+sc config "CCleaner*" start=disabled
+sc config "CxAudioSvc" start=disabled
+sc config "CxUIUSvc64" start=disabled
+sc config "IntelCpHDCPSvc" start=disabled
+sc config "IntelCpHeciSvc" start=disabled
+sc config "jhi_service" start=disabled
+sc config "OneApp.IGCC.WinService" start=disabled
+sc config "igfxCUIService" start=disabled
+sc config "WMIRegistrationService" start=disabled
+sc config "RstMwService" start=disabled
+sc config "XtuService" start=disabled
+sc config "SECOMN64" start=disabled
+sc config "igfxCUIService2.0.0.0" start=disabled
+sc config "igccservice" start=disabled
+sc config "cplspcon" start=disabled
+sc config "XTUOCDriverService" start=disabled
+sc config "SECOMNService" start=disabled
 
 :: ==REBOOT==++======================================================================================================================
 
