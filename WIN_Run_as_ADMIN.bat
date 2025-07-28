@@ -10,17 +10,15 @@ if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & 
 :: ==TWEAKS===========================================================================================================================
 
 title Name PC
-cls
-set /p NUNAME=What name do you want this PC to be called? :
+cls & set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
 
 title Power Planning
-cls
 :choice
-set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
+cls & set /P c=Is this machine a (V)irtual Machine, (D)esktop or (L)aptop? [V/D/L]?
 if /I "%c%" EQU "V" goto :vm
 if /I "%c%" EQU "D" goto :desk
 if /I "%c%" EQU "L" goto :laptop
@@ -45,7 +43,6 @@ Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Pe
 Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force;
 taskkill /im explorer.exe /f
 start explorer.exe
-
 
 title Windows Activation
 ::  ******************************** COULD WE MINIMIZE THIS? **********************
