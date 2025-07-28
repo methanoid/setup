@@ -40,6 +40,12 @@ powercfg -setactive scheme_max
 REM ***************************************************Maybe add HP laptop utils ?
 :done
 
+:: Switch to Dark mode system-wide
+Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;
+Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force;
+taskkill /im explorer.exe /f
+start explorer.exe
+
 :: LanmanWorkstation to Enable Connection to unRAID
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
 
