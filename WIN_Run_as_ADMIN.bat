@@ -63,8 +63,12 @@ reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsec
 :: Remove Gallery from Explorer
 reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} /f /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0x00000000
 
-:: Remove Home from Explorer
+:: Remove Home from Explorer & Remove Pin to QuickAccess
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}" /f >nul
+reg delete "HKCR\AllFilesystemObjects\shell\pintohome" /f
+reg delete "HKCR\Drive\shell\pintohome" /f
+reg delete "HKCR\Folder\shell\pintohome" /f
+reg delete "HKCR\Network\shell\pintohome" /f
 
 :: Stop Explorer from showing external drives twice
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
