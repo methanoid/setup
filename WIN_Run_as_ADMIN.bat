@@ -81,6 +81,9 @@ wuauclt /updatenow
 
 rd /s /q "c:\Perflogs" >nul 2>&1
 
+:: Enable Quick Machine Recovery
+reagentc.exe /enable >nul 2>&1
+
 
 :: ==INSTALLS========================================================================================================================
 
