@@ -48,6 +48,10 @@ title Windows Activation
 powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
 label C: Win11 >nul
 
+title Activating Digital Markets Act
+powershell -command "iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/Set_DMA.ps1'))"
+REM *******************************************************************************************************************************************************************ADD EDGE UNINSTALL COMMANDS HERE!
+
 title Tweaks
 ::  Set PC network discoverable & enable file sharing
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
@@ -98,17 +102,8 @@ powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
 powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
 powershell -command "Repair-WinGetPackageManager"
 
-REM title Installing Wintoys
-REM winget install -e -h 9P8LTPGCBZXD --accept-package-agreements
-REM rem NEED A PROGRAMMATICAL WAY TO AUTOMATE DMA ENABLE HACK (to uninstall MS Edge)
-
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-package-agreements
-
-title Activating Digital Markets Act
-
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\bleachbit.ini"
-
 
 title Installing Brave
 winget install -e -h --id Brave.Brave --accept-package-agreements
@@ -284,3 +279,4 @@ winget install StartIsBack.StartAllBack --scope machine
 :: Windows update check and update
 wuauclt /detectnow
 wuauclt /updatenow
+REM title Installing Wintoys          winget install -e -h 9P8LTPGCBZXD --accept-package-agreements
