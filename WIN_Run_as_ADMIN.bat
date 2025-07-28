@@ -98,24 +98,17 @@ powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
 powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
 powershell -command "Repair-WinGetPackageManager"
 
-title Debloating Last AppX
-::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdgeDevToolsClient* -AllUsers
-::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Edge.GameAssist* -AllUsers
-::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdge.Stable* -AllUsers
-::del /s "c:\Users\Administrator\Desktop\Microsoft Edge.lnk" >nul 2>&1
-powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.OutlookForWindows* -AllUsers"
-powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*"
-powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.DevHome*"
-powershell -command "Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*"
-:: ***************************** FAILS ***********************
-
-
-
-title Installing Wintoys
-winget install -e -h 9P8LTPGCBZXD --accept-package-agreements
+REM title Installing Wintoys
+REM winget install -e -h 9P8LTPGCBZXD --accept-package-agreements
+REM rem NEED A PROGRAMMATICAL WAY TO AUTOMATE DMA ENABLE HACK (to uninstall MS Edge)
 
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-package-agreements
+
+title Activating Digital Markets Act
+
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\bleachbit.ini"
+
 
 title Installing Brave
 winget install -e -h --id Brave.Brave --accept-package-agreements
@@ -240,6 +233,14 @@ reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /f >nul
 
+title Debloating Last AppX
+::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdgeDevToolsClient* -AllUsers
+::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Edge.GameAssist* -AllUsers
+::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdge.Stable* -AllUsers
+::del /s "c:\Users\Administrator\Desktop\Microsoft Edge.lnk" >nul 2>&1
+powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*"
+powershell -command "Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*"
+:: ***************************** FAILS ***********************
 
 
 
