@@ -45,7 +45,6 @@ taskkill /im explorer.exe /f
 start explorer.exe
 
 title Windows Activation
-::  ******************************** COULD WE MINIMIZE THIS? **********************
 powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
 label C: Win11 >nul
 
@@ -85,10 +84,6 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v 
 
 :: Auto Arrange Icons On
 reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v FFLAGS /t REG_DWORD /d 40200224 /f >nul     :: DOESNT WORK!!!!!!!!!
-
-:: Windows update check and update
-wuauclt /detectnow
-wuauclt /updatenow
 
 rd /s /q "c:\Perflogs" >nul 2>&1
 
@@ -285,3 +280,6 @@ pause
 title Installing DirectX
 winget install -e -h --id microsoft.directx
 winget install StartIsBack.StartAllBack --scope machine
+:: Windows update check and update
+wuauclt /detectnow
+wuauclt /updatenow
