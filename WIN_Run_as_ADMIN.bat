@@ -46,8 +46,6 @@ Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Pe
 taskkill /im explorer.exe /f
 start explorer.exe
 
-:: LanmanWorkstation to Enable Connection to unRAID
-reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
 
 title Windows Activation
 ::  ******************************** COULD WE MINIMIZE THIS? **********************
@@ -58,6 +56,9 @@ title Tweaks
 ::  Set PC network discoverable & enable file sharing
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul
+
+:: LanmanWorkstation to Enable Connection to unRAID
+reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
 
 :: Remove Gallery from Explorer
 reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} /f /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0x00000000
