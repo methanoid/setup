@@ -140,11 +140,7 @@ goto :choice
 :yes
 echo Installing clients - please wait
 :choco upgrade -y steam ubisoft-connect epicgameslauncher goggalaxy ea-app >nul 2>&1
-winget install -e -h --id Valve.Steam
-winget install -e -h --id HeroicGamesLauncher.HeroicGamesLauncher
-winget install -e -h --id GOG.Galaxy
-winget install -e -h --id Ubisoft.Connect
-winget install -e -h --id ElectronicArts.EADesktop
+winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GOG.Galaxy Ubisoft.Connect ElectronicArts.EADesktop
 :no
 
 title Installing 7Zip
