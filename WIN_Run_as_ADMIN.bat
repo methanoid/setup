@@ -35,7 +35,7 @@ goto done
 :laptop
 echo Setting up for a Laptop
 powercfg -setactive scheme_max
-REM ***************************************************Maybe add HP laptop utils ?
+REM  Here perhaps add HP Laptop Hotkeys util ?
 :done
 
 :: Switch to Dark mode system-wide
