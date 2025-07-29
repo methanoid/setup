@@ -24,40 +24,33 @@ if /I "%c%" EQU "D" goto :desk
 if /I "%c%" EQU "L" goto :laptop
 goto :choice
 :vm
-echo Setting up for a VM
-powercfg -setactive scheme_min
+echo Setting up for a VM & powercfg -setactive scheme_min
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FlyoutMenuSettings" /v "ShowSleepOption" /t REG_SZ /d "0" /f >nul
 goto done
 :desk
-echo Setting up for a Desktop
-powercfg -setactive scheme_balanced
+echo Setting up for a Desktop & powercfg -setactive scheme_balanced 
 goto done
 :laptop
-echo Setting up for a Laptop
-powercfg -setactive scheme_max
+echo Setting up for a Laptop & powercfg -setactive scheme_max
 REM  Here perhaps add HP Laptop Hotkeys util ?
 :done
 
 :: Switch to Dark mode system-wide
 Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;
 Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force;
-taskkill /im explorer.exe /f
-start explorer.exe
+taskkill /im explorer.exe /f & start explorer.exe & label C: Win11 >nul & rd /s /q "c:\Perflogs" >nul 2>&1
 
 title Windows Activation
 powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
-label C: Win11 >nul
 
 title Activating Digital Markets Act
 powershell -command "iex ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/Set_DMA.ps1'))"
 REM *******************************************************************************************************************************************************************ADD EDGE UNINSTALL COMMANDS HERE!
 
 title Tweaks
-::  Set PC network discoverable & enable file sharing
+::  Set PC network discoverable & enable file sharing  & Lanman for unRAID
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul
-
-:: LanmanWorkstation to Enable Connection to unRAID
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
 
 :: Remove Gallery from Explorer
@@ -65,10 +58,7 @@ reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd02
 
 :: Remove Home from Explorer & Remove Pin to QuickAccess
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}" /f >nul
-reg delete "HKCR\AllFilesystemObjects\shell\pintohome" /f
-reg delete "HKCR\Drive\shell\pintohome" /f
-reg delete "HKCR\Folder\shell\pintohome" /f
-reg delete "HKCR\Network\shell\pintohome" /f
+reg delete "HKCR\AllFilesystemObjects\shell\pintohome" /f & reg delete "HKCR\Drive\shell\pintohome" /f & reg delete "HKCR\Folder\shell\pintohome" /f & reg delete "HKCR\Network\shell\pintohome" /f
 
 :: Stop Explorer from showing external drives twice
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
@@ -89,13 +79,20 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v 
 :: Auto Arrange Icons On
 reg add "HKCU\SOFTWARE\Microsoft\Windows\Shell\Bags\1\Desktop" /v FFLAGS /t REG_DWORD /d 40200224 /f >nul     :: DOESNT WORK!!!!!!!!!
 
-rd /s /q "c:\Perflogs" >nul 2>&1
-
 :: Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 
 
 :: ==INSTALLS========================================================================================================================
+
+title Debloating Last AppX
+::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdgeDevToolsClient* -AllUsers
+::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Edge.GameAssist* -AllUsers
+::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdge.Stable* -AllUsers
+::del /s "c:\Users\Administrator\Desktop\Microsoft Edge.lnk" >nul 2>&1
+powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*"
+powershell -command "Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*"
+:: ***************************** FAILS ***********************
 
 title Installing Winget
 powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
@@ -114,6 +111,11 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe
 del c:\pttb.exe
 
+title Installing DriverBooster
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
+C:\Users\Administrator\Desktop\DB.exe -Y
+del C:\Users\Administrator\Desktop\DB.exe
+
 title Installing NVcleanstall
 winget install -e -h --id TechPowerUp.NVCleanstall
 
@@ -125,7 +127,6 @@ if /I "%c%" EQU "N" goto :no
 goto :choice
 :yes
 echo Installing clients - please wait
-:choco upgrade -y steam ubisoft-connect epicgameslauncher goggalaxy ea-app >nul 2>&1
 winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GOG.Galaxy Ubisoft.Connect ElectronicArts.EADesktop
 :no
 
@@ -156,14 +157,11 @@ del /s "c:\Users\Administrator\Desktop\SumatraPDF.lnk" >nul 2>&1
 
 title Installing ImgBurn
 winget install -e -h --id LIGHTNINGUK.ImgBurn
-del /s "c:\Users\%username%\Desktop\ImgBurn.lnk" >nul 2>&1
-del /s "c:\Users\Public\Desktop\ImgBurn.lnk" >nul 2>&1
+del /s "c:\Users\%username%\Desktop\ImgBurn.lnk" & del /s "c:\Users\Public\Desktop\ImgBurn.lnk" & cls
 
 title Installing KLite Codecs
 winget install -e -h --id CodecGuide.K-LiteCodecPack.Standard
-del /s "c:\Users\%username%\Desktop\MPC-HC x64.lnk" >nul 2>&1
-del /s "c:\Users\Public\Desktop\mpc-be.lnk" >nul 2>&1
-schtasks /delete /tn klcp_update /f >nul 2>&1
+del /s "c:\Users\%username%\Desktop\MPC-HC x64.lnk" & del /s "c:\Users\Public\Desktop\mpc-be.lnk" & schtasks /delete /tn klcp_update /f & cls
 
 title Installing Minecraft Launcher
 winget install -e -h --id PrismLauncher.PrismLauncher
@@ -212,11 +210,6 @@ title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
 shutup10
 
-title Installing DriverBooster
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
-C:\Users\Administrator\Desktop\DB.exe -Y
-del C:\Users\Administrator\Desktop\DB.exe
-
 title Installing CBX Shell
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CBX.exe -OutFile C:\Users\Administrator\Desktop\CBX.exe"
 C:\Users\Administrator\Desktop\CBX.exe  /SP /VERYSILENT
@@ -228,17 +221,13 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRDo.7z.001 -OutFile C:\VRDo.7z.001"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRDo.7z.002 -OutFile C:\VRDo.7z.002"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRDo.7z.003 -OutFile C:\VRDo.7z.003"
-C:\VRDo.exe /s
-C:\VRD.exe /s
-del /s "C:\VRD*.*" >nul 2>&1
+C:\VRDo.exe /s & C:\VRD.exe /s & del /s "C:\VRD*.*" >nul 2>&1
 
 title Installing Samsung Printer Driver
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\SPTR.exe"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\SPTR.7z.001"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\SPTR.7z.002"
-C:\SPTR.exe /s
-C:\PTR.exe /s
-del /s "C:\*PTR.*" >nul 2>&1
+C:\SPTR.exe /s & C:\PTR.exe /s & del /s "C:\*PTR.*" >nul 2>&1
 
 title Installing Plasma Screensaver
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PSS.exe -OutFile C:\Users\Administrator\Desktop\PSS.exe"
@@ -248,15 +237,6 @@ reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /f >nul
-
-title Debloating Last AppX
-::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdgeDevToolsClient* -AllUsers
-::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Edge.GameAssist* -AllUsers
-::Remove-AppXProvisionedPackage -Online -PackageName Microsoft.MicrosoftEdge.Stable* -AllUsers
-::del /s "c:\Users\Administrator\Desktop\Microsoft Edge.lnk" >nul 2>&1
-powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*"
-powershell -command "Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*"
-:: ***************************** FAILS ***********************
 
 
 :: ==CLEANUPS========================================================================================================================
