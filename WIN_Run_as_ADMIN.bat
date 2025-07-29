@@ -110,6 +110,9 @@ winget install -e -h --id Brave.Brave --accept-package-agreements
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f
 for /f "tokens=1 delims=," %%x in ('schtasks /query /fo csv ^| find "Brave"') do schtasks /Delete /TN %%x /F
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PTTB.exe -OutFile C:\PTTB.exe"
+c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe
+del c:\pttb.exe
 
 title Installing NVcleanstall
 winget install -e -h --id TechPowerUp.NVCleanstall
