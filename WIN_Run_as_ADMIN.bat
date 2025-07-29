@@ -219,6 +219,24 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 C:\Users\Administrator\Desktop\CBX.exe  /SP /VERYSILENT
 del C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
 
+title Installing VideoReDo
+REM VideoReDo.TVSuite.6.63.7.836
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRDo.exe -OutFile C:\VRDo.exe"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRDo.7z.001 -OutFile C:\VRDo.7z.001"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRDo.7z.002 -OutFile C:\VRDo.7z.002"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRDo.7z.003 -OutFile C:\VRDo.7z.003"
+C:\VRDo.exe /s
+C:\VRD.exe /s
+del /s "C:\VRD*.*" >nul 2>&1
+
+title Installing Samsung Printer Driver
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\SPTR.exe"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\SPTR.7z.001"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\SPTR.7z.002"
+C:\SPTR.exe /s
+C:\PTR.exe /s
+del /s "C:\*PTR.*" >nul 2>&1
+
 title Installing Plasma Screensaver
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PSS.exe -OutFile C:\Users\Administrator\Desktop\PSS.exe"
 C:\Users\Administrator\Desktop\PSS.exe /S
@@ -236,22 +254,6 @@ title Debloating Last AppX
 powershell -command "Remove-AppXProvisionedPackage -Online -PackageName Microsoft.Windows.NarratorQuickStart*"
 powershell -command "Remove-AppXProvisionedPackage -Online -PackageName AppUp.IntelGraphicsExperience*"
 :: ***************************** FAILS ***********************
-
-
-
-::   NEED FIXES FOR BELOW COS FILES ABOVE 25MB GITHUB LIMIT - MAYBE SPLIT ZIPS?
-
-title Installing VideoReDo
-REM VideoReDo.TVSuite.6.63.7.836
-"c:\Portable Apps\VRD.exe" /s
-del /s "c:\Portable Apps\VRD.exe" >nul 2>&1
-
-title Installing Samsung Printer Driver
-"c:\Portable Apps\SamsungUPD3.exe"
-del /s "c:\Portable Apps\SamsungUPD3.exe" >nul 2>&1
-
-
-
 
 
 :: ==CLEANUPS========================================================================================================================
