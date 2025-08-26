@@ -52,6 +52,7 @@ title Tweaks
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
+reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters /v EnableSecuritySignature /t REG_DWORD /d "0" /f >nul
 
 :: Remove Gallery from Explorer
 reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} /f /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0x00000000
@@ -550,3 +551,4 @@ winget install StartIsBack.StartAllBack --scope machine
 wuauclt /detectnow
 wuauclt /updatenow
 REM title Installing Wintoys          winget install -e -h 9P8LTPGCBZXD --accept-package-agreements
+
