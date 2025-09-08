@@ -112,7 +112,6 @@ reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /
 
 title Installing MKVtoolnix
 winget install -e -h --id MoritzBunkus.MKVToolNix
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/MKVtoolnix.lnk -OutFile C:\Users\Administrator\Desktop\MKVtoolnix.lnk"
 
 title Installing CBX Shell
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CBX.exe -OutFile C:\Users\Administrator\Desktop\CBX.exe"
@@ -149,6 +148,7 @@ echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 pause
+
 
 
 
