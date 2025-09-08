@@ -49,7 +49,7 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v 
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 
-
 pause
+
 
 
