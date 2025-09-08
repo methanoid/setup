@@ -17,7 +17,7 @@ powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\Cur
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force;"
 taskkill /im explorer.exe /f & start explorer.exe & label C: Win11 >nul & rd /s /q "c:\Perflogs" >nul 2>&1
 
-echo Set PC network discoverable & enable file sharing  & Lanman for unRAID
+echo Set Sharing for unRAID
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
@@ -48,5 +48,6 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v 
 
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
+
 
 pause
