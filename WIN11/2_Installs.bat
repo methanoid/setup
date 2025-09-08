@@ -143,14 +143,10 @@ C:\Users\Administrator\Desktop\DB.exe -Y
 del C:\Users\Administrator\Desktop\DB.exe
 
 title Remove Edge Cleanly
-powershell -command 'iex "&{$(irm https://cdn.jsdelivr.net/gh/he3als/EdgeRemover@main/get.ps1)} -UninstallEdge -RemoveEdgeData -InstallWebView"'
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
+powershell -file "C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
+del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
 echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 pause
-
-
-
-
-
-
