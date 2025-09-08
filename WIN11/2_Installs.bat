@@ -18,7 +18,7 @@ winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-pac
 title Installing ExplorerPatcher
 winget install -e -h --id valinet.ExplorerPatcher
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ExplorerPatcher.reg -OutFile C:\ExplorerPatcher.reg"
-reg import c:\ExlorerPatcher.reg
+reg import c:\ExplorerPatcher.reg
 del /s c:\ExplorerPatcher.reg >nul 2>&1
 
 title Installing Brave
@@ -148,6 +148,7 @@ echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 pause
+
 
 
 
