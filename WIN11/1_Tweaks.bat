@@ -1,12 +1,11 @@
 :: ==TWEAKS===========================================================================================================================
 
-:check
-ping www.google.com -n 1 -w 1000>nul && cls
-if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
-
 @echo off
 title Tweaks
 
+:check
+ping www.google.com -n 1 -w 1000>nul && cls
+if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
 :: Windows update check and update
 echo "Checking Windows updates and updating"
@@ -52,4 +51,5 @@ reagentc.exe /enable >nul 2>&1
 
 
 pause
+
 
