@@ -1,11 +1,11 @@
-@echo off
+:: ==INSTALLS========================================================================================================================
+
+@echo off@echo off
 title Installs
 
 :check
 ping www.google.com -n 1 -w 1000>nul && cls
-if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Beginning installs - be patient)
-
-:: ==INSTALLS========================================================================================================================
+if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
 title Installing Winget
 powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
@@ -148,6 +148,7 @@ echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 pause
+
 
 
 
