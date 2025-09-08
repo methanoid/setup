@@ -1,12 +1,11 @@
-:: This script is downloaded from Github by the AutoUnattend.XML file on the ISO
+:: ==CLEANUPS========================================================================================================================
+
 @echo off
 title Windows Cleanups - Be patient
 
 :check
 ping www.google.com -n 1 -w 1000>nul && cls
-if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Beginning installs - be patient)
-
-:: ==CLEANUPS========================================================================================================================
+if errorlevel 1 (echo This script needs you to connect to internet & wait 5 & goto check) else (echo Starting)
 
 title Some File Cleaning
 "C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
@@ -307,4 +306,5 @@ sc config "SECOMNService" start=disabled
 :: ==REBOOT==++======================================================================================================================
 
 echo "Rebooting now - enjoy!"
+
 shutdown -r -t 30
