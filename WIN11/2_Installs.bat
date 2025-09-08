@@ -15,6 +15,12 @@ powershell -command "Repair-WinGetPackageManager"
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
 
+title Installing ExplorerPatcher
+winget install -e -h --id valinet.ExplorerPatcher
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ExplorerPatcher.reg -OutFile C:\ExplorerPatcher.reg"
+reg import c:\ExlorerPatcher.reg
+del /s c:\ExplorerPatcher.reg >nul 2>&1
+
 title Installing Brave
 winget install -e -h --id Brave.Brave
 del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
@@ -23,9 +29,6 @@ for /f "tokens=1 delims=," %%x in ('schtasks /query /fo csv ^| find "Brave"') do
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe
 del c:\pttb.exe
-
-title Installing NVcleanstall
-winget install -e -h --id TechPowerUp.NVCleanstall
 
 title Installing 7Zip
 winget install -e -h --id 7zip.7zip
@@ -140,13 +143,10 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 C:\Users\Administrator\Desktop\DB.exe -Y
 del C:\Users\Administrator\Desktop\DB.exe
 
-title Installing ExplorerPatcher
-winget install -e -h --id valinet.ExplorerPatcher
-:: REG FILE FROM GITHUB, INSTALL SETTINGS, DELETE?
-
 title Remove Edge Cleanly
 powershell -command 'iex "&{$(irm https://cdn.jsdelivr.net/gh/he3als/EdgeRemover@main/get.ps1)} -UninstallEdge -RemoveEdgeData -InstallWebView"'
 echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 pause
+
