@@ -1,3 +1,4 @@
+@echo off
 title Name PC
 cls & set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
@@ -38,8 +39,10 @@ echo Installing clients - please wait
 winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GOG.Galaxy Ubisoft.Connect ElectronicArts.EADesktop
 :no
 
+title Silence Any Telemetry
 shutup10
 
 echo All Done!
 
 pause
+
