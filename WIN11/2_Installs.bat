@@ -7,10 +7,10 @@ title Installs
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
-title Installing Winget
-powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
-powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
-powershell -command "Repair-WinGetPackageManager"
+title Installing Winget NOT WORKING
+REM powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
+REM powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
+REM powershell -command "Repair-WinGetPackageManager"
 
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
@@ -150,4 +150,5 @@ echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 pause
+
 
