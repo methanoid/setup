@@ -8,6 +8,17 @@ ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo This script needs you to connect to internet & wait 5 & goto check) else (echo Starting)
 
 title Some File Cleaning
+
+del "c:\users\administrator\desktop\wise registry cleaner.lnk"
+del "c:\users\administrator\desktop\wise force deleter.lnk"
+del "c:\users\administrator\desktop\wise disk cleaner.lnk"
+del "c:\users\administrator\desktop\putty.lnk"
+del "c:\users\administrator\desktop\bleachbit.lnk"
+del "c:\users\administrator\desktop\ccleaner.lnk"
+del "c:\users\administrator\desktop\unigetui.lnk"
+del "c:\users\administrator\desktop\ONLYOFFICE.lnk"
+del "c:\users\administrator\desktop\VideoReDo TVSuite V6.lnk"
+
 "C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
 "C:\Program Files\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
 
@@ -308,3 +319,4 @@ sc config "SECOMNService" start=disabled
 echo "Rebooting now - enjoy!"
 
 shutdown -r -t 30
+
