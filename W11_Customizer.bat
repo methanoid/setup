@@ -15,7 +15,7 @@ wuauclt /updatenow
 echo Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force;"
-taskkill /im explorer.exe /f & start explorer.exe & label C: Win11 >nul & rd /s /q "c:\Perflogs" >nul 2>&1
+taskkill /im explorer.exe /f & start explorer.exe & rd /s /q "c:\Perflogs" >nul 2>&1
 
 echo Set Sharing for unRAID
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
@@ -66,11 +66,23 @@ powershell -command "irm https://github.com/asheroto/winget-install/releases/lat
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
 
+
+for /f "tokens=4-5 delims=. " %%i in ('ver') do set VERSION=%%i.%%j
+if "%version%" == "10.0" goto win10
+
+:win11
 title Installing ExplorerPatcher
 winget install -e -h --id valinet.ExplorerPatcher
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ExplorerPatcher.reg -OutFile C:\ExplorerPatcher.reg"
 reg import c:\ExplorerPatcher.reg
 del /s c:\ExplorerPatcher.reg >nul 2>&1
+taskkill /im explorer.exe /f & start explorer.exe
+label c: Win11
+goto continue
+
+:win10
+label c: Win10
+:continue
 
 title Installing Brave
 winget install -e -h --id Brave.Brave
