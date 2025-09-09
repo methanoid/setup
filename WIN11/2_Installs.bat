@@ -11,6 +11,8 @@ title Installing Winget NOT WORKING
 REM powershell -command "Install-PackageProvider -Name NuGet -Force | Out-Null"
 REM powershell -command "Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null"
 REM powershell -command "Repair-WinGetPackageManager"
+REM 
+REM Use wsreset -i and then install unigetui from msstore
 
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
@@ -150,5 +152,6 @@ echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 pause
+
 
 
