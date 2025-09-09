@@ -8,7 +8,7 @@ ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
 :: Windows update check and update
-echo "Checking Windows updates and updating"
+echo Asking Windows Update to start
 wuauclt /detectnow
 wuauclt /updatenow
 
@@ -26,7 +26,7 @@ reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters /v E
 echo Remove Gallery from Explorer
 reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} /f /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0x00000000
 
-echo Remove Home from Explorer & Remove Pin to QuickAccess
+echo Remove Home from Explorer and Pin to QuickAccess
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}" /f >nul
 reg delete "HKCR\AllFilesystemObjects\shell\pintohome" /f & reg delete "HKCR\Drive\shell\pintohome" /f & reg delete "HKCR\Folder\shell\pintohome" /f & reg delete "HKCR\Network\shell\pintohome" /f
 
@@ -50,6 +50,7 @@ echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 
 pause
+
 
 
 
