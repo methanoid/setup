@@ -1,6 +1,6 @@
 :: ==INSTALLS========================================================================================================================
 
-@echo off@echo off
+@echo off
 title Installs
 
 :check
@@ -150,3 +150,4 @@ echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 pause
+
