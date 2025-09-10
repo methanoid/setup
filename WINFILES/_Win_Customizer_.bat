@@ -14,9 +14,10 @@ echo Asking Windows Update to start
 wuauclt /detectnow
 wuauclt /updatenow
 
-REM INSERT WALLPAPER & LOCKSCREEN CUSTOMIZER
-REM INSERT WALLPAPER & LOCKSCREEN CUSTOMIZER
-REM INSERT WALLPAPER & LOCKSCREEN CUSTOMIZER
+echo Changing custom Wallpaper and Lockscreen
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/WallpaperLock.PS1 -OutFile C:\Users\Administrator\Desktop\WallpaperLock.PS1"
+powershell -file "C:\Users\Administrator\Desktop\WallpaperLock.PS1"
+del C:\Users\Administrator\Desktop\WallpaperLock.PS1
 
 echo Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
