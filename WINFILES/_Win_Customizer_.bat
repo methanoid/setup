@@ -67,7 +67,7 @@ powershell -command "irm https://github.com/asheroto/winget-install/releases/lat
 
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
-del "c:\users\Administrator\desktop\UniGetUI.lnk"
+del "c:\users\Administrator\Desktop\UniGetUI.lnk"
 
 :: Windows10/11 Differences
 for /f "tokens=3 delims=." %%i in ('ver') do set build=%%i
@@ -106,7 +106,7 @@ winget install -e -h --id Microsoft.VCRedist.2015+.x64
 
 title Installing OnlyOffice
 winget install -e -h --id ONLYOFFICE.DesktopEditors
-del "c:\users\Administrator\desktop\ONLYOFFICE.lnk"
+del "c:\users\Administrator\Desktop\ONLYOFFICE.lnk"
 
 title Installing Putty
 winget install -e -h --id PuTTY.PuTTY
@@ -142,14 +142,14 @@ reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
 
 title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
-del "c:\users\Administrator\desktop\BleachBit.lnk"
+del "c:\users\Administrator\Desktop\BleachBit.lnk"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\bleachbit.ini"
 mkdir "C:\Users\Administrator\AppData\Local\BleachBit\cleaners"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\cleaners\winapp2.ini"
 
 title Installing CCleaner
 winget install -e -h --id Piriform.CCleaner
-del "c:\users\Administrator\desktop\CCleaner.lnk"
+del "c:\users\Administrator\Desktop\CCleaner.lnk"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ccleaner.ini -OutFile 'C:\Program Files\CCleaner\ccleaner.ini'"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile 'C:\Program Files\CCleaner\winapp2.ini'"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCEnhancer.exe -OutFile 'C:\Program Files\CCleaner\CCEnhancer.exe'"
@@ -159,15 +159,15 @@ for /f "tokens=1 delims=," %%x in ('schtasks /query /fo csv ^| find "CCleaner"')
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/config.ini -OutFile 'C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini'"
-del "c:\users\Administrator\desktop\Wise Disk Cleaner.lnk"
+del "c:\users\Administrator\Desktop\Wise Disk Cleaner.lnk"
 
 title Installing Wise Force Deleter
 winget install -e -h --id WiseCleaner.WiseForceDeleter
-del "c:\users\Administrator\desktop\Wise Force Deleter.lnk"
+del "c:\users\Administrator\Desktop\Wise Force Deleter.lnk"
 
 title Installing Wise Registry Cleaner
 winget install -e -h --id WiseCleaner.WiseRegistryCleaner
-del "c:\users\Administrator\desktop\Wise Registry Cleaner.lnk"
+del "c:\users\Administrator\Desktop\Wise Registry Cleaner.lnk"
 
 title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
@@ -197,7 +197,7 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRD_Split.7z.003 -OutFile C:\VRD_Split.7z.003"
 C:\VRD_Split.exe -oC:\ -y
 "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" /s
-del "c:\users\Administrator\desktop\VideoReDo TVSuite V6.lnk"
+del "c:\users\Administrator\Desktop\VideoReDo TVSuite V6.lnk"
 del /s "C:\VRD*.*" >nul 2>&1
 del "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
 
