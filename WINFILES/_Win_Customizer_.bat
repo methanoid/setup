@@ -56,6 +56,10 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v 
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 
+echo Remove grpconv entry
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /f >nul
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "grpconv" /f nul
+
 :: ==INSTALLS========================================================================================================================
 
 @echo off
@@ -97,7 +101,7 @@ title Installing Brave
 winget install -e -h --id Brave.Brave
 del /s "c:\Users\Administrator\Desktop\Brave.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f
-for /f "tokens=1 delims=," %%x in ('schtasks /query /fo csv ^| find "Brave"') do schtasks /Delete /TN %%x /F
+for /f %%x in ('schtasks /query ^| findstr Brave') do schtasks /Delete /TN %%x /F
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe
 del c:\pttb.exe
@@ -161,7 +165,7 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile 'C:\Program Files\CCleaner\winapp2.ini'"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCEnhancer.exe -OutFile 'C:\Program Files\CCleaner\CCEnhancer.exe'"
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul
-for /f "tokens=1 delims=," %%x in ('schtasks /query /fo csv ^| find "CCleaner"') do schtasks /Delete /TN %%x /F
+for /f %%x in ('schtasks /query ^| findstr CCleaner') do schtasks /Delete /TN %%x /F
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
