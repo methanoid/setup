@@ -85,6 +85,8 @@ if %build% geq 22000 {
   label c: Win10
 }
 
+title Uninstall CPU-Z
+"c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
 title Installing Brave
 winget install -e -h --id Brave.Brave
 del /s "c:\Users\Administrator\Desktop\Brave.lnk" >nul 2>&1
