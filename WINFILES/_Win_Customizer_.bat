@@ -88,7 +88,7 @@ if %build% geq 22000 {
 
 title Installing Brave
 winget install -e -h --id Brave.Brave
-del /s "c:\Users\%username%\Desktop\Brave.lnk" >nul 2>&1
+del /s "c:\Users\Administrator\Desktop\Brave.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f
 for /f "tokens=1 delims=," %%x in ('schtasks /query /fo csv ^| find "Brave"') do schtasks /Delete /TN %%x /F
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
@@ -118,11 +118,11 @@ del /s "c:\Users\Administrator\Desktop\SumatraPDF.lnk" >nul 2>&1
 
 title Installing ImgBurn
 winget install -e -h --id LIGHTNINGUK.ImgBurn
-del /s "c:\Users\%username%\Desktop\ImgBurn.lnk" & del /s "c:\Users\Public\Desktop\ImgBurn.lnk" & cls
+del /s "c:\Users\Administrator\Desktop\ImgBurn.lnk" & del /s "c:\Users\Public\Desktop\ImgBurn.lnk" & cls
 
 title Installing KLite Codecs
 winget install -e -h --id CodecGuide.K-LiteCodecPack.Standard
-del /s "c:\Users\%username%\Desktop\MPC-HC x64.lnk" & del /s "c:\Users\Public\Desktop\mpc-be.lnk" & schtasks /delete /tn klcp_update /f & cls
+del /s "c:\Users\Administrator\Desktop\MPC-HC x64.lnk" & del /s "c:\Users\Public\Desktop\mpc-be.lnk" & schtasks /delete /tn klcp_update /f & cls
 
 title Installing Minecraft Launcher
 winget install -e -h --id PrismLauncher.PrismLauncher
