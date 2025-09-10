@@ -7,7 +7,7 @@ $LockscreenUrl = "bloburl from azure" # Change to your fitting
 
 $ImageDestinationFolder = "c:\temp" # Change to your fitting - this is the folder for the wallpaper image
 $WallpaperDestinationFile = "$ImageDestinationFolder\wallpaper.png" # Change to your fitting - this is the Wallpaper image
-$LockScreenDestinationFile = "$ImageDestinationFolder\LockScreen.png" # Change to your fitting - this is the Lockscreen image
+$LockScreenDestinationFile = "$ImageDestinationFolder\lockScreen.png" # Change to your fitting - this is the Lockscreen image
 
 # Creates the destination folder on the target computer
 mkdir $ImageDestinationFolder -erroraction silentlycontinue
