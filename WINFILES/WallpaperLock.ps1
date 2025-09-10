@@ -3,7 +3,7 @@
 # Current script is edited to put the same image on LockScreen and Wallpaper
 
 $WallpaperURL = "https://getwallpapers.com/wallpaper/full/c/2/c/1363723-vertical-colorful-desktop-backgrounds-2560x1600-for-pc.jpg" # Change to your fitting
-$LockscreenUrl = "bloburl from azure" # Change to your fitting
+$LockscreenUrl = "https://getwallpapers.com/wallpaper/full/c/2/c/1363723-vertical-colorful-desktop-backgrounds-2560x1600-for-pc.jpg" # Change to your fitting
 
 $ImageDestinationFolder = "c:\temp" # Change to your fitting - this is the folder for the wallpaper image
 $WallpaperDestinationFile = "$ImageDestinationFolder\wallpaper.png" # Change to your fitting - this is the Wallpaper image
