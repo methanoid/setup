@@ -15,7 +15,7 @@ wuauclt /detectnow
 wuauclt /updatenow
 
 echo Changing custom Wallpaper and Lockscreen
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/WallpaperLock.PS1 -OutFile C:\Users\Administrator\Desktop\WallpaperLock.PS1"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 -OutFile C:\Users\Administrator\Desktop\WallpaperLock.PS1"
 powershell -file "C:\Users\Administrator\Desktop\WallpaperLock.PS1"
 del /s C:\Users\Administrator\Desktop\WallpaperLock.PS1
 
