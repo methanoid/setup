@@ -57,7 +57,6 @@ echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 
 echo Remove grpconv entry
-reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /f >nul
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "grpconv" /f nul
 
 :: ==INSTALLS========================================================================================================================
