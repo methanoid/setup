@@ -212,9 +212,8 @@ title Installing Samsung Printer Driver
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\SPTR.exe"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\SPTR.7z.001"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\SPTR.7z.002"
-C:\SPTR.exe -oC:\ -y
-C:\PTR.exe /s
-del /s "C:\*PTR*.*" >nul 2>&1
+C:\SPTR.exe -oC:\ -y & del /s c:\SPTR*.*
+C:\PTR.exe /s & del /s c:\PTR.exe
 
 title Putting DriverBooster on Desktop
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
