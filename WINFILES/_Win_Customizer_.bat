@@ -587,7 +587,17 @@ shutup10
 echo All Done!
 
 
+
+
+::  LANGUAGE PACKS/SETTINGS/LOCALE CHANGES
+
+
+
+
+
 :: ==REBOOT==========================================================================================================================
 
 echo "Rebooting now - enjoy!"
-shutdown -r -t 30
+shutdown -r -t 60
+
+
