@@ -213,10 +213,10 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 C:\Users\Administrator\Desktop\DB.exe -Y
 del C:\Users\Administrator\Desktop\DB.exe
 
-title Remove Edge Cleanly
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
-powershell -file "C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
-del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
+REM title Remove Edge Cleanly
+REM powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
+REM powershell -file "C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
+REM del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
 echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
