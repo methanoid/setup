@@ -80,14 +80,8 @@ del /s "c:\Users\Public\Desktop\UniGetUI.lnk"
 :: Windows10/11 Differences
 
 for /f "tokens=3 delims=." %%i in ('ver') do set build=%%i
-if %build% geq 22000 {
+if %build% geq 22000 (
   echo Detected Windows 11
-} else {
-  echo Detected Windows 10
-}
-
-goto skip
-
   title Installing ExplorerPatcher
   winget install -e -h --id valinet.ExplorerPatcher
   powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ExplorerPatcher.reg -OutFile C:\ExplorerPatcher.reg"
@@ -95,11 +89,10 @@ goto skip
   del /s c:\ExplorerPatcher.reg >nul 2>&1
   taskkill /im explorer.exe /f & start explorer.exe
   label c: Win11
-
+) else (
   echo Detected Windows 10
   label c: Win10
-
-:skip
+)
 
 title Uninstall CPU-Z
 "c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
