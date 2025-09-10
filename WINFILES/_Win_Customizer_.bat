@@ -79,12 +79,11 @@ if %build% geq 22000 {
   reg import c:\ExplorerPatcher.reg
   del /s c:\ExplorerPatcher.reg >nul 2>&1
   taskkill /im explorer.exe /f & start explorer.exe
-  label c: Win11
-
-) else (
+  label c: Win11 }
+ else {
   echo Detected Windows 10
   label c: Win10
-)
+}
 
 title Installing Brave
 winget install -e -h --id Brave.Brave
