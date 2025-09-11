@@ -90,11 +90,7 @@ if %build% geq 22000 (
   label c: Win11
 ) else (
   echo Detected Windows 10
-
-
-::  LANGUAGE PACKS/SETTINGS/LOCALE CHANGES
-
-
+  powershell -command "Add-AppxPackage -Path LanguageExperiencePack.en-gb.Neutral.appx -LicensePath License.xml"
   label c: Win10
 )
 
