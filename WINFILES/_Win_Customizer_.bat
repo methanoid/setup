@@ -102,6 +102,8 @@ winget install -e -h --id Brave.Brave
 del /s "c:\Users\Administrator\Desktop\Brave.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f >nul 2>&1
 for /f %%x in ('schtasks /query ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
+sc config "Brave" start=disabled >nul 2>&1
+sc config "BraveM" start=disabled >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
 del /s c:\pttb.exe >nul 2>&1
