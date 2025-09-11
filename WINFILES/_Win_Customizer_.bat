@@ -15,59 +15,58 @@ wuauclt /detectnow
 wuauclt /updatenow
 
 echo Changing custom Wallpaper and Lockscreen
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 -OutFile C:\Users\Administrator\Desktop\WallpaperLock.PS1"
-powershell -executionpolicy bypass -file "C:\Users\Administrator\Desktop\WallpaperLock.PS1"
-del /s C:\Users\Administrator\Desktop\WallpaperLock.PS1
+powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
 
 echo Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force;"
-taskkill /im explorer.exe /f & start explorer.exe & rd /s /q "c:\Perflogs" >nul 2>&1
+taskkill /im explorer.exe /f >nul 2>&1
+start explorer.exe >nul 2>&1
+rd /s /q "c:\Perflogs" >nul 2>&1
 
 echo Set Sharing for unRAID
-netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul
-netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul
-reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul
-reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters /v EnableSecuritySignature /t REG_DWORD /d "0" /f >nul
+netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul 2>&1
+netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul 2>&1
+reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul 2>&1
+reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters /v EnableSecuritySignature /t REG_DWORD /d "0" /f >nul 2>&1
 
 echo Remove Gallery from Explorer
-reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} /f /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0x00000000
+reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} /f /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0x00000000 >nul 2>&1
 
 echo Remove Home from Explorer and Pin to QuickAccess
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}" /f >nul
-reg delete "HKCR\AllFilesystemObjects\shell\pintohome" /f & reg delete "HKCR\Drive\shell\pintohome" /f & reg delete "HKCR\Folder\shell\pintohome" /f & reg delete "HKCR\Network\shell\pintohome" /f
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\{f874310e-b6b7-47dc-bc84-b9e6b38f5903}" /f >nul 2>&1
+reg delete "HKCR\AllFilesystemObjects\shell\pintohome" /f >nul 2>&1
+reg delete "HKCR\Drive\shell\pintohome" /f >nul 2>&1
+reg delete "HKCR\Folder\shell\pintohome" /f >nul 2>&1
+reg delete "HKCR\Network\shell\pintohome" /f >nul 2>&1
 
 echo Stop Explorer from showing external drives twice
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
-reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul 2>&1
+reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul 2>&1
 
 echo Hide Recommended Section on Start Menu (which is soon to be hidden anyway!)
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
 
 echo Make sure Defender icon IS in tray
-reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /f >nul
+reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /f >nul 2>&1
 
 echo Remove Realtek Control Panel (will error if not present)
-reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v "RTHDVCPL" /f >nul
+reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v "RTHDVCPL" /f >nul 2>&1
 
 echo Disable Taskbar Transparency (needed for NV 7 Series)
-reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v "EnableTransparency" /t REG_DWORD /d "0" /f >nul
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v "EnableTransparency" /t REG_DWORD /d "0" /f >nul 2>&1
 
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 
 echo Remove grpconv entry
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "grpconv" /f nul
+reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "grpconv" /f >nul 2>&1
 
 :: ==INSTALLS========================================================================================================================
 
 @echo off
 cls
 title Installs
-
-:check
-ping www.google.com -n 1 -w 1000>nul && cls
-if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
 title Installing Winget
 REM Use wsreset -i and then install unigetui from msstore as an ALT
@@ -105,11 +104,11 @@ title Uninstall CPU-Z
 title Installing Brave
 winget install -e -h --id Brave.Brave
 del /s "c:\Users\Administrator\Desktop\Brave.lnk" >nul 2>&1
-reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f
-for /f %%x in ('schtasks /query ^| findstr Brave') do schtasks /Delete /TN %%x /F
+reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f >nul 2>&1
+for /f %%x in ('schtasks /query ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
-c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe
-del c:\pttb.exe
+c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
+del /s c:\pttb.exe >nul 2>&1
 
 title Installing 7Zip
 winget install -e -h --id 7zip.7zip
@@ -122,7 +121,7 @@ winget install -e -h --id Microsoft.VCRedist.2015+.x64
 
 title Installing OnlyOffice
 winget install -e -h --id ONLYOFFICE.DesktopEditors
-del /s "c:\Users\Public\Desktop\ONLYOFFICE.lnk"
+del /s "c:\Users\Public\Desktop\ONLYOFFICE.lnk" >nul 2>&1
 
 title Installing Putty
 winget install -e -h --id PuTTY.PuTTY
@@ -134,18 +133,20 @@ del /s "c:\Users\Administrator\Desktop\SumatraPDF.lnk" >nul 2>&1
 
 title Installing ImgBurn
 winget install -e -h --id LIGHTNINGUK.ImgBurn
-del /s "c:\Users\Administrator\Desktop\ImgBurn.lnk" & del /s "c:\Users\Public\Desktop\ImgBurn.lnk" & cls
+del /s "c:\Users\Administrator\Desktop\ImgBurn.lnk" & del /s "c:\Users\Public\Desktop\ImgBurn.lnk" >nul 2>&1
 
 title Installing KLite Codecs
 winget install -e -h --id CodecGuide.K-LiteCodecPack.Standard
-del /s "c:\Users\Administrator\Desktop\MPC-HC x64.lnk" & del /s "c:\Users\Public\Desktop\mpc-be.lnk" & schtasks /delete /tn klcp_update /f & cls
+del /s "c:\Users\Administrator\Desktop\MPC-HC x64.lnk" >nul 2>&1
+del /s "c:\Users\Public\Desktop\mpc-be.lnk" >nul 2>&1
+schtasks /delete /tn klcp_update /f >nul 2>&1
 
 title Installing Minecraft Launcher
 winget install -e -h --id PrismLauncher.PrismLauncher
 
 title Installing LockHunter
 winget install -e -h --id CrystalRich.LockHunter
-taskkill /F /IM brave.exe /T
+REM taskkill /F /IM brave.exe /T   FOR SOME BROWSER
 
 title Installing Hashtab
 winget install -e -h --id namazso.OpenHashTab
@@ -153,49 +154,49 @@ winget install -e -h --id namazso.OpenHashTab
 title Installing Privado VPN
 winget install -e -h --id PrivadoNetworksAG.PrivadoVPN
 del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
-reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul      
-reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f
+reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul 2>&1      
+reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f >nul 2>&1
 
 title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
-del /s "c:\Users\Administrator\Desktop\BleachBit.lnk"
+del /s "c:\Users\Administrator\Desktop\BleachBit.lnk" >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\bleachbit.ini"
-mkdir "C:\Users\Administrator\AppData\Local\BleachBit\cleaners"
+mkdir "C:\Users\Administrator\AppData\Local\BleachBit\cleaners" >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\cleaners\winapp2.ini"
 
 title Installing CCleaner
 winget install -e -h --id Piriform.CCleaner
-del /s "c:\Users\Public\Desktop\CCleaner.lnk"
+del /s "c:\Users\Public\Desktop\CCleaner.lnk" >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ccleaner.ini -OutFile 'C:\Program Files\CCleaner\ccleaner.ini'"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile 'C:\Program Files\CCleaner\winapp2.ini'"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCEnhancer.exe -OutFile 'C:\Program Files\CCleaner\CCEnhancer.exe'"
-reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul 2>&1
 for /f %%x in ('schtasks /query ^| findstr CCleaner') do schtasks /Delete /TN %%x /F
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/config.ini -OutFile 'C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini'"
-del /s "c:\Users\Public\Desktop\Wise Disk Cleaner.lnk"
+del /s "c:\Users\Public\Desktop\Wise Disk Cleaner.lnk" >nul 2>&1
 
 title Installing Wise Force Deleter
 winget install -e -h --id WiseCleaner.WiseForceDeleter
-del /s "c:\Users\Public\Desktop\Wise Force Deleter.lnk"
+del /s "c:\Users\Public\Desktop\Wise Force Deleter.lnk" >nul 2>&1
 
 title Installing Wise Registry Cleaner
 winget install -e -h --id WiseCleaner.WiseRegistryCleaner
-del /s "c:\Users\Public\Desktop\Wise Registry Cleaner.lnk"
+del /s "c:\Users\Public\Desktop\Wise Registry Cleaner.lnk" >nul 2>&1
 
 title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
 
 title Installing Plasma Screensaver
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PSS.exe -OutFile C:\Users\Administrator\Desktop\PSS.exe"
-C:\Users\Administrator\Desktop\PSS.exe /S
-del C:\Users\Administrator\Desktop\PSS.exe >nul 2>&1
-reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\system32\plasma.scr" /f >nul
-reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul
-reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul
-reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /f >nul
+C:\Users\Administrator\Desktop\PSS.exe /S  
+del /s C:\Users\Administrator\Desktop\PSS.exe >nul 2>&1
+reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\system32\plasma.scr" /f >nul 2>&1
+reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul 2>&1
+reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul 2>&1
+reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /f >nul 2>&1
 
 title Installing MKVtoolnix
 winget install -e -h --id MoritzBunkus.MKVToolNix
@@ -203,7 +204,7 @@ winget install -e -h --id MoritzBunkus.MKVToolNix
 title Installing CBX Shell
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CBX.exe -OutFile C:\Users\Administrator\Desktop\CBX.exe"
 C:\Users\Administrator\Desktop\CBX.exe /SP /VERYSILENT
-del C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
+del /s C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
 
 title Installing VideoReDo
 REM VideoReDo.TVSuite.6.63.7.836
@@ -213,7 +214,7 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRD_Split.7z.003 -OutFile C:\VRD_Split.7z.003"
 C:\VRD_Split.exe -oC:\ -y
 "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" /s
-del /s "c:\Users\Public\Desktop\VideoReDo TVSuite V6.lnk"
+del /s "c:\Users\Public\Desktop\VideoReDo TVSuite V6.lnk" >nul 2>&1
 del /s "C:\VRD*.*" >nul 2>&1
 del /s "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
 
@@ -222,31 +223,25 @@ title ERROR HERE ERROR HERE ERROR HERE!!!!!!!
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\SPTR.exe"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\SPTR.7z.001"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\SPTR.7z.002"
-C:\SPTR.exe -oC:\ -y & del /s c:\SPTR*.*
-C:\PTR.exe /s & del /s c:\PTR.exe
+C:\SPTR.exe -oC:\ -y & del /s c:\SPTR*.* >nul 2>&1
+C:\PTR.exe /s & del /s c:\PTR.exe >nul 2>&1
 
 title Putting DriverBooster on Desktop
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
 C:\Users\Administrator\Desktop\DB.exe -Y
-del C:\Users\Administrator\Desktop\DB.exe
+del C:\Users\Administrator\Desktop\DB.exe >nul 2>&1
 
 REM title Remove Edge Cleanly
 REM powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
 REM powershell -file "C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
 REM del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
-echo Displaying remaining installed AppX
-powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
+REM echo Displaying remaining installed AppX
+REM powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 :: ==CLEANUPS========================================================================================================================
 
 @echo off
 cls
-title Windows Cleanups - Be patient
-
-:check
-ping www.google.com -n 1 -w 1000>nul && cls
-if errorlevel 1 (echo This script needs you to connect to internet & wait 5 & goto check) else (echo Starting)
-
 title Some File Cleaning
 "C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
 "C:\Program Files\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
@@ -256,208 +251,208 @@ title Some File Cleaning
 "C:\Program Files (x86)\Wise\Wise Disk Cleaner\WiseDiskCleaner.exe"
 
 :: Services lifted from CTT
-sc config "AudioSrv" start=automatic
-sc config "Audiosrv" start=automatic
-sc config "BFE" start=automatic
-sc config "BrokerInfrastructure" start=automatic
-sc config "BthHFSrv" start=automatic
-sc config "CDPUserSvc_*" start=automatic
-sc config "CoreMessagingRegistrar" start=automatic
-sc config "CryptSvc" start=automatic
-sc config "DcomLaunch" start=automatic
-sc config "Dhcp" start=automatic
-sc config "DispBrokerDesktopSvc" start=automatic
-sc config "Dnscache" start=automatic
-sc config "DPS" start=automatic
-sc config "DusmSvc" start=automatic
-sc config "EventLog" start=automatic
-sc config "EventSystem" start=automatic
-sc config "FontCache" start=automatic
-sc config "gpsvc" start=automatic
-sc config "iphlpsvc" start=automatic
-sc config "LanmanServer" start=automatic
-sc config "LanmanWorkstation" start=automatic
-sc config "LSM" start=automatic
-sc config "MpsSvc" start=automatic
-sc config "mpssvc" start=automatic
-sc config "nsi" start=automatic
-sc config "OneSyncSvc_*" start=automatic
-sc config "Power" start=automatic
-sc config "ProfSvc" start=automatic
-sc config "RpcEptMapper" start=automatic
-sc config "RpcSs" start=automatic
-sc config "SamSs" start=automatic
-sc config "Schedule" start=automatic
-sc config "SENS" start=automatic
-sc config "SgrmBroker" start=automatic
-sc config "ShellHWDetection" start=automatic
-sc config "Spooler" start=automatic
-sc config "SysMain" start=automatic
-sc config "SystemEventsBroker" start=automatic
-sc config "Themes" start=automatic
-sc config "tiledatamodelsvc" start=automatic
-sc config "TrkWks" start=automatic
-sc config "UserManager" start=automatic
-sc config "VGAuthService" start=automatic
-sc config "VMTools" start=automatic
-sc config "Wcmsvc" start=automatic
-sc config "webthreatdefUsersvc_*" start=automatic
-sc config "WinDefend" start=automatic
-sc config "Winmgmt" start=automatic
-sc config "WpnUserService_*" start=automatic
-sc config "DoSvc" start=delayed-auto
-sc config "MapsBroker" start=delayed-auto
-sc config "sppsvc" start=delayed-auto
-sc config "wscsvc" start=delayed-auto
-sc config "WSearch" start=delayed-auto
-sc config "ALG" start=demand
-sc config "AppIDSvc" start=demand
-sc config "Appinfo" start=demand
-sc config "AppMgmt" start=demand
-sc config "AppReadiness" start=demand
-sc config "AppXSvc" start=demand
-sc config "autotimesvc" start=demand
-sc config "AxInstSV" start=demand
-sc config "BcastDVRUserService_*" start=demand
-sc config "BDESVC" start=demand
-sc config "BluetoothUserService_*" start=demand
-sc config "Browser" start=demand
-sc config "BTAGService" start=demand
-sc config "bthserv" start=demand
-sc config "camsvc" start=demand
-sc config "CaptureService_*" start=demand
-sc config "CDPSvc" start=demand
-sc config "CertPropSvc" start=demand
-sc config "ClipSVC" start=demand
-sc config "cloudidsvc" start=demand
-sc config "COMSysApp" start=demand
-sc config "ConsentUxUserSvc_*" start=demand
-sc config "CredentialEnrollmentManagerUserSvc_*" start=demand
-sc config "CscService" start=demand
-sc config "DcpSvc" start=demand
-sc config "dcsvc" start=demand
-sc config "defragsvc" start=demand
-sc config "DeviceAssociationBrokerSvc_*" start=demand
-sc config "DeviceInstall" start=demand
-sc config "DevicePickerUserSvc_*" start=demand
-sc config "DevicesFlowUserSvc_*" start=demand
-sc config "DevQueryBroker" start=demand
-sc config "diagnosticshub.standardcollector.service" start=demand
-sc config "diagsvc" start=demand
-sc config "DisplayEnhancementService" start=demand
-sc config "DmEnrollmentSvc" start=demand
-sc config "dmwappushservice" start=demand
-sc config "dot3svc" start=demand
-sc config "DsmSvc" start=demand
-sc config "DsSvc" start=demand
-sc config "EapHost" start=demand
-sc config "edgeupdate" start=demand
-sc config "edgeupdatem" start=demand
-sc config "EFS" start=demand
-sc config "embeddedmode" start=demand
-sc config "EntAppSvc" start=demand
-sc config "Fax" start=demand
-sc config "fdPHost" start=demand
-sc config "FDResPub" start=demand
-sc config "fhsvc" start=demand
-sc config "FrameServer" start=demand
-sc config "FrameServerMonitor" start=demand
-sc config "GraphicsPerfSvc" start=demand
-sc config "hidserv" start=demand
-sc config "HomeGroupListener" start=demand
-sc config "HomeGroupProvider" start=demand
-sc config "HvHost" start=demand
-sc config "icssvc" start=demand
-sc config "IEEtwCollectorService" start=demand
-sc config "InstallService" start=demand
-sc config "InventorySvc" start=demand
-sc config "IpxlatCfgSvc" start=demand
-sc config "KtmRm" start=demand
-sc config "lfsvc" start=demand
-sc config "LicenseManager" start=demand
-sc config "lltdsvc" start=demand
-sc config "lmhosts" start=demand
-sc config "LxpSvc" start=demand
-sc config "McpManagementService" start=demand
-sc config "MessagingService_*" start=demand
-sc config "MicrosoftEdgeElevationService" start=demand
-sc config "MixedRealityOpenXRSvc" start=demand
-sc config "MSDTC" start=demand
-sc config "MSiSCSI" start=demand
-sc config "msiserver" start=demand
-sc config "MsKeyboardFilter" start=demand
-sc config "NaturalAuthentication" start=demand
-sc config "NcaSvc" start=demand
-sc config "NcbService" start=demand
-sc config "NcdAutoSetup" start=demand
-sc config "Netman" start=demand
-sc config "netprofm" start=demand
-sc config "NetSetupSvc" start=demand
-sc config "NgcCtnrSvc" start=demand
-sc config "NgcSvc" start=demand
-sc config "NPSMSvc_*" start=demand
-sc config "p2pimsvc" start=demand
-sc config "p2psvc" start=demand
-sc config "P9RdrService_*" start=demand
-sc config "PeerDistSvc" start=demand
-sc config "PenService_*" start=demand
-sc config "perceptionsimulation" start=demand
-sc config "PerfHost" start=demand
-sc config "PhoneSvc" start=demand
-sc config "PimIndexMaintenanceSvc_*" start=demand
-sc config "pla" start=demand
-sc config "PlugPlay" start=demand
-sc config "PNRPAutoReg" start=demand
-sc config "PNRPsvc" start=demand
-sc config "PolicyAgent" start=demand
-sc config "PrintNotify" start=demand
-sc config "PrintWorkflowUserSvc_*" start=demand
-sc config "PushToInstall" start=demand
-sc config "QWAVE" start=demand
-sc config "RasAuto" start=demand
-sc config "RetailDemo" start=demand
-sc config "RmSvc" start=demand
-sc config "RpcLocator" start=demand
-sc config "SCardSvr" start=demand
-sc config "ScDeviceEnum" start=demand
-sc config "SCPolicySvc" start=demand
-sc config "SDRSVC" start=demand
-sc config "seclogon" start=demand
-sc config "SecurityHealthService" start=demand
-sc config "SEMgrSvc" start=demand
-sc config "Sense" start=demand
-sc config "SensorDataService" start=demand
-sc config "SensorService" start=demand
-sc config "SensrSvc" start=demand
-sc config "SessionEnv" start=demand
-sc config "SharedAccess" start=demand
-sc config "SharedRealitySvc" start=demand
-sc config "smphost" start=demand
-sc config "SmsRouter" start=demand
-sc config "SNMPTRAP" start=demand
-sc config "SNMPTrap" start=demand
-sc config "spectrum" start=demand
-sc config "SSDPSRV" start=demand
-sc config "StiSvc" start=demand
-sc config "StorSvc" start=demand
-sc config "svsvc" start=demand
-sc config "swprv" start=demand
-sc config "TabletInputService" start=demand
-sc config "TapiSrv" start=demand
-sc config "TextInputManagementService" start=demand
-sc config "TieringEngineService" start=demand
-sc config "TimeBroker" start=demand
-sc config "TimeBrokerSvc" start=demand
-sc config "TokenBroker" start=demand
-sc config "TroubleshootingSvc" start=demand
-sc config "TrustedInstaller" start=demand
-sc config "UdkUserSvc_*" start=demand
-sc config "UI0Detect" start=demand
-sc config "UmRdpService" start=demand
-sc config "UnistoreSvc_*" start=demand
-sc config "upnphost" start=demand
-sc config "UserDataSvc_*" start=demand
-sc config "UsoSvc" start=demand
+sc config "AudioSrv" start=automatic >nul 2>&1
+sc config "Audiosrv" start=automatic >nul 2>&1
+sc config "BFE" start=automatic >nul 2>&1
+sc config "BrokerInfrastructure" start=automatic >nul 2>&1
+sc config "BthHFSrv" start=automatic >nul 2>&1
+sc config "CDPUserSvc_*" start=automatic >nul 2>&1
+sc config "CoreMessagingRegistrar" start=automatic >nul 2>&1
+sc config "CryptSvc" start=automatic >nul 2>&1
+sc config "DcomLaunch" start=automatic >nul 2>&1
+sc config "Dhcp" start=automatic >nul 2>&1
+sc config "DispBrokerDesktopSvc" start=automatic >nul 2>&1
+sc config "Dnscache" start=automatic >nul 2>&1
+sc config "DPS" start=automatic >nul 2>&1
+sc config "DusmSvc" start=automatic >nul 2>&1
+sc config "EventLog" start=automatic >nul 2>&1
+sc config "EventSystem" start=automatic >nul 2>&1
+sc config "FontCache" start=automatic >nul 2>&1
+sc config "gpsvc" start=automatic >nul 2>&1
+sc config "iphlpsvc" start=automatic >nul 2>&1
+sc config "LanmanServer" start=automatic >nul 2>&1
+sc config "LanmanWorkstation" start=automatic >nul 2>&1
+sc config "LSM" start=automatic >nul 2>&1
+sc config "MpsSvc" start=automatic >nul 2>&1
+sc config "mpssvc" start=automatic >nul 2>&1
+sc config "nsi" start=automatic >nul 2>&1
+sc config "OneSyncSvc_*" start=automatic >nul 2>&1
+sc config "Power" start=automatic >nul 2>&1
+sc config "ProfSvc" start=automatic >nul 2>&1
+sc config "RpcEptMapper" start=automatic >nul 2>&1
+sc config "RpcSs" start=automatic >nul 2>&1
+sc config "SamSs" start=automatic >nul 2>&1
+sc config "Schedule" start=automatic >nul 2>&1
+sc config "SENS" start=automatic >nul 2>&1
+sc config "SgrmBroker" start=automatic >nul 2>&1
+sc config "ShellHWDetection" start=automatic >nul 2>&1
+sc config "Spooler" start=automatic >nul 2>&1
+sc config "SysMain" start=automatic >nul 2>&1
+sc config "SystemEventsBroker" start=automatic >nul 2>&1
+sc config "Themes" start=automatic >nul 2>&1
+sc config "tiledatamodelsvc" start=automatic >nul 2>&1
+sc config "TrkWks" start=automatic >nul 2>&1
+sc config "UserManager" start=automatic >nul 2>&1
+sc config "VGAuthService" start=automatic >nul 2>&1
+sc config "VMTools" start=automatic >nul 2>&1
+sc config "Wcmsvc" start=automatic >nul 2>&1
+sc config "webthreatdefUsersvc_*" start=automatic >nul 2>&1
+sc config "WinDefend" start=automatic >nul 2>&1
+sc config "Winmgmt" start=automatic >nul 2>&1
+sc config "WpnUserService_*" start=automatic >nul 2>&1
+sc config "DoSvc" start=delayed-auto >nul 2>&1
+sc config "MapsBroker" start=delayed-auto >nul 2>&1
+sc config "sppsvc" start=delayed-auto >nul 2>&1
+sc config "wscsvc" start=delayed-auto >nul 2>&1
+sc config "WSearch" start=delayed-auto >nul 2>&1
+sc config "ALG" start=demand >nul 2>&1
+sc config "AppIDSvc" start=demand >nul 2>&1
+sc config "Appinfo" start=demand >nul 2>&1
+sc config "AppMgmt" start=demand >nul 2>&1
+sc config "AppReadiness" start=demand >nul 2>&1
+sc config "AppXSvc" start=demand >nul 2>&1
+sc config "autotimesvc" start=demand >nul 2>&1
+sc config "AxInstSV" start=demand >nul 2>&1
+sc config "BcastDVRUserService_*" start=demand >nul 2>&1
+sc config "BDESVC" start=demand >nul 2>&1
+sc config "BluetoothUserService_*" start=demand >nul 2>&1
+sc config "Browser" start=demand >nul 2>&1
+sc config "BTAGService" start=demand >nul 2>&1
+sc config "bthserv" start=demand >nul 2>&1
+sc config "camsvc" start=demand >nul 2>&1
+sc config "CaptureService_*" start=demand >nul 2>&1
+sc config "CDPSvc" start=demand >nul 2>&1
+sc config "CertPropSvc" start=demand >nul 2>&1
+sc config "ClipSVC" start=demand >nul 2>&1
+sc config "cloudidsvc" start=demand >nul 2>&1
+sc config "COMSysApp" start=demand >nul 2>&1
+sc config "ConsentUxUserSvc_*" start=demand >nul 2>&1
+sc config "CredentialEnrollmentManagerUserSvc_*" start=demand >nul 2>&1
+sc config "CscService" start=demand >nul 2>&1
+sc config "DcpSvc" start=demand >nul 2>&1
+sc config "dcsvc" start=demand >nul 2>&1
+sc config "defragsvc" start=demand >nul 2>&1
+sc config "DeviceAssociationBrokerSvc_*" start=demand >nul 2>&1
+sc config "DeviceInstall" start=demand >nul 2>&1
+sc config "DevicePickerUserSvc_*" start=demand >nul 2>&1
+sc config "DevicesFlowUserSvc_*" start=demand >nul 2>&1
+sc config "DevQueryBroker" start=demand >nul 2>&1
+sc config "diagnosticshub.standardcollector.service" start=demand >nul 2>&1
+sc config "diagsvc" start=demand >nul 2>&1
+sc config "DisplayEnhancementService" start=demand >nul 2>&1
+sc config "DmEnrollmentSvc" start=demand >nul 2>&1
+sc config "dmwappushservice" start=demand >nul 2>&1
+sc config "dot3svc" start=demand >nul 2>&1
+sc config "DsmSvc" start=demand >nul 2>&1
+sc config "DsSvc" start=demand >nul 2>&1
+sc config "EapHost" start=demand >nul 2>&1
+sc config "edgeupdate" start=demand >nul 2>&1
+sc config "edgeupdatem" start=demand >nul 2>&1
+sc config "EFS" start=demand >nul 2>&1
+sc config "embeddedmode" start=demand >nul 2>&1
+sc config "EntAppSvc" start=demand >nul 2>&1
+sc config "Fax" start=demand >nul 2>&1
+sc config "fdPHost" start=demand >nul 2>&1
+sc config "FDResPub" start=demand >nul 2>&1
+sc config "fhsvc" start=demand >nul 2>&1
+sc config "FrameServer" start=demand >nul 2>&1
+sc config "FrameServerMonitor" start=demand >nul 2>&1
+sc config "GraphicsPerfSvc" start=demand >nul 2>&1
+sc config "hidserv" start=demand >nul 2>&1
+sc config "HomeGroupListener" start=demand >nul 2>&1
+sc config "HomeGroupProvider" start=demand >nul 2>&1
+sc config "HvHost" start=demand >nul 2>&1
+sc config "icssvc" start=demand >nul 2>&1
+sc config "IEEtwCollectorService" start=demand >nul 2>&1
+sc config "InstallService" start=demand >nul 2>&1
+sc config "InventorySvc" start=demand >nul 2>&1
+sc config "IpxlatCfgSvc" start=demand >nul 2>&1
+sc config "KtmRm" start=demand >nul 2>&1
+sc config "lfsvc" start=demand >nul 2>&1
+sc config "LicenseManager" start=demand >nul 2>&1
+sc config "lltdsvc" start=demand >nul 2>&1
+sc config "lmhosts" start=demand >nul 2>&1
+sc config "LxpSvc" start=demand >nul 2>&1
+sc config "McpManagementService" start=demand >nul 2>&1
+sc config "MessagingService_*" start=demand >nul 2>&1
+sc config "MicrosoftEdgeElevationService" start=demand >nul 2>&1
+sc config "MixedRealityOpenXRSvc" start=demand >nul 2>&1
+sc config "MSDTC" start=demand >nul 2>&1
+sc config "MSiSCSI" start=demand >nul 2>&1
+sc config "msiserver" start=demand >nul 2>&1
+sc config "MsKeyboardFilter" start=demand >nul 2>&1
+sc config "NaturalAuthentication" start=demand >nul 2>&1
+sc config "NcaSvc" start=demand >nul 2>&1
+sc config "NcbService" start=demand >nul 2>&1
+sc config "NcdAutoSetup" start=demand >nul 2>&1
+sc config "Netman" start=demand >nul 2>&1
+sc config "netprofm" start=demand >nul 2>&1
+sc config "NetSetupSvc" start=demand >nul 2>&1
+sc config "NgcCtnrSvc" start=demand >nul 2>&1
+sc config "NgcSvc" start=demand >nul 2>&1
+sc config "NPSMSvc_*" start=demand >nul 2>&1
+sc config "p2pimsvc" start=demand >nul 2>&1
+sc config "p2psvc" start=demand >nul 2>&1
+sc config "P9RdrService_*" start=demand >nul 2>&1
+sc config "PeerDistSvc" start=demand >nul 2>&1
+sc config "PenService_*" start=demand >nul 2>&1
+sc config "perceptionsimulation" start=demand >nul 2>&1
+sc config "PerfHost" start=demand >nul 2>&1
+sc config "PhoneSvc" start=demand >nul 2>&1
+sc config "PimIndexMaintenanceSvc_*" start=demand >nul 2>&1
+sc config "pla" start=demand >nul 2>&1
+sc config "PlugPlay" start=demand >nul 2>&1
+sc config "PNRPAutoReg" start=demand >nul 2>&1
+sc config "PNRPsvc" start=demand >nul 2>&1
+sc config "PolicyAgent" start=demand >nul 2>&1
+sc config "PrintNotify" start=demand >nul 2>&1
+sc config "PrintWorkflowUserSvc_*" start=demand >nul 2>&1
+sc config "PushToInstall" start=demand >nul 2>&1
+sc config "QWAVE" start=demand >nul 2>&1
+sc config "RasAuto" start=demand >nul 2>&1
+sc config "RetailDemo" start=demand >nul 2>&1
+sc config "RmSvc" start=demand >nul 2>&1
+sc config "RpcLocator" start=demand >nul 2>&1
+sc config "SCardSvr" start=demand >nul 2>&1
+sc config "ScDeviceEnum" start=demand >nul 2>&1
+sc config "SCPolicySvc" start=demand >nul 2>&1
+sc config "SDRSVC" start=demand >nul 2>&1
+sc config "seclogon" start=demand >nul 2>&1
+sc config "SecurityHealthService" start=demand >nul 2>&1
+sc config "SEMgrSvc" start=demand >nul 2>&1
+sc config "Sense" start=demand >nul 2>&1
+sc config "SensorDataService" start=demand >nul 2>&1
+sc config "SensorService" start=demand >nul 2>&1
+sc config "SensrSvc" start=demand >nul 2>&1
+sc config "SessionEnv" start=demand >nul 2>&1
+sc config "SharedAccess" start=demand >nul 2>&1
+sc config "SharedRealitySvc" start=demand >nul 2>&1
+sc config "smphost" start=demand >nul 2>&1
+sc config "SmsRouter" start=demand >nul 2>&1
+sc config "SNMPTRAP" start=demand >nul 2>&1
+sc config "SNMPTrap" start=demand >nul 2>&1
+sc config "spectrum" start=demand >nul 2>&1
+sc config "SSDPSRV" start=demand >nul 2>&1
+sc config "StiSvc" start=demand >nul 2>&1
+sc config "StorSvc" start=demand >nul 2>&1
+sc config "svsvc" start=demand >nul 2>&1
+sc config "swprv" start=demand >nul 2>&1
+sc config "TabletInputService" start=demand >nul 2>&1
+sc config "TapiSrv" start=demand >nul 2>&1
+sc config "TextInputManagementService" start=demand >nul 2>&1
+sc config "TieringEngineService" start=demand >nul 2>&1
+sc config "TimeBroker" start=demand >nul 2>&1
+sc config "TimeBrokerSvc" start=demand >nul 2>&1
+sc config "TokenBroker" start=demand >nul 2>&1
+sc config "TroubleshootingSvc" start=demand >nul 2>&1
+sc config "TrustedInstaller" start=demand >nul 2>&1
+sc config "UdkUserSvc_*" start=demand >nul 2>&1
+sc config "UI0Detect" start=demand >nul 2>&1
+sc config "UmRdpService" start=demand >nul 2>&1
+sc config "UnistoreSvc_*" start=demand >nul 2>&1
+sc config "upnphost" start=demand >nul 2>&1
+sc config "UserDataSvc_*" start=demand >nul 2>&1
+sc config "UsoSvc" start=demand >nul 2>&1
 sc config "VacSvc" start=demand
 sc config "vds" start=demand
 sc config "vm3dservice" start=demand
