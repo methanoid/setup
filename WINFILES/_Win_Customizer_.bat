@@ -91,6 +91,11 @@ if %build% geq 22000 (
   label c: Win11
 ) else (
   echo Detected Windows 10
+
+
+::  LANGUAGE PACKS/SETTINGS/LOCALE CHANGES
+
+
   label c: Win10
 )
 
@@ -585,15 +590,6 @@ winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GO
 title Silence Any Telemetry
 shutup10
 echo All Done!
-
-
-
-
-::  LANGUAGE PACKS/SETTINGS/LOCALE CHANGES
-
-
-
-
 
 :: ==REBOOT==========================================================================================================================
 
