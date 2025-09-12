@@ -101,7 +101,7 @@ title Installing Brave
 winget install -e -h --id Brave.Brave
 del /s "c:\Users\Administrator\Desktop\Brave.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f >nul 2>&1
-for /f %%x in ('schtasks /query ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
+for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
 sc config "Brave" start=disabled >nul 2>&1
 sc config "BraveM" start=disabled >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
@@ -169,7 +169,7 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile 'C:\Program Files\CCleaner\winapp2.ini'"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCEnhancer.exe -OutFile 'C:\Program Files\CCleaner\CCEnhancer.exe'"
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul 2>&1
-for /f %%x in ('schtasks /query ^| findstr CCleaner') do schtasks /Delete /TN %%x /F
+for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr CCleaner') do schtasks /Delete /TN %%x /f >nul 2>&1 /F
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
