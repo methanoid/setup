@@ -249,7 +249,6 @@ title Some File Cleaning
 "C:\Program Files (x86)\Wise\Wise Disk Cleaner\WiseDiskCleaner.exe"
 
 :: Services lifted from CTT
-sc config "AudioSrv" start=automatic >nul 2>&1
 sc config "Audiosrv" start=automatic >nul 2>&1
 sc config "BFE" start=automatic >nul 2>&1
 sc config "BrokerInfrastructure" start=automatic >nul 2>&1
