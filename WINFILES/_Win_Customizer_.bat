@@ -2,6 +2,16 @@
 
 :: ==TWEAKS===========================================================================================================================
 
+:: $OEM$ inc Customizer & EdgeDie on W10
+:: Missing Network Icon
+:: Search Icon on Taskbar
+:: Uninstall StartIsBack
+:: en-GB for Win10
+:: CCleaner Tasks
+:: Samsunbg Printer Error
+:: Driver Magician ??
+
+
 @echo off
 title Tweaks
 
