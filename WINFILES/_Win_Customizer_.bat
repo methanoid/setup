@@ -10,6 +10,8 @@
 :: CCleaner Tasks
 :: Samsunbg Printer Error
 :: Driver Magician ??
+::   https://www.youtube.com/watch?v=3xsU7J45i5s   for Mac Mini
+::    https://forums.macrumors.com/threads/win7-x64-booting-natively-via-efi-no-bios-emulation.696523/page-10#post-14101770
 
 
 @echo off
