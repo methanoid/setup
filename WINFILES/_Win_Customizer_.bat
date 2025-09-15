@@ -193,10 +193,6 @@ winget install -e -h --id WiseCleaner.WiseDiskCleaner
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/config.ini -OutFile 'C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini'"
 del /s "c:\Users\Public\Desktop\Wise Disk Cleaner.lnk" >nul 2>&1
 
-title Installing Wise Force Deleter
-winget install -e -h --id WiseCleaner.WiseForceDeleter
-del /s "c:\Users\Public\Desktop\Wise Force Deleter.lnk" >nul 2>&1
-
 title Installing Wise Registry Cleaner
 winget install -e -h --id WiseCleaner.WiseRegistryCleaner
 del /s "c:\Users\Public\Desktop\Wise Registry Cleaner.lnk" >nul 2>&1
