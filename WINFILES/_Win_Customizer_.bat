@@ -97,9 +97,11 @@ if %build% geq 22000 (
   label c: Win11
 ) else (
   echo Detected Windows 10
-  C:\Program files(x86)\StartIsBack\StartIsBackCfg.exe /uninstall
+  echo Removing StartIsBack
+  "C:\Program Files (x86)\StartIsBack\StartIsBackCfg.exe" /uninstall /silent
   label c: Win10
   :: en-GB for Win10
+  echo Making en-GB specific
   REM powershell -command "Add-AppxPackage -Path LanguageExperiencePack.en-gb.Neutral.appx -LicensePath License.xml"
   powershell -command "Install-Language en-GB"
   powershell -command "Set-SystemPreferredUILanguage en-GB"
