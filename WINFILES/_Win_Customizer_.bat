@@ -188,6 +188,7 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile 'C:\Program Files\CCleaner\winapp2.ini'"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCEnhancer.exe -OutFile 'C:\Program Files\CCleaner\CCEnhancer.exe'"
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul 2>&1
+schtasks /Delete /TN CCleanerCrashReporting /F
 for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr CCleaner') do schtasks /Delete /TN %%x /f >nul 2>&1 /F
 
 title Installing Wise Disk Cleaner
