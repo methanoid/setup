@@ -1,13 +1,9 @@
-:: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC =============================================================================
+:: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC ========== $OEM$ inc Customizer & EdgeDie on W10 ============================
 
 :: ==TWEAKS===========================================================================================================================
 
-:: $OEM$ inc Customizer & EdgeDie on W10
-
-:: Search Icon on Taskbar
 :: CCleaner Tasks
 :: Samsunbg Printer Error
-:: Driver Magician ??
 
 @echo off
 title Tweaks
@@ -66,6 +62,10 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v 
 echo Add Network Icon to Desktop
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel]" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu]" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
+
+echo Remove Search Icon from Taskbar
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Feeds\DSB]" /v "ShowDynamicContent" /t REG_DWORD /d "0" /f >nul 2>&1
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\SearchSettings]" /v "IsDynamicSearchBoxEnabled" /t REG_DWORD /d "0" /f >nul 2>&1
 
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
