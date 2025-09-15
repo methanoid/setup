@@ -2,8 +2,7 @@
 
 :: ==TWEAKS===========================================================================================================================
 
-:: CCleaner Tasks
-:: Samsunbg Printer Error
+:: Samsung Printer Error
 
 @echo off
 title Tweaks
