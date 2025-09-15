@@ -3,16 +3,11 @@
 :: ==TWEAKS===========================================================================================================================
 
 :: $OEM$ inc Customizer & EdgeDie on W10
-:: Missing Network Icon
+
 :: Search Icon on Taskbar
-:: Uninstall StartIsBack
-:: en-GB for Win10
 :: CCleaner Tasks
 :: Samsunbg Printer Error
 :: Driver Magician ??
-::   https://www.youtube.com/watch?v=3xsU7J45i5s   for Mac Mini
-::    https://forums.macrumors.com/threads/win7-x64-booting-natively-via-efi-no-bios-emulation.696523/page-10#post-14101770
-
 
 @echo off
 title Tweaks
@@ -68,6 +63,10 @@ reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v "
 echo Disable Taskbar Transparency (needed for NV 7 Series)
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize]" /v "EnableTransparency" /t REG_DWORD /d "0" /f >nul 2>&1
 
+echo Add Network Icon to Desktop
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel]" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu]" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
+
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 
@@ -102,8 +101,17 @@ if %build% geq 22000 (
   label c: Win11
 ) else (
   echo Detected Windows 10
-  powershell -command "Add-AppxPackage -Path LanguageExperiencePack.en-gb.Neutral.appx -LicensePath License.xml"
+  C:\Program files(x86)\StartIsBack\StartIsBackCfg.exe /uninstall
   label c: Win10
+  :: en-GB for Win10
+  REM powershell -command "Add-AppxPackage -Path LanguageExperiencePack.en-gb.Neutral.appx -LicensePath License.xml"
+  powershell -command "Install-Language en-GB"
+  powershell -command "Set-SystemPreferredUILanguage en-GB"
+  powershell -command "Set-WinSystemLocale en-GB"
+  powershell -command "Set-WinUserLanguageList en-GB
+  powershell -command "Uninstall-Language en-US"
+  tzutil /s "GMT Standard Time"
+  w32tm /resync /force
 )
 
 title Uninstall CPU-Z
