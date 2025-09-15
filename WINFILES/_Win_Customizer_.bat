@@ -1,9 +1,6 @@
 :: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC ========== $OEM$ inc Customizer & EdgeDie on W10 ============================
 
 :: ==TWEAKS===========================================================================================================================
-
-:: Samsung Printer Error
-
 @echo off
 title Tweaks
 
@@ -237,12 +234,12 @@ del /s "C:\VRD*.*" >nul 2>&1
 del /s "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
 
 title Installing Samsung Printer Driver
-title ERROR HERE ERROR HERE ERROR HERE!!!!!!!
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\SPTR.exe"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\SPTR.7z.001"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\SPTR.7z.002"
-C:\SPTR.exe -oC:\ -y & del /s c:\SPTR*.* >nul 2>&1
-C:\PTR.exe /s & del /s c:\PTR.exe >nul 2>&1
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\UPD.exe"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\UPD.7z.001"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\UPD.7z.002"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\UPD.7z.003"
+C:\UPD.exe -oC:\ -y & del /s c:\UPD*.* >nul 2>&1
+C:\SamsungUPD3.exe /s & del /s c:\SamsungUPD3.exe >nul 2>&1
 
 title Putting DriverBooster on Desktop
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
