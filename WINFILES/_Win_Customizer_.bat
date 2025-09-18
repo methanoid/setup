@@ -1,5 +1,7 @@
 :: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC ========== $OEM$ inc Customizer & EdgeDie on W10 ============================
 
+REM echo: adds a blank line to screen
+
 :: ==TWEAKS===========================================================================================================================
 @echo off
 title Tweaks
@@ -229,6 +231,19 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 C:\Users\Administrator\Desktop\CBX.exe /SP /VERYSILENT
 del /s C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
 
+title Putting DriverBooster on Desktop
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
+C:\Users\Administrator\Desktop\DB.exe -Y
+del C:\Users\Administrator\Desktop\DB.exe >nul 2>&1
+
+title Installing Samsung Printer Driver
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\UPD.exe"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\UPD.7z.001"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\UPD.7z.002"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\UPD.7z.003"
+C:\UPD.exe -oC:\ -y & del /s c:\UPD*.* >nul 2>&1
+C:\SamsungUPD3.exe /s & del /s c:\SamsungUPD3.exe >nul 2>&1
+
 title Installing VideoReDo
 REM VideoReDo.TVSuite.6.63.7.836
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRD_Split.exe -OutFile C:\VRD_Split.exe"
@@ -241,19 +256,6 @@ del /s "c:\Users\Public\Desktop\VideoReDo TVSuite V6.lnk" >nul 2>&1
 del /s "C:\VRD*.*" >nul 2>&1
 del /s "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
 
-title Installing Samsung Printer Driver
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\UPD.exe"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\UPD.7z.001"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\UPD.7z.002"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\UPD.7z.003"
-C:\UPD.exe -oC:\ -y & del /s c:\UPD*.* >nul 2>&1
-C:\SamsungUPD3.exe /s & del /s c:\SamsungUPD3.exe >nul 2>&1
-
-title Putting DriverBooster on Desktop
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
-C:\Users\Administrator\Desktop\DB.exe -Y
-del C:\Users\Administrator\Desktop\DB.exe >nul 2>&1
-
 REM title Remove Edge Cleanly
 REM powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
 REM powershell -file "C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
@@ -265,7 +267,7 @@ REM powershell -command "Get-AppxProvisionedPackage -Online | Format-Table Displ
 
 @echo off
 cls
-title File Cleaning
+title More File Cleaning
 "C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
 REM "C:\Program Files\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner seems not working now?
 
@@ -273,6 +275,7 @@ REM "C:\Program Files\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccl
 "C:\Program Files\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
 "C:\Program Files (x86)\Wise\Wise Disk Cleaner\WiseDiskCleaner.exe"
 
+title Services Tweaks
 :: Services lifted from CTT
 sc config "Audiosrv" start=automatic >nul 2>&1
 sc config "BFE" start=automatic >nul 2>&1
