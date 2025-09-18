@@ -172,7 +172,7 @@ winget install -e -h --id PrismLauncher.PrismLauncher
 
 title Installing LockHunter
 winget install -e -h --id CrystalRich.LockHunter
-taskkill /F /IM iexplore.exe /T   
+taskkill /F /IM iexplore.exe
 
 title Installing Hashtab
 winget install -e -h --id namazso.OpenHashTab
