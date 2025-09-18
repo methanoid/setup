@@ -20,9 +20,11 @@ rmdir /s /q $WINDOWS.~BT >nul 2>&1
 rmdir /s /q $WINDOWS.~LS >nul 2>&1
 
 :: Windows update check and update
-echo Asking Windows Update to start
-wuauclt /detectnow
-wuauclt /updatenow
+echo Windows Updates - script may need restarting
+powershell "Install-Module -Name PSWindowsUpdate -Force"
+powershell "Import-Module PSWindowsUpdate"
+powershell "Get-WindowsUpdate -AcceptAll -Install -AutoReboot"
+powershell "Restart-Computer -Force"
 
 echo Changing custom Wallpaper and Lockscreen
 powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
