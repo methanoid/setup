@@ -18,6 +18,8 @@ rmdir /s /q "c:\users\Administrator\Desktop\Extras" >nul 2>&1
 rmdir /s /q "c:\Nexus_LiteOS_Toolkit" >nul 2>&1
 rmdir /s /q $WINDOWS.~BT >nul 2>&1
 rmdir /s /q $WINDOWS.~LS >nul 2>&1
+title Uninstall CPU-Z GHOST ONLY
+"c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
 
 :: Windows update check and update
 echo Windows Updates - script may need restarting
@@ -91,10 +93,6 @@ title Installing Winget
 REM Use wsreset -i and then install unigetui from msstore as an ALT
 powershell -command "irm https://github.com/asheroto/winget-install/releases/latest/download/winget-install.ps1 | iex"
 
-title Installing UniGetUI
-winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
-del /s "c:\Users\Public\Desktop\UniGetUI.lnk"
-
 :: Windows10/11 Differences
 
 for /f "tokens=3 delims=." %%i in ('ver') do set build=%%i
@@ -124,8 +122,9 @@ if %build% geq 22000 (
   w32tm /resync /force
 )
 
-title Uninstall CPU-Z
-"c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
+title Installing UniGetUI
+winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
+del /s "c:\Users\Public\Desktop\UniGetUI.lnk"
 
 title Installing Brave
 winget install -e -h --id Brave.Brave
