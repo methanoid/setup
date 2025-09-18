@@ -264,9 +264,9 @@ REM powershell -command "Get-AppxProvisionedPackage -Online | Format-Table Displ
 
 @echo off
 cls
-title Some File Cleaning
+title File Cleaning
 "C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
-"C:\Program Files\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner
+REM "C:\Program Files\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner seems not working now?
 
 :: Run applications (needs manual intervention)
 "C:\Program Files\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
