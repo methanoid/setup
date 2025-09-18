@@ -8,6 +8,11 @@ title Tweaks
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
+del /s "c:\users\Administrator\Desktop\Discord Server.url" >nul 2>&1
+del /s "c:\users\Administrator\Desktop\YouTube Channel.url" >nul 2>&1
+del /s "c:\users\Administrator\Desktop\DL_Setup_Script.cmd" >nul 2>&1
+rmdir /s /q "c:\users\Administrator\Desktop\Extras" >nul 2>&1
+
 :: Windows update check and update
 echo Asking Windows Update to start
 wuauclt /detectnow
