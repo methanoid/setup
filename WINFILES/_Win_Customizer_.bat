@@ -238,10 +238,10 @@ C:\Users\Administrator\Desktop\DB.exe -Y
 del C:\Users\Administrator\Desktop\DB.exe >nul 2>&1
 
 title Installing Samsung Printer Driver
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.exe -OutFile C:\UPD.exe"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.001 -OutFile C:\UPD.7z.001"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\UPD.7z.002"
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/SPTR.7z.002 -OutFile C:\UPD.7z.003"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/UPD.exe -OutFile C:\UPD.exe"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/UPD.7z.001 -OutFile C:\UPD.7z.001"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/UPD.7z.002 -OutFile C:\UPD.7z.002"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/UPD.7z.002 -OutFile C:\UPD.7z.003"
 C:\UPD.exe -oC:\ -y & del /s c:\UPD*.* >nul 2>&1
 C:\SamsungUPD3.exe /s & del /s c:\SamsungUPD3.exe >nul 2>&1
 
