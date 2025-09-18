@@ -1,6 +1,6 @@
 :: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC ========== $OEM$ inc Customizer & EdgeDie on W10 ============================
 
-REM echo: adds a blank line to screen
+REM echo: adds a blank line to screen        hide meet now icon      hide search bar which reappears after update
 
 :: ==TWEAKS===========================================================================================================================
 @echo off
