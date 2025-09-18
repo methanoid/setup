@@ -20,15 +20,15 @@ rmdir /s /q "c:\users\Administrator\Desktop\Extras" >nul 2>&1
 rmdir /s /q "c:\Nexus_LiteOS_Toolkit" >nul 2>&1
 rmdir /s /q $WINDOWS.~BT >nul 2>&1
 rmdir /s /q $WINDOWS.~LS >nul 2>&1
-title Uninstall CPU-Z GHOST ONLY
-"c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
+
+REM title Uninstall CPU-Z GHOST ONLY    "c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
 
 :: Windows update check and update
-echo Windows Updates - script may need restarting
-powershell "Install-Module -Name PSWindowsUpdate -Force"
-powershell "Import-Module PSWindowsUpdate"
-powershell "Get-WindowsUpdate -AcceptAll -Install -AutoReboot"
-powershell "Restart-Computer -Force"
+REM echo Windows Updates - script may need restarting
+REM powershell "Install-Module -Name PSWindowsUpdate -Force"
+REM powershell "Import-Module PSWindowsUpdate"
+REM powershell "Get-WindowsUpdate -AcceptAll -Install -AutoReboot"
+REM powershell "Restart-Computer -Force"
 
 echo Changing custom Wallpaper and Lockscreen
 powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
