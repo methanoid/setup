@@ -10,6 +10,7 @@ if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & 
 
 del /s "c:\users\Administrator\Desktop\Discord Server.url" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\YouTube Channel.url" >nul 2>&1
+attrib -r "c:\users\Administrator\Desktop\DL_Setup_Script.cmd" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\DL_Setup_Script.cmd" >nul 2>&1
 rmdir /s /q "c:\users\Administrator\Desktop\Extras" >nul 2>&1
 
