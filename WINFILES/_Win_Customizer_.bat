@@ -194,6 +194,8 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul 2>&1
 schtasks /Delete /TN CCleanerCrashReporting /F
 for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr CCleaner') do schtasks /Delete /TN %%x /f >nul 2>&1 /F
+rem one below is to fix one above??
+for /f "tokens=2" %x in ('schtasks /query /xml ^| findstr CCleaner') do schtasks /Delete /TN %x /f >nul 2>&1 /F
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
