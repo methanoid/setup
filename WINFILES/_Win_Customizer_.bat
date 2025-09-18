@@ -13,6 +13,9 @@ del /s "c:\users\Administrator\Desktop\YouTube Channel.url" >nul 2>&1
 attrib -r "c:\users\Administrator\Desktop\DL_Setup_Script.cmd" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\DL_Setup_Script.cmd" >nul 2>&1
 rmdir /s /q "c:\users\Administrator\Desktop\Extras" >nul 2>&1
+rmdir /s /q "c:\Nexus_LiteOS_Toolkit" >nul 2>&1
+rmdir /s /q $WINDOWS.~BT >nul 2>&1
+rmdir /s /q $WINDOWS.~LS >nul 2>&1
 
 :: Windows update check and update
 echo Asking Windows Update to start
