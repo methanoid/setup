@@ -5,7 +5,7 @@
 $WallpaperURL = "https://getwallpapers.com/wallpaper/full/c/2/c/1363723-vertical-colorful-desktop-backgrounds-2560x1600-for-pc.jpg" # Change to your fitting
 $LockscreenUrl = "https://getwallpapers.com/wallpaper/full/c/2/c/1363723-vertical-colorful-desktop-backgrounds-2560x1600-for-pc.jpg" # Change to your fitting
 
-$ImageDestinationFolder = "%LocalAppData%\Microsoft\Windows\Themes" # Change to your fitting - this is the folder for the wallpaper image
+$ImageDestinationFolder = "C:\Users\Administrator\AppData\Local\Microsoft\Windows\Themes" # Change to your fitting - this is the folder for the wallpaper image
 $WallpaperDestinationFile = "$ImageDestinationFolder\wallpaper.png" # Change to your fitting - this is the Wallpaper image
 $LockScreenDestinationFile = "$ImageDestinationFolder\lockScreen.png" # Change to your fitting - this is the Lockscreen image
 
