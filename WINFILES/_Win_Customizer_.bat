@@ -1,6 +1,6 @@
 :: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC ========== $OEM$ inc Customizer & EdgeDie on W10 ============================
 
-REM echo: adds a blank line to screen        hide meet now icon      hide search bar which reappears after update  w11 is PRO and warns about password expired
+REM Hide meet now icon Hide search bar which reappears after update Re-do Services   Re-run Cleans   Maybe Break into Mini Scripts or Options?
 
 :: ==TWEAKS===========================================================================================================================
 @echo off
@@ -9,6 +9,9 @@ title Tweaks
 :check
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
+
+echo Changing custom Wallpaper and Lockscreen
+powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
 
 echo Quick Nexus and Ghost-specific Tweaks
 del /s "c:\users\Administrator\Desktop\Discord Server.url" >nul 2>&1
@@ -32,29 +35,9 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcon
 echo Remove Search Icon from Taskbar
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /D "0" /f >nul 2>&1
 
-
-echo Unnecessary Changes to Start Menu
-powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Start" -Name "HideRecommendedSection" -Value 1'
-powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education" -Name "IsEducationEnvironment" -Value 1'
-powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "HideRecommendedSection" -Value 1'
-powershell -command 'Get-Process Explorer | Stop-Process'
-powershell -command 'Start-Process Explorer'
-
 echo Hide Recommended Section on Start Menu (which is soon to be hidden anyway!)
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
-
 echo:
-
-:: Windows update check and update
-echo Windows Updates - script may need restarting
-powershell -command "install-packageProvider -Name Nuget -MinimumVersion 2.8.5.201 -Force"
-powershell -command "Install-Module -Name PSWindowsUpdate -Force"
-powershell -executionpolicy bypass -command "Import-Module PSWindowsUpdate"
-powershell -command "Get-WindowsUpdate -AcceptAll -Install -AutoReboot"
-REM powershell -command "Restart-Computer -Force"
-
-REM echo Changing custom Wallpaper and Lockscreen
-REM powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
 
 echo Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
@@ -68,6 +51,7 @@ netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nu
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul 2>&1
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul 2>&1
 reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters /v EnableSecuritySignature /t REG_DWORD /d "0" /f >nul 2>&1
+REM LanmanWorkstation Service MUST be running too
 
 echo Remove Gallery from Explorer
 reg add HKEY_CURRENT_USER\Software\Classes\CLSID\{e88865ea-0e1c-4e20-9aa6-edcd0212c87c} /f /v "System.IsPinnedToNameSpaceTree" /t REG_DWORD /d 0x00000000 >nul 2>&1
@@ -95,14 +79,10 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 
-echo Remove grpconv entry
-reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" /v "grpconv" /f >nul 2>&1
-
 :: ==INSTALLS========================================================================================================================
 
 @echo off
 cls
-title Installs
 
 title Installing Winget
 REM Use wsreset -i and then install unigetui from msstore as an ALT
@@ -123,14 +103,14 @@ if %build% geq 22000 (
   label c: Win11
 ) else (
   echo Detected Windows 10
-  echo Removing StartIsBack
+  echo Removing StartIsBack (from Nexus LiteOS)
   "C:\Program Files (x86)\StartIsBack\StartIsBackCfg.exe" /uninstall /silent
   label c: Win10
-  :: en-GB for Win10
   echo Making en-GB specific
+ 
   REM powershell -command "Add-AppxPackage -Path LanguageExperiencePack.en-gb.Neutral.appx -LicensePath License.xml"
-  
   REM DOESNT WORK FOR WIN10 :-(
+  REM ALSO CHECK BLOAT REMAINING???
 
   powershell -command "Install-Language en-GB"
   powershell -command "Set-SystemPreferredUILanguage en-GB"
@@ -158,6 +138,13 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
 del /s c:\pttb.exe >nul 2>&1
 echo:
+
+title Remove Edge Cleanly
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
+powershell -file "C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
+del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
+echo Displaying remaining installed AppX
+powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 title Installing 7Zip
 winget install -e -h --id 7zip.7zip
@@ -300,13 +287,6 @@ del /s "C:\VRD*.*" >nul 2>&1
 del /s "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
 echo:
 
-REM title Remove Edge Cleanly
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
-REM powershell -file "C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
-REM del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
-REM echo Displaying remaining installed AppX
-REM powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
-
 :: ==CLEANUPS========================================================================================================================
 
 @echo off
@@ -343,7 +323,7 @@ sc config "FontCache" start=automatic >nul 2>&1
 sc config "gpsvc" start=automatic >nul 2>&1
 sc config "iphlpsvc" start=automatic >nul 2>&1
 sc config "LanmanServer" start=automatic >nul 2>&1
-sc config "LanmanWorkstation" start=automatic >nul 2>&1
+sc config "LanmanWorkstation" start=automatic >nul 2>&1                    REM NEEDED FOR SAMBA UNRAID
 sc config "LSM" start=automatic >nul 2>&1
 sc config "MpsSvc" start=automatic >nul 2>&1
 sc config "mpssvc" start=automatic >nul 2>&1
@@ -665,13 +645,11 @@ shutup10
 echo:
 echo All Done!
 
-title CTT WinUtil Just In Case
-powershell -executionpolicy bypass -command "irm https://christitus.com/win | iex"
+REM powershell -executionpolicy bypass -command "irm https://christitus.com/win | iex"
 echo:
 
-:: ==REBOOT==========================================================================================================================
+:: ==UPDATES==========================================================================================================================
 
-echo "Rebooting now - enjoy!"
+cls
+echo "Install Windows Updates now!!!!!!!"
 pause
-
-shutdown -r -t 10
