@@ -32,18 +32,16 @@ Start-Process Explorer
 
 powershell -executionpolicy bypass -command "irm https://christitus.com/win | iex"
 
-
 :: Windows update check and update
-REM echo Windows Updates - script may need restarting
-powershell "install-packageProvider -Name Nuget -MinimumVersion 2.8.5.201 -Force"
-REM powershell "Install-Module -Name PSWindowsUpdate -Force"
-REM powershell "Import-Module PSWindowsUpdate"
-REM powershell "Get-WindowsUpdate -AcceptAll -Install -AutoReboot"
-REM powershell "Restart-Computer -Force"
+echo Windows Updates - script may need restarting
+powershell -command "install-packageProvider -Name Nuget -MinimumVersion 2.8.5.201 -Force"
+powershell -command "Install-Module -Name PSWindowsUpdate -Force"
+powershell -executionpolicy bypass -command "Import-Module PSWindowsUpdate"
+powershell -command "Get-WindowsUpdate -AcceptAll -Install -AutoReboot"
+REM powershell -command "Restart-Computer -Force"
 
 echo Changing custom Wallpaper and Lockscreen
 powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
-
 
 echo Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
