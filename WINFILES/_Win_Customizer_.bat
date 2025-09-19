@@ -10,7 +10,7 @@ title Tweaks
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
-echo Some Nexus and Ghost-specific Tweaks
+echo Quick Nexus and Ghost-specific Tweaks
 del /s "c:\users\Administrator\Desktop\Discord Server.url" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\YouTube Channel.url" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\Nexus LiteOS Toolkit.lnk" >nul 2>&1
@@ -23,11 +23,19 @@ rmdir /s /q $WINDOWS.~LS >nul 2>&1
 "c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
 
 
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Start" -Name "HideRecommendedSection" -Value 1
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education" -Name "IsEducationEnvironment" -Value 1
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "HideRecommendedSection" -Value 1
+Get-Process Explorer | Stop-Process
+Start-Process Explorer
+
+
 powershell -executionpolicy bypass -command "irm https://christitus.com/win | iex"
 
 
 :: Windows update check and update
 REM echo Windows Updates - script may need restarting
+powershell "install-packageProvider -Name Nuget -MinimumVersion 2.8.5.201 -Force"
 REM powershell "Install-Module -Name PSWindowsUpdate -Force"
 REM powershell "Import-Module PSWindowsUpdate"
 REM powershell "Get-WindowsUpdate -AcceptAll -Install -AutoReboot"
