@@ -35,8 +35,9 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcon
 echo Remove Search Icon from Taskbar
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /D "0" /f >nul 2>&1
 
-echo Hide Recommended Section on Start Menu (which is soon to be hidden anyway!)
+echo Hide Recommended Section and Recently Added Apps
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecentlyAddedApps" /t REG_DWORD /d "1" /f >nul 2>&1
 echo:
 
 echo Switch to Dark mode system-wide
