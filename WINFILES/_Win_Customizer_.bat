@@ -274,8 +274,7 @@ C:\UPD.exe -oC:\ -y & del /s c:\UPD*.* >nul 2>&1
 C:\SamsungUPD3.exe /s & del /s c:\SamsungUPD3.exe >nul 2>&1
 echo:
 
-title Installing VideoReDo
-REM VideoReDo.TVSuite.6.63.7.836
+title Installing VideoReDo.TVSuite.6.63.7.836
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRD_Split.exe -OutFile C:\VRD_Split.exe"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRD_Split.7z.001 -OutFile C:\VRD_Split.7z.001"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/VRD_Split.7z.002 -OutFile C:\VRD_Split.7z.002"
