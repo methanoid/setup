@@ -657,6 +657,9 @@ winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GO
 :no
 echo:
 
+title Just in case
+powershell -command "Get-ScheduledTask 'MicrosoftEdge*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
+
 title Silence Any Telemetry
 shutup10
 echo:
