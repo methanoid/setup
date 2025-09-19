@@ -21,16 +21,29 @@ rmdir /s /q "c:\Nexus_LiteOS_Toolkit" >nul 2>&1
 rmdir /s /q $WINDOWS.~BT >nul 2>&1
 rmdir /s /q $WINDOWS.~LS >nul 2>&1
 "c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
+echo:
+
+echo Tweaks not needed if Unattended.XML used
+
+echo Add Network Icon to Desktop
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
+
+echo Remove Search Icon from Taskbar
+reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /D "0" /f >nul 2>&1
 
 
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Start" -Name "HideRecommendedSection" -Value 1
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education" -Name "IsEducationEnvironment" -Value 1
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "HideRecommendedSection" -Value 1
-Get-Process Explorer | Stop-Process
-Start-Process Explorer
+echo Unnecessary Changes to Start Menu
+powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Start" -Name "HideRecommendedSection" -Value 1'
+powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\current\device\Education" -Name "IsEducationEnvironment" -Value 1'
+powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer" -Name "HideRecommendedSection" -Value 1'
+powershell -command 'Get-Process Explorer | Stop-Process'
+powershell -command 'Start-Process Explorer'
 
+echo Hide Recommended Section on Start Menu (which is soon to be hidden anyway!)
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
 
-powershell -executionpolicy bypass -command "irm https://christitus.com/win | iex"
+echo:
 
 :: Windows update check and update
 echo Windows Updates - script may need restarting
@@ -40,8 +53,8 @@ powershell -executionpolicy bypass -command "Import-Module PSWindowsUpdate"
 powershell -command "Get-WindowsUpdate -AcceptAll -Install -AutoReboot"
 REM powershell -command "Restart-Computer -Force"
 
-echo Changing custom Wallpaper and Lockscreen
-powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
+REM echo Changing custom Wallpaper and Lockscreen
+REM powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
 
 echo Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
@@ -70,9 +83,6 @@ echo Stop Explorer from showing external drives twice
 reg delete "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul 2>&1
 reg delete "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\DelegateFolders\{F5FB2C77-0E2F-4A16-A381-3E560C68BC83}" /f >nul 2>&1
 
-echo Hide Recommended Section on Start Menu (which is soon to be hidden anyway!)
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
-
 echo Make sure Defender icon IS in tray
 reg delete "HKLM\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" /v "HideSystray" /f >nul 2>&1
 
@@ -81,13 +91,6 @@ reg delete HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run /v "
 
 echo Disable Taskbar Transparency (needed for NV 7 Series)
 reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "EnableTransparency" /t REG_DWORD /d "0" /f >nul 2>&1
-
-echo Add Network Icon to Desktop
-reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
-reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
-
-echo Remove Search Icon from Taskbar
-reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /D "0" /f >nul 2>&1
 
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
@@ -104,6 +107,7 @@ title Installs
 title Installing Winget
 REM Use wsreset -i and then install unigetui from msstore as an ALT
 powershell -command "irm https://github.com/asheroto/winget-install/releases/latest/download/winget-install.ps1 | iex"
+echo:
 
 :: Windows10/11 Differences
 
@@ -125,11 +129,15 @@ if %build% geq 22000 (
   :: en-GB for Win10
   echo Making en-GB specific
   REM powershell -command "Add-AppxPackage -Path LanguageExperiencePack.en-gb.Neutral.appx -LicensePath License.xml"
+  
+  REM DOESNT WORK FOR WIN10 :-(
+
   powershell -command "Install-Language en-GB"
   powershell -command "Set-SystemPreferredUILanguage en-GB"
   powershell -command "Set-WinSystemLocale en-GB"
   powershell -command "Set-WinUserLanguageList en-GB
   powershell -command "Uninstall-Language en-US"
+
   tzutil /s "GMT Standard Time"
   w32tm /resync /force
 )
@@ -137,6 +145,7 @@ if %build% geq 22000 (
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
 del /s "c:\Users\Public\Desktop\UniGetUI.lnk"
+echo:
 
 title Installing Brave
 winget install -e -h --id Brave.Brave
@@ -148,54 +157,67 @@ sc config "BraveM" start=disabled >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
 del /s c:\pttb.exe >nul 2>&1
+echo:
 
 title Installing 7Zip
 winget install -e -h --id 7zip.7zip
+echo:
 
 title Installing Notepad++
 winget install -e -h --id Notepad++.Notepad++
+echo:
 
 title Installing Redist Files
 winget install -e -h --id Microsoft.VCRedist.2015+.x64
+echo:
 
 title Installing OnlyOffice
 winget install -e -h --id ONLYOFFICE.DesktopEditors
 del /s "c:\Users\Public\Desktop\ONLYOFFICE.lnk" >nul 2>&1
+echo:
 
 title Installing Putty
 winget install -e -h --id PuTTY.PuTTY
 REM powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Putty.lnk -OutFile C:\Users\Administrator\Desktop\Putty.lnk"
+echo:
 
 title Installing SumatraPDF
 winget install -e -h --id SumatraPDF.SumatraPDF
 del /s "c:\Users\Administrator\Desktop\SumatraPDF.lnk" >nul 2>&1
+echo:
 
 title Installing ImgBurn
 winget install -e -h --id LIGHTNINGUK.ImgBurn
 del /s "c:\Users\Administrator\Desktop\ImgBurn.lnk" & del /s "c:\Users\Public\Desktop\ImgBurn.lnk" >nul 2>&1
+echo:
 
 title Installing KLite Codecs
 winget install -e -h --id CodecGuide.K-LiteCodecPack.Standard
 del /s "c:\Users\Administrator\Desktop\MPC-HC x64.lnk" >nul 2>&1
 del /s "c:\Users\Public\Desktop\mpc-be.lnk" >nul 2>&1
 schtasks /delete /tn klcp_update /f >nul 2>&1
+echo:
 
 title Installing Minecraft Launcher
 winget install -e -h --id PrismLauncher.PrismLauncher
+echo:
 
 title Installing LockHunter
 winget install -e -h --id CrystalRich.LockHunter
-taskkill /F /T /IM iexplore.exe
-taskkill /F /T /IM brave.exe
+taskkill /F /T /IM iexplore.exe >nul 2>&1
+taskkill /F /T /IM brave.exe >nul 2>&1
+echo:
 
 title Installing Hashtab
 winget install -e -h --id namazso.OpenHashTab
+echo:
 
 title Installing Privado VPN
 winget install -e -h --id PrivadoNetworksAG.PrivadoVPN
 del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul 2>&1      
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f >nul 2>&1
+echo:
 
 title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
@@ -203,6 +225,7 @@ del /s "c:\Users\Administrator\Desktop\BleachBit.lnk" >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/bleachbit.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\bleachbit.ini"
 mkdir "C:\Users\Administrator\AppData\Local\BleachBit\cleaners" >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile C:\Users\Administrator\AppData\Local\BleachBit\cleaners\winapp2.ini"
+echo:
 
 title Installing CCleaner
 winget install -e -h --id Piriform.CCleaner
@@ -212,18 +235,22 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CCEnhancer.exe -OutFile 'C:\Program Files\CCleaner\CCEnhancer.exe'"
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul 2>&1
 powershell -command "Get-ScheduledTask 'CCleaner*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
+echo:
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/config.ini -OutFile 'C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini'"
 del /s "c:\Users\Public\Desktop\Wise Disk Cleaner.lnk" >nul 2>&1
+echo:
 
 title Installing Wise Registry Cleaner
 winget install -e -h --id WiseCleaner.WiseRegistryCleaner
 del /s "c:\Users\Public\Desktop\Wise Registry Cleaner.lnk" >nul 2>&1
+echo:
 
 title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
+echo:
 
 title Installing Plasma Screensaver
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/PSS.exe -OutFile C:\Users\Administrator\Desktop\PSS.exe"
@@ -233,19 +260,23 @@ reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul 2>&1
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul 2>&1
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaverIsSecure" /t REG_SZ /d "0" /f >nul 2>&1
+echo:
 
 title Installing MKVtoolnix
 winget install -e -h --id MoritzBunkus.MKVToolNix
+echo:
 
 title Installing CBX Shell
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CBX.exe -OutFile C:\Users\Administrator\Desktop\CBX.exe"
 C:\Users\Administrator\Desktop\CBX.exe /SP /VERYSILENT
 del /s C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
+echo:
 
 title Putting DriverBooster on Desktop
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
 C:\Users\Administrator\Desktop\DB.exe -Y
 del C:\Users\Administrator\Desktop\DB.exe >nul 2>&1
+echo:
 
 title Installing Samsung Printer Driver
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/UPD.exe -OutFile C:\UPD.exe"
@@ -254,6 +285,7 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/UPD.7z.002 -OutFile C:\UPD.7z.003"
 C:\UPD.exe -oC:\ -y & del /s c:\UPD*.* >nul 2>&1
 C:\SamsungUPD3.exe /s & del /s c:\SamsungUPD3.exe >nul 2>&1
+echo:
 
 title Installing VideoReDo
 REM VideoReDo.TVSuite.6.63.7.836
@@ -266,9 +298,10 @@ C:\VRD_Split.exe -oC:\ -y
 del /s "c:\Users\Public\Desktop\VideoReDo TVSuite V6.lnk" >nul 2>&1
 del /s "C:\VRD*.*" >nul 2>&1
 del /s "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
+echo:
 
 REM title Remove Edge Cleanly
-REM powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Die_Edge_Die.ps1 -OutFile C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
 REM powershell -file "C:\Users\Administrator\Desktop\Die_Edge_Die.ps1"
 REM del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
 REM echo Displaying remaining installed AppX
@@ -281,12 +314,15 @@ cls
 title More File Cleaning
 "C:\Users\Administrator\AppData\Roaming\BleachBit\bleachbit_console.exe" -c --preset >nul 2>&1
 REM "C:\Program Files\CCleaner\CCleaner64.exe" /AUTO                 :: Runs Ccleaner seems not working now?
+echo:
 
 :: Run applications (needs manual intervention)
 "C:\Program Files\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
 "C:\Program Files (x86)\Wise\Wise Disk Cleaner\WiseDiskCleaner.exe"
+echo:
 
 title Services Tweaks
+echo Service tweaks running
 :: Services lifted from CTT
 sc config "Audiosrv" start=automatic >nul 2>&1
 sc config "BFE" start=automatic >nul 2>&1
@@ -577,13 +613,13 @@ sc config "SECOMNService" start=disabled >nul 2>&1
 :: ==FINAL BITS========================================================================================================================
 
 @echo off
-cls
 title Name PC
 cls & set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
+echo:
 
 title Power Planning
 :choice
@@ -603,9 +639,11 @@ goto done
 echo Setting up for a Laptop & powercfg -setactive scheme_max
 REM  Here perhaps add HP Laptop Hotkeys util ?
 :done
+echo:
 
 title Windows Activation
 powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
+echo:
 
 title Gaming Installs
 :choice
@@ -617,14 +655,20 @@ goto :choice
 echo Installing clients - please wait
 winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GOG.Galaxy Ubisoft.Connect ElectronicArts.EADesktop
 :no
+echo:
 
 title Silence Any Telemetry
 shutup10
+echo:
 echo All Done!
+
+title CTT WinUtil Just In Case
+powershell -executionpolicy bypass -command "irm https://christitus.com/win | iex"
+echo:
 
 :: ==REBOOT==========================================================================================================================
 
 echo "Rebooting now - enjoy!"
+pause
+
 shutdown -r -t 10
-
-
