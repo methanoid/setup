@@ -10,7 +10,7 @@ title Tweaks
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
-echo Some file deletions
+echo Some Nexus and Ghost-specific Tweaks
 del /s "c:\users\Administrator\Desktop\Discord Server.url" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\YouTube Channel.url" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\Nexus LiteOS Toolkit.lnk" >nul 2>&1
@@ -20,8 +20,11 @@ rmdir /s /q "c:\users\Administrator\Desktop\Extras" >nul 2>&1
 rmdir /s /q "c:\Nexus_LiteOS_Toolkit" >nul 2>&1
 rmdir /s /q $WINDOWS.~BT >nul 2>&1
 rmdir /s /q $WINDOWS.~LS >nul 2>&1
+"c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
 
-REM title Uninstall CPU-Z GHOST ONLY    "c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
+
+powershell -executionpolicy bypass -command "irm https://christitus.com/win | iex"
+
 
 :: Windows update check and update
 REM echo Windows Updates - script may need restarting
@@ -32,6 +35,7 @@ REM powershell "Restart-Computer -Force"
 
 echo Changing custom Wallpaper and Lockscreen
 powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
+
 
 echo Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
