@@ -10,8 +10,17 @@ title Tweaks
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
+REM USE UNATTENDED!!!!!!!!!!!!!
+REM USE UNATTENDED!!!!!!!!!!!!!
+REM USE UNATTENDED!!!!!!!!!!!!!
+
 echo Changing custom Wallpaper and Lockscreen
 powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
+
+REM USE UNATTENDED!!!!!!!!!!!!!
+REM USE UNATTENDED!!!!!!!!!!!!!
+REM USE UNATTENDED!!!!!!!!!!!!!
+
 
 echo Quick Nexus and Ghost-specific Tweaks
 del /s "c:\users\Administrator\Desktop\Discord Server.url" >nul 2>&1
