@@ -10,44 +10,27 @@ title Tweaks
 ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
 
-REM USE UNATTENDED!!!!!!!!!!!!!
-REM USE UNATTENDED!!!!!!!!!!!!!
-REM USE UNATTENDED!!!!!!!!!!!!!
-
-echo Changing custom Wallpaper and Lockscreen
-powershell -executionpolicy bypass -command "irm https://raw.githubusercontent.com/methanoid/setup/refs/heads/main/WINFILES/WallpaperLock.ps1 | iex"
-
-REM USE UNATTENDED!!!!!!!!!!!!!
-REM USE UNATTENDED!!!!!!!!!!!!!
-REM USE UNATTENDED!!!!!!!!!!!!!
-
-
-echo Quick Nexus and Ghost-specific Tweaks
+echo Quick Nexus-specific Tweaks
 del /s "c:\users\Administrator\Desktop\Discord Server.url" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\YouTube Channel.url" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\Nexus LiteOS Toolkit.lnk" >nul 2>&1
+rmdir /s /q "c:\Nexus_LiteOS_Toolkit" >nul 2>&1
 attrib -r "c:\users\Administrator\Desktop\DL_Setup_Script.cmd" >nul 2>&1
 del /s "c:\users\Administrator\Desktop\DL_Setup_Script.cmd" >nul 2>&1
 rmdir /s /q "c:\users\Administrator\Desktop\Extras" >nul 2>&1
-rmdir /s /q "c:\Nexus_LiteOS_Toolkit" >nul 2>&1
 rmdir /s /q $WINDOWS.~BT >nul 2>&1
 rmdir /s /q $WINDOWS.~LS >nul 2>&1
-"c:\Program Files\CPUID\CPU-Z\unins000.exe" /SILENT
 echo:
 
-echo Tweaks not needed if Unattended.XML used
-
-echo Add Network Icon to Desktop
-reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
-reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
-
-echo Remove Search Icon from Taskbar
-reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /D "0" /f >nul 2>&1
-
-echo Hide Recommended Section and Recently Added Apps
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecentlyAddedApps" /t REG_DWORD /d "1" /f >nul 2>&1
-echo:
+REM echo Add Network Icon to Desktop
+REM reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
+REM reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\ClassicStartMenu" /v "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}" /t REG_DWORD /d "0" /f >nul 2>&1
+REM echo Remove Search Icon from Taskbar
+REM reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" /v "SearchboxTaskbarMode" /t REG_DWORD /D "0" /f >nul 2>&1
+REM echo Hide Recommended Section and Recently Added Apps
+REM reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
+REM reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecentlyAddedApps" /t REG_DWORD /d "1" /f >nul 2>&1
+REM echo:
 
 echo Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
@@ -93,6 +76,8 @@ reagentc.exe /enable >nul 2>&1
 
 @echo off
 cls
+tzutil /s "GMT Standard Time" >nul 2>&1
+w32tm /resync /force >nul 2>&1
 
 title Installing Winget
 REM Use wsreset -i and then install unigetui from msstore as an ALT
@@ -105,7 +90,7 @@ for /f "tokens=3 delims=." %%i in ('ver') do set build=%%i
 if %build% geq 22000 (
   echo Detected Windows 11
   title Installing ExplorerPatcher
-  winget install -e -h --id valinet.ExplorerPatcher
+  winget install -e -h --id valinet.ExplorerPatcher --accept-source-agreements --accept-package-agreements
   powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ExplorerPatcher.reg -OutFile C:\ExplorerPatcher.reg"
   reg import c:\ExplorerPatcher.reg
   del /s c:\ExplorerPatcher.reg >nul 2>&1
@@ -117,19 +102,14 @@ if %build% geq 22000 (
   "C:\Program Files (x86)\StartIsBack\StartIsBackCfg.exe" /uninstall /silent
   label c: Win10
   echo Making en-GB specific
- 
-  REM powershell -command "Add-AppxPackage -Path LanguageExperiencePack.en-gb.Neutral.appx -LicensePath License.xml"
-  REM DOESNT WORK FOR WIN10 :-(
-  REM ALSO CHECK BLOAT REMAINING???
-
   powershell -command "Install-Language en-GB"
   powershell -command "Set-SystemPreferredUILanguage en-GB"
   powershell -command "Set-WinSystemLocale en-GB"
   powershell -command "Set-WinUserLanguageList en-GB
   powershell -command "Uninstall-Language en-US"
-
-  tzutil /s "GMT Standard Time"
-  w32tm /resync /force
+  REM powershell -command "Add-AppxPackage -Path LanguageExperiencePack.en-gb.Neutral.appx -LicensePath License.xml"
+  REM DOESNT WORK FOR WIN10 :-(
+  REM ALSO CHECK BLOAT REMAINING???
 )
 
 title Installing UniGetUI
