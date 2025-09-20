@@ -96,6 +96,9 @@ if %build% geq 22000 (
   del /s c:\ExplorerPatcher.reg >nul 2>&1
   taskkill /im explorer.exe /f & start explorer.exe
   label c: Win11
+  powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
+  c:\pttb.exe C:\windows\explorer.exe >nul 2>&1
+
 ) else (
   echo Detected Windows 10
   echo Removing StartIsBack (from Nexus LiteOS)
