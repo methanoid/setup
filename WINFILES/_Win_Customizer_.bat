@@ -121,14 +121,18 @@ del /s "c:\Users\Public\Desktop\UniGetUI.lnk"
 echo:
 
 title Installing Brave
-winget install -e -h --id Brave.Brave
+winget install -e -h --scope machine --id Brave.Brave 
 del /s "c:\Users\Administrator\Desktop\Brave.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f >nul 2>&1
 for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
 sc config "Brave" start=disabled >nul 2>&1
 sc config "BraveM" start=disabled >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
+
+REM FIX???
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
+
+
 del /s c:\pttb.exe >nul 2>&1
 echo:
 
