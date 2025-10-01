@@ -302,5 +302,6 @@ sc config "XTUOCDriverService" start=disabled >nul 2>&1
 sc config "SECOMNService" start=disabled >nul 2>&1
 
 powershell -command "Get-ScheduledTask 'MoveActiveHours*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
-
+powershell -command "Get-AppxPackage -Name 'Microsoft.MicrosoftEdge*' | Remove-AppxPackage"
+powershell -command "Get-AppxPackage -Name 'Microsoft.Wikndows.DevHome*' | Remove-AppxPackage"
 echo:
