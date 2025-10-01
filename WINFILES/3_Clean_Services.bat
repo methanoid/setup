@@ -9,6 +9,10 @@ title More File Cleaning
 "C:\Program Files (x86)\Wise\Wise Disk Cleaner\WiseDiskCleaner.exe"
 echo:
 
+title Silence Any Telemetry
+shutup10
+echo:
+
 title Services Tweaks
 echo Service tweaks running
 :: Services lifted from CTT
