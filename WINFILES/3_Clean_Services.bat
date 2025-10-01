@@ -301,4 +301,6 @@ sc config "cplspcon" start=disabled >nul 2>&1
 sc config "XTUOCDriverService" start=disabled >nul 2>&1
 sc config "SECOMNService" start=disabled >nul 2>&1
 
+powershell -command "Get-ScheduledTask 'MoveActiveHours*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
+
 echo:
