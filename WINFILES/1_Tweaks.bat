@@ -54,3 +54,7 @@ reg add "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize" /v "
 
 echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
+
+echo Set PageFile size
+wmic computersystem where name="NEW_INSTALL" set AutomaticManagedPagefile=false
+wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=512,MaximumSize=2048
