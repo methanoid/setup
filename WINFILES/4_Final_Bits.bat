@@ -49,6 +49,8 @@ echo:
 title Just in case
 powershell -command "Get-ScheduledTask 'MicrosoftEdge*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
 
+powercfg -h off
+
 echo All Done!
 echo:
 
