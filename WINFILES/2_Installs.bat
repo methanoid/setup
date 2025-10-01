@@ -57,6 +57,9 @@ powershell -command "Get-ScheduledTask 'MicrosoftEdgeUpdate*' | Unregister-Sched
 echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
+title Installing Driver Store Explorer
+winget install -e -h --id Lostindark.DriverStoreExplorer
+
 title Installing 7Zip
 winget install -e -h --id 7zip.7zip
 echo:
