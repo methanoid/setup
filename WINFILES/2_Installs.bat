@@ -4,6 +4,8 @@ o:: ==INSTALLS==================================================================
 cls
 tzutil /s "GMT Standard Time" >nul 2>&1
 w32tm /resync /force >nul 2>&1
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
+c:\pttb.exe C:\windows\explorer.exe >nul 2>&1
 
 title Installing Winget
 REM Use wsreset -i and then install unigetui from msstore as an ALT
@@ -22,8 +24,6 @@ if %build% geq 22000 (
   reg import c:\ExplorerPatcher.reg
   del /s c:\ExplorerPatcher.reg >nul 2>&1
   taskkill /im explorer.exe /f & start explorer.exe
-  powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
-  c:\pttb.exe C:\windows\explorer.exe >nul 2>&1
 
 ) else (
   echo Detected Windows 10
@@ -44,7 +44,6 @@ reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware 
 for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
 sc config "Brave" start=disabled >nul 2>&1
 sc config "BraveM" start=disabled >nul 2>&1
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/pttb.exe -OutFile C:\pttb.exe"
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
 del /s c:\pttb.exe >nul 2>&1
 echo:
