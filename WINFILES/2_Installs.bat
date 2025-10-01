@@ -27,6 +27,7 @@ if %build% geq 22000 (
 
 ) else (
   echo Detected Windows 10
+  slmgr.vbs /ipk QPM6N-7J2WJ-P88HH-P3YRH-YY74H 
   label c: Win10
 )
 
