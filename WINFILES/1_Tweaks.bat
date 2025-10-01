@@ -58,3 +58,8 @@ reagentc.exe /enable >nul 2>&1
 echo Set PageFile size
 wmic computersystem where name="NEW_INSTALL" set AutomaticManagedPagefile=false
 wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=512,MaximumSize=2048
+
+echo Disable System Restore
+reg add "HKLM\Software\Policies\Microsoft\Windows NT\SystemRestore" /v "DisableSR" /t REG_DWORD /d "1" /f
+schtasks /Change /TN "Microsoft\Windows\SystemRestore\SR" /Disable
+vssadmin Resize ShadowStorage /For=C: /On=C: /Maxsize=320MB
