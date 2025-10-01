@@ -305,3 +305,8 @@ powershell -command "Get-ScheduledTask 'MoveActiveHours*' | Unregister-Scheduled
 powershell -command "Get-AppxPackage -Name 'Microsoft.MicrosoftEdge*' | Remove-AppxPackage"
 powershell -command "Get-AppxPackage -Name 'Microsoft.Wikndows.DevHome*' | Remove-AppxPackage"
 echo:
+
+echo "Hide MeetNow Icon"     REM Here cos it comes after a Windows update
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d "1" /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d "1" /f >nul 2>&1
+echo:
