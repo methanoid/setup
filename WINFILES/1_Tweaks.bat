@@ -1,5 +1,4 @@
 :: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC ========== $OEM$ inc Customizer & EdgeDie on W10 ============================
-REM Hide meet now icon Hide search bar which reappears after update Re-do Services   Re-run Cleans   Maybe Break into Mini Scripts or Options?
 
 :: ==TWEAKS===========================================================================================================================
 @echo off
