@@ -45,6 +45,7 @@ for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr Brave') do schtasks /
 sc config "Brave" start=disabled >nul 2>&1
 sc config "BraveM" start=disabled >nul 2>&1
 c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
+c:\pttb.exe C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
 del /s c:\pttb.exe >nul 2>&1
 echo:
 
