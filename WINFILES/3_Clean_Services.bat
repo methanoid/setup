@@ -310,4 +310,7 @@ echo:
 echo "Hide MeetNow Icon"     REM Here cos it comes after a Windows update
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d "1" /f >nul 2>&1
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d "1" /f >nul 2>&1
+
+REM Search icon remove AGAIN!!!!
+
 echo:
