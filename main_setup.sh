@@ -1,7 +1,7 @@
 #!/bin/bash
 # SETUP SCRIPT FOR DEBIAN/UBUNTU BASED DISTROS USING APT
 # NALA
-# sudo apt install -y nala curl && sudo nala fetch && sudo nala update && sudo nala upgrade -y
+sudo apt install -y nala curl && sudo nala fetch && sudo nala update && sudo nala upgrade -y
 
 # DE-SNAP UBUNTU-DERVIATIVES
 if [  -n "$(uname -a | grep buntu)" ]; then
@@ -18,10 +18,10 @@ fi
 # BRAVE
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"|sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-sudo apt update && sudo apt install -y brave-browser
+sudo nala update && sudo nala install -y brave-browser
 
 # FLATPAK INSTALLS
-sudo apt install -y flatpak && sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+sudo nala install -y flatpak && sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze && sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro
 sudo flatpak install flathub -y com.usebottles.bottles    # Only available as Flatpak
 sudo flatpak override com.usebottles.bottles --user --filesystem=xdg-data/applications  # Allows access elsewhere
@@ -40,17 +40,18 @@ else
 fi
 
 # INSTALLS & TWEAKS
-sudo apt update
+sudo nala update
 wget https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher/releases/download/v2.14.1/heroic_2.14.1_amd64.deb && sudo dpkg -i heroic_*_amd64.deb && rm ~/Downloads/heroic_*_amd64.deb
-sudo apt install -y neofetch bleachbit ufw python3-pip mc libavcodec-extra git ncdu gamemode hunspell-en-gb vlc powertop steam-devices localepurge
-sudo apt purge -y hunspell-en-us thunderbird transmission-cli transmission-qt pidgin pidgin-extprefs pidgin-gnome-keyring pidgin-otr pidgin-plugin-pack firefox-esr synaptic #  Spiral specifics
-sudo apt purge -y ktorrent kmahjongg ksudoku # Kubuntu specifics
+sudo nala install -y fastfetch bleachbit ufw python3-pip mc libavcodec-extra git ncdu gamemode hunspell-en-gb vlc powertop steam-devices localepurge
+sudo nala purge -y hunspell-en-us thunderbird transmission-cli transmission-qt pidgin pidgin-extprefs pidgin-gnome-keyring pidgin-otr pidgin-plugin-pack firefox-esr synaptic #  Spiral specifics
+sudo nala purge -y ktorrent kmahjongg ksudoku # Kubuntu specifics
 sudo systemctl disable NetworkManager-wait-online.service  # Just for Ubuntu derivatives? sudo systemd-analyze critical-chain indicates they waste 5s on boot
 echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections && sudo apt install -y ttf-mscorefonts-installer
 
 # TIDY UP & UPGRADES
-sudo apt upgrade -y && sudo apt clean && sudo apt autoremove -y && sudo apt autopurge -y
-sudo printf "neofetch" >> /home/$USER/.bashrc && sudo timedatectl set-local-rtc 1 --adjust-system-clock
+sudo nala upgrade -y && sudo nala clean && sudo nala autoremove -y && sudo nala autopurge -y
+
+sudo printf "fastfetch" >> /home/$USER/.bashrc && sudo timedatectl set-local-rtc 1 --adjust-system-clock
 
 echo -n "KDE Plasma specific customizations"
     sudo python3 -m pip install konsave --break-system-packages
