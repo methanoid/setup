@@ -22,6 +22,7 @@ WUSA /QUIET /WARNRESTART c:\windows10.0-kb5010472-x64-ndp48_2ddef186366792bd766b
 WUSA /QUIET /WARNRESTART c:\windows10.0-kb5066130-x64-ndp481_62d1e2cbc14bd4ef08e10b076868a6ee7a986fa6.MSU
 WUSA /QUIET /WARNRESTART c:\windows10.0-kb5066135-x64-ndp48_0838b78fa58e8f54c56ed6bc4fbfc762b829a87f.MSU
 WUSA /QUIET /WARNRESTART c:\windows10.0-kb5066791-x64_3210d264091be5effb3253d05397c4daefba44c8.MSU
+del /f /q c:\*.MSU >nul 2>&1
 
 title Services Tweaks
 echo Service tweaks running
