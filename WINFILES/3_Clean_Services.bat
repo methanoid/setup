@@ -13,7 +13,7 @@ del /f /q c:\Restore_Photo_Viewer.reg >nul 2>&1
 echo:
 
 title Silence Any Telemetry
-shutup10
+shutup10 ooshutup10.cfg /quiet
 echo:
 
 title Windows Updates
