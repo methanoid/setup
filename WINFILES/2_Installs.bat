@@ -56,8 +56,9 @@ powershell -command "Get-ScheduledTask 'MicrosoftEdgeUpdate*' | Unregister-Sched
 echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
-title Installing Driver Store Explorer
-winget install -e -h --id Lostindark.DriverStoreExplorer
+title Installing Driver Store Explorer and Driver Booster
+winget install -e -h "Driver Booster Free"
+winget install -e -h --id lostindark.DriverStoreExplorer
 
 title Installing 7Zip
 winget install -e -h --id 7zip.7zip
@@ -113,10 +114,8 @@ winget install -e -h --id namazso.OpenHashTab
 echo:
 
 title Installing Privado VPN
-winget install -e -h --id PrivadoNetworksAG.PrivadoVPN
-del /s "c:\Users\Public\Desktop\PrivadoVPN.lnk" >nul 2>&1
+winget install -e -h --id Surfshark.Surfshark
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul 2>&1      
-reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "PrivadoVPN" /f >nul 2>&1
 echo:
 
 title Installing Bleachbit
