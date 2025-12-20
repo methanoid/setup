@@ -26,9 +26,8 @@ if %build% geq 22000 (
   taskkill /im explorer.exe /f & start explorer.exe
 
 ) else (
-  echo Detected Windows 10
-  echo Changing to LTSC IOT Edition
-  slmgr.vbs /ipk QPM6N-7J2WJ-P88HH-P3YRH-YY74H 
+  echo Changing to W10 LTSC IOT
+  cscript //B slmgr.vbs /ipk QPM6N-7J2WJ-P88HH-P3YRH-YY74H 
   label c: Win10
 )
 
@@ -89,7 +88,7 @@ echo:
 
 title Installing ImgBurn
 winget install -e -h --id LIGHTNINGUK.ImgBurn
-del /s "c:\Users\Administrator\Desktop\ImgBurn.lnk" & del /s "c:\Users\Public\Desktop\ImgBurn.lnk" >nul 2>&1
+del /s "c:\Users\Administrator\Desktop\ImgBurn.lnk" >nul 2>&1 & del /s "c:\Users\Public\Desktop\ImgBurn.lnk" >nul 2>&1
 echo:
 
 title Installing KLite Codecs
