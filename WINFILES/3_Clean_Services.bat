@@ -8,6 +8,7 @@ title More File Cleaning
 "C:\Program Files\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
 "C:\Program Files (x86)\Wise\Wise Disk Cleaner\WiseDiskCleaner.exe"
 del /f /q c:\inetpub >nul 2>&1
+reg import Restore_Photo_Viewer.reg >nul 2>&1
 echo:
 
 title Silence Any Telemetry
