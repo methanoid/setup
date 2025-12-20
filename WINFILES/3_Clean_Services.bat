@@ -14,6 +14,13 @@ title Silence Any Telemetry
 shutup10
 echo:
 
+title Windows Updates
+echo Installing Windows updates
+WUSA /QUIET /WARNRESTART windows10.0-kb5010472-x64-ndp48_2ddef186366792bd766bc55a2ee63819e8770e07.MSU
+WUSA /QUIET /WARNRESTART windows10.0-kb5066130-x64-ndp481_62d1e2cbc14bd4ef08e10b076868a6ee7a986fa6.MSU
+WUSA /QUIET /WARNRESTART windows10.0-kb5066135-x64-ndp48_0838b78fa58e8f54c56ed6bc4fbfc762b829a87f.MSU
+WUSA /QUIET /WARNRESTART windows10.0-kb5066791-x64_3210d264091be5effb3253d05397c4daefba44c8.MSU
+
 title Services Tweaks
 echo Service tweaks running
 :: Services lifted from CTT
