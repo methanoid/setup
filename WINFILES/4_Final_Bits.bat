@@ -57,7 +57,7 @@ echo:
 :: ==UPDATES==========================================================================================================================
 
 cls
-echo "Install Windows Updates, and run Post-Installs Again !!!!!!"
+echo "REBOOT ALL DONE!"
 echo:
 pause
 
