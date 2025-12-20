@@ -127,7 +127,7 @@ powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methano
 echo:
 
 title Installing CCleaner
-winget install -e -h --id Piriform.CCleaner.slim
+winget install -e -h --id Piriform.CCleaner.Slim
 del /s "c:\Users\Public\Desktop\CCleaner.lnk" >nul 2>&1
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/ccleaner.ini -OutFile 'C:\Program Files\CCleaner\ccleaner.ini'"
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/winapp2.ini -OutFile 'C:\Program Files\CCleaner\winapp2.ini'"
