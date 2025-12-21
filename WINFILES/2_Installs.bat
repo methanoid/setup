@@ -116,7 +116,7 @@ title Installing Hashtab
 winget install -e -h --id namazso.OpenHashTab
 echo:
 
-title Installing Privado VPN
+title Installing Surfshark VPN
 winget install -e -h --id Surfshark.Surfshark
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul 2>&1      
 echo:
