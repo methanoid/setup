@@ -179,3 +179,8 @@ title Installing VideoReDo.TVSuite.6.63.7.836
 del /s "c:\Users\Public\Desktop\VideoReDo TVSuite V6.lnk" >nul 2>&1
 del /s "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
 echo:
+
+title DotNet Framework 3.5
+Dism /online /Enable-Feature /FeatureName:NetFx3
+c:\d3dx43\DXsetup.exe /QUIET
+del c:\d3dx43 /s  >nul 2>&1
