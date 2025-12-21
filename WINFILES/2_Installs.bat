@@ -20,7 +20,6 @@ if %build% geq 22000 (
   title Installing ExplorerPatcher
   winget install -e -h --id valinet.ExplorerPatcher --accept-source-agreements --accept-package-agreements
   reg import c:\ExplorerPatcher.reg
-  del /s c:\ExplorerPatcher.reg >nul 2>&1
   taskkill /im explorer.exe /f & start explorer.exe
 
 ) else (
@@ -28,6 +27,7 @@ if %build% geq 22000 (
   cscript //B slmgr.vbs /ipk QPM6N-7J2WJ-P88HH-P3YRH-YY74H 
   label c: Win10
 )
+del /s c:\ExplorerPatcher.reg >nul 2>&1
 
 title Installing UniGetUI
 winget install -e -h --id XPFFTQ032PTPHF --accept-source-agreements --accept-package-agreements
