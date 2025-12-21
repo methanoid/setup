@@ -2,6 +2,10 @@
 :: ==FINAL BITS========================================================================================================================
 
 @echo off
+title Windows Activation
+powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
+echo:
+
 title Name PC
 cls & set /p NUNAME=What name do you want this PC to be called? :
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
@@ -30,10 +34,6 @@ REM  Here perhaps add HP Laptop Hotkeys util ?
 :done
 echo:
 
-title Windows Activation
-powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
-echo:
-
 title Gaming Installs
 :choice
 set /P c=Is this machine for Gaming? [Y/N]?
@@ -51,13 +51,7 @@ powershell -command "Get-ScheduledTask 'MicrosoftEdge*' | Unregister-ScheduledTa
 
 powercfg -h off
 
-echo All Done!
-echo:
-
-:: ==UPDATES==========================================================================================================================
-
-cls
-echo "REBOOT ALL DONE!"
+cls & echo All Done! REBOOT TIME!
 echo:
 pause
 
