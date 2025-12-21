@@ -10,6 +10,8 @@ title More File Cleaning
 del /f /q c:\inetpub >nul 2>&1
 reg import c:\Restore_Photo_Viewer.reg >nul 2>&1
 del /f /q c:\Restore_Photo_Viewer.reg >nul 2>&1
+reg import c:\BlockKeylogger.reg >nul 2>&1
+del /f /q c:\BlockKeylogger.reg >nul 2>&1
 echo:
 
 title Silence Any Telemetry
