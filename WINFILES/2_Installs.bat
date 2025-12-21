@@ -57,8 +57,11 @@ echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 title Installing Driver Store Explorer and Driver Booster
-winget install -e -h "Driver Booster Free"
+powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
+C:\Users\Administrator\Desktop\DB.exe -Y
+del C:\Users\Administrator\Desktop\DB.exe >nul 2>&1
 winget install -e -h --id lostindark.DriverStoreExplorer
+echo:
 
 title Installing 7Zip
 winget install -e -h --id 7zip.7zip
@@ -170,12 +173,6 @@ title Installing CBX Shell
 powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/CBX.exe -OutFile C:\Users\Administrator\Desktop\CBX.exe"
 C:\Users\Administrator\Desktop\CBX.exe /SP /VERYSILENT
 del /s C:\Users\Administrator\Desktop\CBX.exe >nul 2>&1
-echo:
-
-title Putting DriverBooster on Desktop
-powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/DB.exe -OutFile C:\Users\Administrator\Desktop\DB.exe"
-C:\Users\Administrator\Desktop\DB.exe -Y
-del C:\Users\Administrator\Desktop\DB.exe >nul 2>&1
 echo:
 
 title Installing Samsung Printer Driver
