@@ -36,7 +36,7 @@ echo:
 
 title Installing Brave
 winget install -e -h --scope machine --id Brave.Brave 
-del /s "c:\Users\Administrator\Desktop\Brave.lnk" >nul 2>&1
+del /s "c:\Users\Public\Desktop\Brave.lnk" >nul 2>&1
 reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware Update" /f >nul 2>&1
 for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
 sc config "Brave" start=disabled >nul 2>&1
@@ -114,6 +114,7 @@ echo:
 
 title Installing Surfshark VPN
 winget install -e -h --id Surfshark.Surfshark
+del /s "c:\Users\Public\Desktop\Surfshark.lnk" >nul 2>&1
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul 2>&1      
 taskkill /F /T /IM surfshark.exe >nul 2>&1
 echo:
