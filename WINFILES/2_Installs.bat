@@ -50,6 +50,7 @@ title Remove Edge Cleanly
 powershell -file "C:\Die_Edge_Die.ps1"
 del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
 powershell -command "Get-ScheduledTask 'MicrosoftEdgeUpdate*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
+del /s "c:\Users\Public\Desktop\Microsoft Edge.lnk" >nul 2>&1
 echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
