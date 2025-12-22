@@ -54,8 +54,8 @@ echo Displaying remaining installed AppX
 powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 title Installing Driver Store Explorer and Driver Booster
-move "c:\Driver Booster" "c:\Program Files\Driver Booster" -y >nul 2>&1
-move DriverBooster.lnk c:\Users\Administrator\Desktop\DriverBooster.lnk -y >nul 2>&1 
+move "c:\Driver Booster" "c:\Program Files\Driver Booster" /y >nul 2>&1
+move DriverBooster.lnk c:\Users\Administrator\Desktop\DriverBooster.lnk /y >nul 2>&1 
 winget install -e -h --id lostindark.DriverStoreExplorer
 echo:
 
@@ -115,22 +115,23 @@ echo:
 title Installing Surfshark VPN
 winget install -e -h --id Surfshark.Surfshark
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\PolicyAgent" /v "AssumeUDPEncapsulationContextOnSendRule" /t REG_DWORD /d "2" /f >nul 2>&1      
+taskkill /F /T /IM surfshark.exe >nul 2>&1
 echo:
 
 title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
 del /s "c:\Users\Administrator\Desktop\BleachBit.lnk" >nul 2>&1
-move c:\bleachbit.ini C:\Users\Administrator\AppData\Local\BleachBit\bleachbit.ini -y >nul 2>&1
+move c:\bleachbit.ini C:\Users\Administrator\AppData\Local\BleachBit\bleachbit.ini /y >nul 2>&1
 mkdir "C:\Users\Administrator\AppData\Local\BleachBit\cleaners" >nul 2>&1
-copy c:\winapp2.ini C:\Users\Administrator\AppData\Local\BleachBit\cleaners\winapp2.ini -y >nul 2>&1
+copy c:\winapp2.ini C:\Users\Administrator\AppData\Local\BleachBit\cleaners\winapp2.ini /y >nul 2>&1
 echo:
 
 title Installing CCleaner
 winget install -e -h --id Piriform.CCleaner.Slim
 del /s "c:\Users\Public\Desktop\CCleaner.lnk" >nul 2>&1
-move c:\ccleaner.ini "C:\Program Files\CCleaner\ccleaner.ini" -y >nul 2>&1
-move c:\winapp2.ini "C:\Program Files\CCleaner\winapp2.ini" -y >nul 2>&1
-move c:\CCEnhancer.exe "C:\Program Files\CCleaner\CCEnhancer.exe" -y >nul 2>&1
+move c:\ccleaner.ini "C:\Program Files\CCleaner\ccleaner.ini" /y >nul 2>&1
+move c:\winapp2.ini "C:\Program Files\CCleaner\winapp2.ini" /y >nul 2>&1
+move c:\CCEnhancer.exe "C:\Program Files\CCleaner\CCEnhancer.exe" /y >nul 2>&1
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul 2>&1
 schtasks /delete /TN "CCleanerCrashReporting" /F >nul 2>&1
 powershell -command "Get-ScheduledTask 'CCleaner*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
@@ -138,7 +139,7 @@ echo:
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
-move c:\config.ini "C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini" -y >nul 2>&1
+move c:\config.ini "C:\Program Files (x86)\Wise\Wise Disk Cleaner\config.ini" /y >nul 2>&1
 del /s "c:\Users\Public\Desktop\Wise Disk Cleaner.lnk" >nul 2>&1
 echo:
 
