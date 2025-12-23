@@ -17,15 +17,15 @@ echo:
 REM title Windows Updates
 REM echo Installing Windows updates
 REM WUSA /QUIET /NORESTART c:\windows10.0-kb5066135-x64.MSU
-REM WUSA /QUIET /NORESTART c:\windows10.0-kb5071546-x64.MSU
+WUSA /QUIET /NORESTART c:\windows10.0-kb5071546-x64.MSU
 REM c:\updateplatform.amd64.exe
 REM del c:\updateplatform.amd64.exe
-REM del /f /q c:\*.MSU >nul 2>&1
+del /f /q c:\*.MSU >nul 2>&1
+cls
 
 title Silence Any Telemetry
-move c:\ooshutup10.cfg "C:\Users\Administrator\AppData\Local\OO Software\OO ShutUp10\ooshutup10.cfg" -y  >nul 2>&1
 shutup10 ooshutup10.cfg /quiet /force
-echo:
+cls
 
 title Services Tweaks
 echo Service tweaks running
@@ -317,13 +317,10 @@ sc config "SECOMNService" start=disabled >nul 2>&1
 
 powershell -command "Get-ScheduledTask 'MoveActiveHours*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
 powershell -command "Get-AppxPackage -Name 'Microsoft.MicrosoftEdge*' | Remove-AppxPackage" >nul 2>&1
-powershell -command "Get-AppxPackage -Name 'Microsoft.Wikndows.DevHome*' | Remove-AppxPackage" >nul 2>&1
-echo:
+powershell -command "Get-AppxPackage -Name 'Microsoft.Windows.DevHome*' | Remove-AppxPackage" >nul 2>&1
+cls
 
 echo "Hide MeetNow Icon"     REM Here cos it comes after a Windows update
 reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d "1" /f >nul 2>&1
 reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer" /v "HideSCAMeetNow" /t REG_DWORD /d "1" /f >nul 2>&1
-
-REM Search icon remove AGAIN!!!!
-
-echo:
+cls
