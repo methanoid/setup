@@ -1,4 +1,4 @@
-o:: ==INSTALLS========================================================================================================================
+:: ==INSTALLS========================================================================================================================
 
 @echo off
 cls
@@ -46,13 +46,13 @@ c:\pttb.exe C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe >
 del /s c:\pttb.exe >nul 2>&1
 echo:
 
-title Remove Edge Cleanly
-powershell -file "C:\Die_Edge_Die.ps1"
-del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
-powershell -command "Get-ScheduledTask 'MicrosoftEdgeUpdate*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
-del /s "c:\Users\Public\Desktop\Microsoft Edge.lnk" >nul 2>&1
-echo Displaying remaining installed AppX
-powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
+REM title Remove Edge Cleanly
+REM powershell -file "C:\Die_Edge_Die.ps1"
+REM del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
+REM powershell -command "Get-ScheduledTask 'MicrosoftEdgeUpdate*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
+REM del /s "c:\Users\Public\Desktop\Microsoft Edge.lnk" >nul 2>&1
+REM echo Displaying remaining installed AppX
+REM powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 title Installing Driver Store Explorer and Driver Booster
 move "c:\Driver Booster" "c:\Program Files\Driver Booster" /y >nul 2>&1
@@ -184,6 +184,6 @@ del /s "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
 echo:
 
 title DotNet Framework 3.5
-Dism /online /Enable-Feature /FeatureName:NetFx3
+REM Dism /online /Enable-Feature /FeatureName:NetFx3
 c:\d3dx43\DXsetup.exe /QUIET
 del c:\d3dx43 /s  >nul 2>&1
