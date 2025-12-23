@@ -14,13 +14,13 @@ reg import c:\BlockKeylogger.reg >nul 2>&1
 del /f /q c:\BlockKeylogger.reg >nul 2>&1
 echo:
 
-title Windows Updates
-echo Installing Windows updates
-WUSA /QUIET /NORESTART c:\windows10.0-kb5066135-x64.MSU
-WUSA /QUIET /NORESTART c:\windows10.0-kb5071546-x64.MSU
-c:\updateplatform.amd64.exe
-del c:\updateplatform.amd64.exe
-del /f /q c:\*.MSU >nul 2>&1
+REM title Windows Updates
+REM echo Installing Windows updates
+REM WUSA /QUIET /NORESTART c:\windows10.0-kb5066135-x64.MSU
+REM WUSA /QUIET /NORESTART c:\windows10.0-kb5071546-x64.MSU
+REM c:\updateplatform.amd64.exe
+REM del c:\updateplatform.amd64.exe
+REM del /f /q c:\*.MSU >nul 2>&1
 
 title Silence Any Telemetry
 move c:\ooshutup10.cfg "C:\Users\Administrator\AppData\Local\OO Software\OO ShutUp10\ooshutup10.cfg" -y  >nul 2>&1
