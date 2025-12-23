@@ -4,7 +4,7 @@
 @echo off
 title Windows Activation
 powershell -command "& ([ScriptBlock]::Create((irm https://get.activated.win))) /hwid"
-echo:
+cls
 
 title Name PC
 cls & set /p NUNAME=What name do you want this PC to be called? :
@@ -12,7 +12,7 @@ reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ActiveComputerName" 
 reg add "HKLM\SYSTEM\CurrentControlSet\Control\ComputerName\ComputerName" /v "ComputerName" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "Hostname" /t REG_SZ /d %NUNAME% /f >nul
 reg add "HKLM\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters" /v "NV Hostname" /t REG_SZ /d %NUNAME% /f >nul
-echo:
+cls
 
 title Power Planning
 :choice
@@ -32,7 +32,7 @@ goto done
 echo Setting up for a Laptop & powercfg -setactive scheme_max
 REM  Here perhaps add HP Laptop Hotkeys util ?
 :done
-echo:
+cls
 
 title Gaming Installs
 :choice
@@ -44,15 +44,11 @@ goto :choice
 echo Installing clients - please wait
 winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GOG.Galaxy Ubisoft.Connect ElectronicArts.EADesktop
 :no
-echo:
-
-title Just in case
-powershell -command "Get-ScheduledTask 'MicrosoftEdge*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
+cls
 
 powercfg -h off
 
 cls & echo All Done! REBOOT TIME!
-echo:
 pause
 
 exit
