@@ -120,9 +120,9 @@ reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware 
 for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
 sc config "Brave" start=disabled >nul 2>&1
 sc config "BraveM" start=disabled >nul 2>&1
-c:\pttb.exe C:\Users\Administrator\AppData\Local\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
-c:\pttb.exe C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe >nul 2>&1
+c:\pttb.exe "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" >nul 2>&1
 del /s c:\pttb.exe >nul 2>&1
+REM   MAYBE MAKE BRAVE DEFAULT HTML ASSIGN BROWSER???
 cls
 
 REM title Remove Edge Cleanly
@@ -205,7 +205,7 @@ del /s "c:\Users\Administrator\Desktop\BleachBit.lnk" >nul 2>&1
 move c:\bleachbit.ini C:\Users\Administrator\AppData\Local\BleachBit\ /y >nul 2>&1
 mkdir "C:\Users\Administrator\AppData\Local\BleachBit\cleaners" >nul 2>&1
 copy c:\winapp2.ini C:\Users\Administrator\AppData\Local\BleachBit\cleaners\ /y >nul 2>&1
-echo:
+cls
 
 title Installing CCleaner
 winget install -e -h --id Piriform.CCleaner.Slim
@@ -285,12 +285,8 @@ reg import c:\BlockKeylogger.reg >nul 2>&1
 del /f /q c:\BlockKeylogger.reg >nul 2>&1
 echo:
 
-REM title Windows Updates
-REM echo Installing Windows updates
-REM WUSA /QUIET /NORESTART c:\windows10.0-kb5066135-x64.MSU
+title Windows Rollup Update
 WUSA /QUIET /NORESTART c:\windows10.0-kb5071546-x64.MSU
-REM c:\updateplatform.amd64.exe
-REM del c:\updateplatform.amd64.exe
 del /f /q c:\*.MSU >nul 2>&1
 cls
 
