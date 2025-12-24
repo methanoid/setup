@@ -122,7 +122,8 @@ sc config "Brave" start=disabled >nul 2>&1
 sc config "BraveM" start=disabled >nul 2>&1
 c:\pttb.exe "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" >nul 2>&1
 del /s c:\pttb.exe >nul 2>&1
-REM   MAYBE MAKE BRAVE DEFAULT HTML ASSIGN BROWSER???
+c:\SetUserFTA.exe HKLM "Brave"
+del /s c:\SetUSerFTA.exe >nul 2>&1
 cls
 
 REM title Remove Edge Cleanly
