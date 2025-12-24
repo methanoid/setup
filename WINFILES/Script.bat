@@ -283,7 +283,7 @@ reg import c:\Restore_Photo_Viewer.reg >nul 2>&1
 del /f /q c:\Restore_Photo_Viewer.reg >nul 2>&1
 reg import c:\BlockKeylogger.reg >nul 2>&1
 del /f /q c:\BlockKeylogger.reg >nul 2>&1
-echo:
+cls
 
 title Windows Rollup Update
 WUSA /QUIET /NORESTART c:\windows10.0-kb5071546-x64.MSU
@@ -291,7 +291,7 @@ del /f /q c:\*.MSU >nul 2>&1
 cls
 
 title Silence Any Telemetry
-shutup10 ooshutup10.cfg /quiet /force
+shutup10 ooshutup10.cfg /quiet
 cls
 
 title Services Tweaks
