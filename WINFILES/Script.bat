@@ -6,7 +6,8 @@ title Tweaks
 
 :check
 ping www.google.com -n 1 -w 1000>nul && cls
-if errorlevel 1 (echo "This script needs you to connect to internet" & wait 5 & goto check) else (echo Starting)
+if errorlevel 1 (echo "This script needs you to connect to internet" & wait 10 & goto check) else (echo Starting)
+attrib -R c:\CUSTOM /s >nul 2>&1
 
 echo Hide Recommended Section and Recently Added Apps
 reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
@@ -81,7 +82,7 @@ cls
 cls
 tzutil /s "GMT Standard Time" >nul 2>&1
 w32tm /resync /force >nul 2>&1
-c:\pttb.exe C:\windows\explorer.exe >nul 2>&1
+c:\CUSTOM\pttb.exe C:\windows\explorer.exe >nul 2>&1
 
 title Installing Winget
 REM Use wsreset -i and then install unigetui from msstore as an ALT
@@ -96,7 +97,7 @@ if %build% geq 22000 (
   label c: Win11
   title Installing ExplorerPatcher
   winget install -e -h --id valinet.ExplorerPatcher --accept-source-agreements --accept-package-agreements
-  reg import c:\ExplorerPatcher.reg
+  reg import c:\CUSTOM\ExplorerPatcher.reg
   taskkill /im explorer.exe /f & start explorer.exe
 
 ) else (
@@ -104,7 +105,7 @@ if %build% geq 22000 (
   cscript //B slmgr.vbs /ipk QPM6N-7J2WJ-P88HH-P3YRH-YY74H 
   label c: Win10
 )
-del /s c:\ExplorerPatcher.reg >nul 2>&1
+del /s c:\CUSTOM\ExplorerPatcher.reg >nul 2>&1
 cls
 
 title Installing UniGetUI
@@ -120,23 +121,24 @@ reg delete HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v "BraveSoftware 
 for /f "tokens=2" %%x in ('schtasks /query /xml ^| findstr Brave') do schtasks /Delete /TN %%x /f >nul 2>&1
 sc config "Brave" start=disabled >nul 2>&1
 sc config "BraveM" start=disabled >nul 2>&1
-c:\pttb.exe "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" >nul 2>&1
-del /s c:\pttb.exe >nul 2>&1
-c:\SetUserFTA.exe HKLM "Brave"
-del /s c:\SetUSerFTA.exe >nul 2>&1
+c:\CUSTOM\pttb.exe "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" >nul 2>&1
+del /s c:\CUSTOM\pttb.exe >nul 2>&1
+c:\CUSTOM\SetUserFTA.exe HKLM "Brave"
+del /s c:\CUSTOM\SetUSerFTA.exe >nul 2>&1
 cls
 
 REM title Remove Edge Cleanly
 REM powershell -file "C:\Die_Edge_Die.ps1"
 REM del C:\Users\Administrator\Desktop\Die_Edge_Die.ps1
 REM powershell -command "Get-ScheduledTask 'MicrosoftEdgeUpdate*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
-REM del /s "c:\Users\Public\Desktop\Microsoft Edge.lnk" >nul 2>&1
+del /s "c:\Users\Public\Desktop\Microsoft Edge.lnk" >nul 2>&1
+del /s "c:\Users\Administrator\Desktop\Microsoft Edge.lnk" >nul 2>&1
 REM echo Displaying remaining installed AppX
 REM powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 title Installing Driver Store Explorer and Driver Booster
-move "c:\Driver Booster" "c:\Program Files\" /y >nul 2>&1
-move DriverBooster.lnk c:\Users\Administrator\Desktop\ /y >nul 2>&1 
+move "c:\CUSTOM\Driver Booster" "c:\Program Files\" /y >nul 2>&1
+move c:\CUSTOM\DriverBooster.lnk c:\Users\Administrator\Desktop\ /y >nul 2>&1 
 winget install -e -h --id lostindark.DriverStoreExplorer
 cls
 
@@ -159,7 +161,6 @@ cls
 
 title Installing Putty
 winget install -e -h --id PuTTY.PuTTY
-REM powershell -command "Invoke-WebRequest https://raw.githubusercontent.com/methanoid/setup/main/WINFILES/Putty.lnk -OutFile C:\Users\Administrator\Desktop\Putty.lnk"
 cls
 
 title Installing SumatraPDF
@@ -185,7 +186,6 @@ cls
 
 title Installing LockHunter
 winget install -e -h --id CrystalRich.LockHunter
-taskkill /F /T /IM iexplore.exe >nul 2>&1
 taskkill /F /T /IM brave.exe >nul 2>&1
 cls
 
@@ -203,17 +203,17 @@ cls
 title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
 del /s "c:\Users\Administrator\Desktop\BleachBit.lnk" >nul 2>&1
-move c:\bleachbit.ini C:\Users\Administrator\AppData\Local\BleachBit\ /y >nul 2>&1
+move c:\CUSTOM\bleachbit.ini C:\Users\Administrator\AppData\Local\BleachBit\ /y >nul 2>&1
 mkdir "C:\Users\Administrator\AppData\Local\BleachBit\cleaners" >nul 2>&1
-copy c:\winapp2.ini C:\Users\Administrator\AppData\Local\BleachBit\cleaners\ /y >nul 2>&1
+copy c:\CUSTOM\winapp2.ini C:\Users\Administrator\AppData\Local\BleachBit\cleaners\ /y >nul 2>&1
 cls
 
 title Installing CCleaner
 winget install -e -h --id Piriform.CCleaner.Slim
 del /s "c:\Users\Public\Desktop\CCleaner.lnk" >nul 2>&1
-move c:\ccleaner.ini "C:\Program Files\CCleaner\" /y >nul 2>&1
-move c:\winapp2.ini "C:\Program Files\CCleaner\" /y >nul 2>&1
-move c:\CCEnhancer.exe "C:\Program Files\CCleaner\" /y >nul 2>&1
+move c:\CUSTOM\ccleaner.ini "C:\Program Files\CCleaner\" /y >nul 2>&1
+move c:\CUSTOM\winapp2.ini "C:\Program Files\CCleaner\" /y >nul 2>&1
+move c:\CUSTOM\CCEnhancer.exe "C:\Program Files\CCleaner\" /y >nul 2>&1
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul 2>&1
 schtasks /delete /TN "CCleanerCrashReporting" /F >nul 2>&1
 powershell -command "Get-ScheduledTask 'CCleaner*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
@@ -221,7 +221,7 @@ cls
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
-move c:\config.ini "C:\Program Files (x86)\Wise\Wise Disk Cleaner\" /y >nul 2>&1
+move c:\CUSTOM\config.ini "C:\Program Files (x86)\Wise\Wise Disk Cleaner\" /y >nul 2>&1
 del /s "c:\Users\Public\Desktop\Wise Disk Cleaner.lnk" >nul 2>&1
 cls
 
@@ -232,12 +232,12 @@ cls
 
 title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
-move c:\ooshutup10.cfg "C:\Users\Administrator\AppData\Local\OO Software\OO ShutUp10\" -y  >nul 2>&1
+move c:\CUSTOM\ooshutup10.cfg "C:\Users\Administrator\AppData\Local\OO Software\OO ShutUp10\" -y  >nul 2>&1
 cls
 
 title Installing Plasma Screensaver
-C:\PSS.exe /S  
-del /s C:\PSS.exe >nul 2>&1
+C:\CUSTOM\PSS.exe /S  
+del /s C:\CUSTOM\PSS.exe >nul 2>&1
 reg add "HKCU\Control Panel\Desktop" /v "SCRNSAVE.EXE" /t REG_SZ /d "c:\Windows\system32\plasma.scr" /f >nul 2>&1
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveTimeOut" /t REG_SZ /d "600" /f >nul 2>&1
 reg add "HKCU\Control Panel\Desktop" /v "ScreenSaveActive" /t REG_SZ /d "0" /f >nul 2>&1
@@ -249,25 +249,25 @@ winget install -e -h --id MoritzBunkus.MKVToolNix
 cls
 
 title Installing CBX Shell
-C:\CBX.exe /SP /VERYSILENT
-del /s C:\CBX.exe >nul 2>&1
+C:\CUSTOM\CBX.exe /SP /VERYSILENT
+del /s C:\CUSTOM\CBX.exe >nul 2>&1
 cls
 
 title Installing Samsung Printer Driver
-C:\SamsungUPD3.exe /s
-del /s c:\SamsungUPD3.exe >nul 2>&1
+C:\CUSTOM\SamsungUPD3.exe /s
+del /s c:\CUSTOM\SamsungUPD3.exe >nul 2>&1
 cls
 
 title Installing VideoReDo.TVSuite.6.63.7.836
-"C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" /s
+"C:\CUSTOM\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" /s
 del /s "c:\Users\Public\Desktop\VideoReDo TVSuite V6.lnk" >nul 2>&1
-del /s "C:\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
+del /s "C:\CUSTOM\VideoReDo.TVSuite.6.63.7.836 - Patched SFX.exe" >nul 2>&1
 cls
 
-title DotNet Framework 3.5
+REM title DotNet Framework 3.5
 REM Dism /online /Enable-Feature /FeatureName:NetFx3
-c:\d3dx43\DXsetup.exe /silent
-del c:\d3dx43 /s  >nul 2>&1
+REM c:\d3dx43\DXsetup.exe /silent
+REM del c:\d3dx43 /s  >nul 2>&1
 cls
 
 :: ==CLEANUPS========================================================================================================================
@@ -280,16 +280,27 @@ title More File Cleaning
 "C:\Program Files\CCleaner\CCleaner64.exe" /REGISTRY             :: Opens CCleaner on Registry Screen
 "C:\Program Files (x86)\Wise\Wise Disk Cleaner\WiseDiskCleaner.exe"
 del /f /q c:\inetpub >nul 2>&1
-reg import c:\Restore_Photo_Viewer.reg >nul 2>&1
-del /f /q c:\Restore_Photo_Viewer.reg >nul 2>&1
-reg import c:\BlockKeylogger.reg >nul 2>&1
-del /f /q c:\BlockKeylogger.reg >nul 2>&1
+reg import c:\CUSTOM\Restore_Photo_Viewer.reg >nul 2>&1
+del /f /q c:\CUSTOM\Restore_Photo_Viewer.reg >nul 2>&1
+reg import c:\CUSTOM\BlockKeylogger.reg >nul 2>&1
+del /f /q c:\CUSTOM\BlockKeylogger.reg >nul 2>&1
 cls
 
-title Windows Rollup Update
-WUSA /QUIET /NORESTART c:\windows10.0-kb5071546-x64.MSU
-del /f /q c:\*.MSU >nul 2>&1
-cls
+:: Windows10/11 Differences
+
+for /f "tokens=3 delims=." %%i in ('ver') do set build=%%i
+if %build% geq 22000 (
+  echo Detected Windows 11
+  title Installing W11 Updates
+  rem
+  
+) else (
+  echo Changing to W10 LTSC IOT
+  title Installing W10 Updates
+  WUSA /QUIET /NORESTART c:\CUSTOM\windows10.0-kb5071546-x64.MSU
+  del /f /q c:\CUSTOM\*.MSU >nul 2>&1
+  cls
+)
 
 title Silence Any Telemetry
 shutup10 ooshutup10.cfg /quiet
@@ -646,4 +657,3 @@ powercfg -h off
 cls & echo All Done! REBOOT TIME!
 pause
 shutdown -r -t 0
- 
