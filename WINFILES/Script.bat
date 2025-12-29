@@ -9,12 +9,7 @@ ping www.google.com -n 1 -w 1000>nul && cls
 if errorlevel 1 (echo "This script needs you to connect to internet" & wait 10 & goto check) else (echo Starting)
 attrib -R c:\CUSTOM /s >nul 2>&1
 
-echo Hide Recommended Section and Recently Added Apps
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
-reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecentlyAddedApps" /t REG_DWORD /d "1" /f >nul 2>&1
-cls
-
-echo Switch to Dark mode system-wide
+title Switch to Dark mode system-wide
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name SystemUsesLightTheme -Value 0 -Type Dword -Force;"
 powershell -command "Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize -Name AppsUseLightTheme -Value 0 -Type Dword -Force;"
 taskkill /im explorer.exe /f >nul 2>&1
@@ -22,13 +17,19 @@ start explorer.exe >nul 2>&1
 rd /s /q "c:\Perflogs" >nul 2>&1
 cls
 
-echo Set Sharing for unRAID
+title Set Sharing for unRAID
 netsh advfirewall firewall set rule group="Network Discovery" new enable=Yes >nul 2>&1
 powershell -command "Set-NetFirewallRule -Group '*-32752*' -Enabled 'True'"
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=Yes >nul 2>&1
 reg add HKLM\Software\Policies\Microsoft\Windows\LanmanWorkstation /v AllowInsecureGuestAuth /t REG_DWORD /d "1" /f >nul 2>&1
 reg add HKLM\SYSTEM\CurrentControlSet\Services\LanmanWorkstation\Parameters /v EnableSecuritySignature /t REG_DWORD /d "0" /f >nul 2>&1
 sc config "LanmanWorkstation" start=automatic >nul 2>&1     REM Needed for Samba Share
+cls
+
+title More Reg Tweaks
+echo Hide Recommended Section and Recently Added Apps
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecommendedSection" /t REG_DWORD /d "1" /f >nul 2>&1
+reg add "HKLM\SOFTWARE\Policies\Microsoft\Windows\Explorer" /v "HideRecentlyAddedApps" /t REG_DWORD /d "1" /f >nul 2>&1
 cls
 
 echo Remove Gallery from Explorer
@@ -65,11 +66,6 @@ echo Enable Quick Machine Recovery
 reagentc.exe /enable >nul 2>&1
 cls
 
-echo Set PageFile size
-wmic computersystem where name="NEW_INSTALL" set AutomaticManagedPagefile=false
-wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=512,MaximumSize=2048
-cls
-
 echo Disable System Restore
 reg add "HKLM\Software\Policies\Microsoft\Windows NT\SystemRestore" /v "DisableSR" /t REG_DWORD /d "1" /f
 schtasks /Change /TN "Microsoft\Windows\SystemRestore\SR" /Disable >nul 2>&1
@@ -99,6 +95,8 @@ if %build% geq 22000 (
   winget install -e -h --id valinet.ExplorerPatcher --accept-source-agreements --accept-package-agreements
   reg import c:\CUSTOM\ExplorerPatcher.reg
   taskkill /im explorer.exe /f & start explorer.exe
+  title Installing WMIC
+  powershell -command "add-WindowsCapability -online -name WMIC"
 
 ) else (
   echo Changing to W10 LTSC IOT
@@ -106,6 +104,11 @@ if %build% geq 22000 (
   label c: Win10
 )
 del /s c:\CUSTOM\ExplorerPatcher.reg >nul 2>&1
+cls
+
+title Setting PageFile size
+wmic computersystem where name="NEW_INSTALL" set AutomaticManagedPagefile=false
+wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=512,MaximumSize=2048
 cls
 
 title Installing UniGetUI
