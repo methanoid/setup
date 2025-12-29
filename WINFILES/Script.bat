@@ -1,5 +1,9 @@
 :: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC =============================================================================
 
+echo "Make sure updates have been applied BEFORE running this script"
+pause
+cls
+
 :: ==TWEAKS===========================================================================================================================
 @echo off
 title Tweaks
