@@ -97,6 +97,7 @@ if %build% geq 22000 (
   taskkill /im explorer.exe /f & start explorer.exe
   title Installing WMIC
   powershell -command "add-WindowsCapability -online -name WMIC"
+  powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization" ` -Name "DODownloadMode" -Value 9'
 
 ) else (
   echo Changing to W10 LTSC IOT
