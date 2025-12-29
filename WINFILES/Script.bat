@@ -72,6 +72,10 @@ schtasks /Change /TN "Microsoft\Windows\SystemRestore\SR" /Disable >nul 2>&1
 vssadmin Resize ShadowStorage /For=C: /On=C: /Maxsize=320MB >nul 2>&1
 cls
 
+echo Disable Delivery Optimization
+powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization" ` -Name "DODownloadMode" -Value 9'
+cls
+
 :: ==INSTALLS========================================================================================================================
 
 @echo off
@@ -83,6 +87,7 @@ c:\CUSTOM\pttb.exe C:\windows\explorer.exe >nul 2>&1
 title Installing Winget
 REM Use wsreset -i and then install unigetui from msstore as an ALT
 powershell -command "irm https://github.com/asheroto/winget-install/releases/latest/download/winget-install.ps1 | iex"
+wait 2
 cls
 
 :: Windows10/11 Differences
@@ -97,7 +102,6 @@ if %build% geq 22000 (
   taskkill /im explorer.exe /f & start explorer.exe
   title Installing WMIC
   powershell -command "add-WindowsCapability -online -name WMIC"
-  powershell -command 'Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeliveryOptimization" ` -Name "DODownloadMode" -Value 9'
 
 ) else (
   echo Changing to W10 LTSC IOT
