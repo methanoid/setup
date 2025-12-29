@@ -170,6 +170,7 @@ cls
 
 title Installing Putty
 winget install -e -h --id PuTTY.PuTTY
+move c:\CUSTOM\Putty.lnk c:\Users\Administrator\Desktop\ >nul 2>&1 
 cls
 
 title Installing SumatraPDF
@@ -312,6 +313,7 @@ if %build% geq 22000 (
 )
 
 title Silence Any Telemetry
+move c:\CUSTOM\ooshutup10.cfg C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Packages\OO-Software.ShutUp10_Microsoft.Winget.Source_8wekyb3d8bbwe\ >nul 2>&1 
 shutup10 ooshutup10.cfg /quiet
 cls
 
@@ -662,6 +664,7 @@ winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GO
 cls
 
 powercfg -h off
+del c:\CUSTOM /s >nul 2>&1
 
 cls & echo All Done! REBOOT TIME!
 pause
