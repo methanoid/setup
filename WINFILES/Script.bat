@@ -132,7 +132,8 @@ sc config "BraveM" start=disabled >nul 2>&1
 c:\CUSTOM\pttb.exe "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" >nul 2>&1
 del /s c:\CUSTOM\pttb.exe >nul 2>&1
 c:\CUSTOM\SetUserFTA.exe HKLM "Brave"
-del /s c:\CUSTOM\SetUSerFTA.exe >nul 2>&1
+taskkill /F /T /IM SetUserFTAexe >nul 2>&1
+del /s c:\CUSTOM\SetUserFTA.exe >nul 2>&1
 cls
 
 REM title Remove Edge Cleanly
