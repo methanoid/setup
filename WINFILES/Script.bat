@@ -665,6 +665,11 @@ cls
 
 powercfg -h off
 del c:\CUSTOM /s >nul 2>&1
+cls
+
+title DISM Cleanup
+dism /online /cleanup-image /startcomponentcleanup
+dism /online /cleanup-image /startcomponentcleanup /resetbase
 
 cls & echo All Done! REBOOT TIME!
 pause
