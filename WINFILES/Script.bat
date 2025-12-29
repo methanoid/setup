@@ -137,8 +137,8 @@ REM echo Displaying remaining installed AppX
 REM powershell -command "Get-AppxProvisionedPackage -Online | Format-Table DisplayName, PackageName"
 
 title Installing Driver Store Explorer and Driver Booster
-move "c:\CUSTOM\Driver Booster" "c:\Program Files\" /y >nul 2>&1
-move c:\CUSTOM\DriverBooster.lnk c:\Users\Administrator\Desktop\ /y >nul 2>&1 
+move "c:\CUSTOM\Driver Booster" "c:\Program Files\" >nul 2>&1
+move c:\CUSTOM\DriverBooster.lnk c:\Users\Administrator\Desktop\ >nul 2>&1 
 winget install -e -h --id lostindark.DriverStoreExplorer
 cls
 
@@ -203,17 +203,17 @@ cls
 title Installing Bleachbit
 winget install -e -h --id BleachBit.BleachBit
 del /s "c:\Users\Administrator\Desktop\BleachBit.lnk" >nul 2>&1
-move c:\CUSTOM\bleachbit.ini C:\Users\Administrator\AppData\Local\BleachBit\ /y >nul 2>&1
+move c:\CUSTOM\bleachbit.ini C:\Users\Administrator\AppData\Local\BleachBit\ >nul 2>&1
 mkdir "C:\Users\Administrator\AppData\Local\BleachBit\cleaners" >nul 2>&1
-copy c:\CUSTOM\winapp2.ini C:\Users\Administrator\AppData\Local\BleachBit\cleaners\ /y >nul 2>&1
+copy c:\CUSTOM\winapp2.ini C:\Users\Administrator\AppData\Local\BleachBit\cleaners\ >nul 2>&1
 cls
 
 title Installing CCleaner
 winget install -e -h --id Piriform.CCleaner.Slim
 del /s "c:\Users\Public\Desktop\CCleaner.lnk" >nul 2>&1
-move c:\CUSTOM\ccleaner.ini "C:\Program Files\CCleaner\" /y >nul 2>&1
-move c:\CUSTOM\winapp2.ini "C:\Program Files\CCleaner\" /y >nul 2>&1
-move c:\CUSTOM\CCEnhancer.exe "C:\Program Files\CCleaner\" /y >nul 2>&1
+move c:\CUSTOM\ccleaner.ini "C:\Program Files\CCleaner\" >nul 2>&1
+move c:\CUSTOM\winapp2.ini "C:\Program Files\CCleaner\" >nul 2>&1
+move c:\CUSTOM\CCEnhancer.exe "C:\Program Files\CCleaner\" >nul 2>&1
 reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "CCleaner Smart Cleaning" /f >nul 2>&1
 schtasks /delete /TN "CCleanerCrashReporting" /F >nul 2>&1
 powershell -command "Get-ScheduledTask 'CCleaner*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
@@ -221,7 +221,7 @@ cls
 
 title Installing Wise Disk Cleaner
 winget install -e -h --id WiseCleaner.WiseDiskCleaner
-move c:\CUSTOM\config.ini "C:\Program Files (x86)\Wise\Wise Disk Cleaner\" /y >nul 2>&1
+move c:\CUSTOM\config.ini "C:\Program Files (x86)\Wise\Wise Disk Cleaner\" >nul 2>&1
 del /s "c:\Users\Public\Desktop\Wise Disk Cleaner.lnk" >nul 2>&1
 cls
 
@@ -232,7 +232,7 @@ cls
 
 title Installing Shutup10++
 winget install -e -h --id OO-Software.ShutUp10
-move c:\CUSTOM\ooshutup10.cfg "C:\Users\Administrator\AppData\Local\OO Software\OO ShutUp10\" -y  >nul 2>&1
+move c:\CUSTOM\ooshutup10.cfg "C:\Users\Administrator\AppData\Local\OO Software\OO ShutUp10\"  >nul 2>&1
 cls
 
 title Installing Plasma Screensaver
