@@ -1,6 +1,7 @@
 :: == WINDOWS CUSTOMIZER SCRIPT for WINDOWS 10 & 11 LTSC =============================================================================
 
 echo "Make sure updates have been applied BEFORE running this script"
+echo "Otherwise it will not slim the system fully. Just do the Updates!"
 pause
 cls
 
@@ -309,12 +310,12 @@ if %build% geq 22000 (
   rem
   
 ) else (
-  echo Changing to W10 LTSC IOT
+  echo Detected Windows 10
   title Installing W10 Updates
   rem WUSA /QUIET /NORESTART c:\CUSTOM\windows10.0-kb5071546-x64.MSU
-  del /f /q c:\CUSTOM\*.MSU >nul 2>&1
-  cls
+  rem del /f /q c:\CUSTOM\*.MSU >nul 2>&1 
 )
+cls
 
 title Silence Any Telemetry
 move c:\CUSTOM\ooshutup10.cfg C:\Users\Administrator\AppData\Local\Microsoft\WinGet\Packages\OO-Software.ShutUp10_Microsoft.Winget.Source_8wekyb3d8bbwe\ >nul 2>&1 
