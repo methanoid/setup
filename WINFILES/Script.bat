@@ -137,7 +137,7 @@ sc config "BraveM" start=disabled >nul 2>&1
 c:\CUSTOM\pttb.exe "C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe" >nul 2>&1
 del /s c:\CUSTOM\pttb.exe >nul 2>&1
 c:\CUSTOM\SetUserFTA.exe HKLM "Brave"
-taskkill /F /T /IM SetUserFTAexe >nul 2>&1
+taskkill /F /T /IM SetUserFTA.exe >nul 2>&1
 del /s c:\CUSTOM\SetUserFTA.exe >nul 2>&1
 cls
 
@@ -656,7 +656,7 @@ REM  Here perhaps add HP Laptop Hotkeys util ?
 :done
 cls
 
-title Gaming Installs
+title Possible Gaming Installs
 :choice
 set /P c=Is this machine for Gaming? [Y/N]?
 if /I "%c%" EQU "Y" goto :yes
@@ -669,7 +669,7 @@ winget install -e -h --id Valve.Steam HeroicGamesLauncher.HeroicGamesLauncher GO
 cls
 
 powercfg -h off
-del c:\CUSTOM /s >nul 2>&1
+del c:\CUSTOM /s /y >nul 2>&1
 cls
 
 title DISM Cleanup
