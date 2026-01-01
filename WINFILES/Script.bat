@@ -311,7 +311,7 @@ if %build% geq 22000 (
 ) else (
   echo Changing to W10 LTSC IOT
   title Installing W10 Updates
-  WUSA /QUIET /NORESTART c:\CUSTOM\windows10.0-kb5071546-x64.MSU
+  rem WUSA /QUIET /NORESTART c:\CUSTOM\windows10.0-kb5071546-x64.MSU
   del /f /q c:\CUSTOM\*.MSU >nul 2>&1
   cls
 )
