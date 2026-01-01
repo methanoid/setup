@@ -175,7 +175,7 @@ cls
 
 title Installing Putty
 winget install -e -h --id PuTTY.PuTTY
-move c:\CUSTOM\Putty.lnk c:\Users\Administrator\Desktop\ >nul 2>&1 
+REM move c:\CUSTOM\Putty.lnk c:\Users\Administrator\Desktop\ >nul 2>&1 
 cls
 
 title Installing SumatraPDF
@@ -609,6 +609,11 @@ sc config "igccservice" start=disabled >nul 2>&1
 sc config "cplspcon" start=disabled >nul 2>&1
 sc config "XTUOCDriverService" start=disabled >nul 2>&1
 sc config "SECOMNService" start=disabled >nul 2>&1
+
+:: Delete remnant EdgeServices
+
+sc delete edgeupdate >nul 2>&1
+sc delete edgeupdatem >nul 2>&1
 
 powershell -command "Get-ScheduledTask 'MoveActiveHours*' | Unregister-ScheduledTask -Confirm:$false" >nul 2>&1
 powershell -command "Get-AppxPackage -Name 'Microsoft.MicrosoftEdge*' | Remove-AppxPackage" >nul 2>&1
