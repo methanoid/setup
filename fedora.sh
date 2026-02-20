@@ -31,11 +31,12 @@ sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flat
 sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
 sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro 
 sudo dnf install -y fastfetch preload bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl libavcodec-freeworld dnfdragora
+sudo dnf copr enable atim/heroic-games-launcher -y
+sudo dnf install heroic-games-launcher-bin
 sudo printf "fastfetch" >> /home/$USER/.bashrc
 
 #GAMING STUFF
 sudo dnf install -y gamemode bottles lutris dosbox-staging steam steam-devices goverlay mangohud winetricks
-sudo flatpak install -y flathub com.heroicgameslauncher.hgl
 sudo flatpak install -y flathub org.prismlauncher.PrismLauncher
 sudo flatpak install -y flathub dev.lizardbyte.app.Sunshine
 sudo flatpak install -y flathub com.moonlight_stream.Moonlight
