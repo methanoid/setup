@@ -6,7 +6,8 @@ echo "max_parallel_downloads=10" | sudo tee -a /etc/dnf/dnf.conf
 echo "fastestmirror=True" | sudo tee -a /etc/dnf/dnf.conf
 echo "install_weak_deps=False" | sudo tee -a /etc/dnf/dnf.conf
 # Enable RPMfusion repos
-sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm
+sudo dnf install https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm
 # Disable the Modular Repos, added load at update.
 sudo sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/fedora-updates-modular.repo
 sudo sed -i 's/enabled=1/enabled=0/g' /etc/yum.repos.d/fedora-modular.repo
@@ -25,23 +26,18 @@ if [[ $nvgpu ]]; then
 fi
 #else    #  printf "RADV_PERFTEST=aco" >> /etc/environment   #fi
 
-#GENERAL INSTALLS
+#INSTALLS
 sudo dnf install -y dnf-plugins-core && sudo dnf config-manager addrepo --from-repofile=https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo && sudo dnf install -y brave-browser
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo && sudo flatpak remote-modify --no-filter --enable flathub && sudo flatpak remote-delete fedora
 sudo flatpak install -y --noninteractive --system org.gtk.Gtk3theme.Breeze
 sudo flatpak override --filesystem=xdg-config/gtk-3.0:ro 
 sudo dnf install -y fastfetch preload bleachbit python3-pip mc git ncdu hunspell-en-GB powertop curl libavcodec-freeworld dnfdragora
 sudo dnf copr enable atim/heroic-games-launcher -y
-sudo dnf install heroic-games-launcher-bin
-sudo printf "fastfetch" >> /home/$USER/.bashrc
-
-#GAMING STUFF
+sudo dnf copr enable atim/moonlight -y
+sudo dnf copr enable g3tchoo/prismlauncher -y
 sudo dnf install -y gamemode bottles lutris dosbox-staging steam steam-devices goverlay mangohud winetricks
-sudo flatpak install -y flathub org.prismlauncher.PrismLauncher
-sudo flatpak install -y flathub dev.lizardbyte.app.Sunshine
-sudo flatpak install -y flathub com.moonlight_stream.Moonlight
-sudo flatpak install -y flathub net.retrodeck.retrodeck
-
+sudo dnf install -y heroic-games-launcher-bin moonlight-qt retroarch prismlauncher   
+sudo printf "fastfetch" >> /home/$USER/.bashrc
 sudo dnf up -y && sudo dnf autoremove -y && sudo dnf clean all && sudo dnf distro-sync -y
 
 ## sudo dnf remove -y plasma-welcome ktorrent firefox neochat skanpage kmahjongg
